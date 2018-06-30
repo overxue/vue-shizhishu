@@ -1,6 +1,6 @@
 <template>
   <div class="tab">
-    <router-link tag="div" to="/" class="tab-item">
+    <router-link tag="div" to="/" class="tab-item" exact>
       <div class="tab-link">
         <i class="iconfont icon">&#xe61a;</i>
         <span class="text">首页</span>
@@ -57,4 +57,9 @@ export default {}
           margin-top: 3px
           font-size: $font-size-medium
           color: $color-tab-text
+      &.router-link-active
+        .icon
+          color: $color-highlight-background
+        .text
+          color: $color-highlight-background
 </style>
