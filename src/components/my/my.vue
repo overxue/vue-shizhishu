@@ -117,7 +117,7 @@ export default {
       color: #aaa
       .bottom-item
         display: flex
-        margin: 0 20px
+        margin: 0 10px
         height: 40px
         border-1px($color-border)
         line-height: 40px
