@@ -1,6 +1,6 @@
 <template>
   <div class="my">
-    <div class="my-top">
+    <div class="my-top" :style="bgStyl">
       <div class="img">
         <img class="image" width="100" height="100" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKrViabiahwZF1NQZBKpSA5QoibSnKGQE0nljAvpJP8CZgGVbd5AKBRoucJk8a5Ypns2DZdUqq0icU9qw/132">
       </div>
@@ -67,7 +67,17 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
+  computed: {
+    bgStyl () {
+      return `background-image: url(${this.backgroundImg})`
+    },
+    ...mapGetters([
+      'backgroundImg'
+    ])
+  },
   methods: {
     choseskin () {
       this.$router.push({
@@ -87,8 +97,8 @@ export default {
       position: relative
       width: 100%
       height: 200px
-      background-image: url(http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg)
       text-align: center
+      background-size: cover
       .img
         .image
           margin-top: 20px

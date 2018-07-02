@@ -4,10 +4,10 @@
       <div class="back" @click="back">
         <i class="iconfont icon">&#xe600;</i>
       </div>
-      <scroll class="skin-wrapper">
+      <scroll ref="listContent" class="skin-wrapper" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
         <ul>
-          <li class="skin-item" v-for="(item, index) of pic" :key="index">
-            <div class="image">
+          <li ref="pic" class="skin-item" v-for="(item, index) of pic" :key="index" @click="choseImg(item.imgUrl)">
+            <div class="image" :class="{'active': item.imgUrl === backgroundImg}">
               <img class="img" :src="item.imgUrl">
               <div class="text">
                 <span>{{item.desc}}</span>
@@ -16,19 +16,25 @@
           </li>
         </ul>
       </scroll>
+      <top :posY="posY" @top="backTop"></top>
     </div>
   </transition>
 </template>
 
 <script>
 import Scroll from 'base/scroll/scroll'
+import Top from 'base/top/top'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data () {
     return {
+      probeType: 3,
+      listenScroll: true,
+      posY: 0,
       pic: [
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_1.jpg', desc: '公路'},
         {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg', desc: '默认'},
+        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_1.jpg', desc: '公路'},
         {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_2.jpg', desc: '黑夜森林'},
         {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_3.jpg', desc: '鱼与水'},
         {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_4.jpg', desc: '山之剪影'},
@@ -43,13 +49,49 @@ export default {
       ]
     }
   },
+  created () {
+    this.scrollToCurrent()
+  },
+  computed: {
+    ...mapGetters([
+      'backgroundImg'
+    ])
+  },
   methods: {
+    // 一开始进入页面获取所选择位置
+    scrollToCurrent () {
+      setTimeout(() => {
+        const index = this.pic.findIndex((pic) => {
+          return this.backgroundImg === pic.imgUrl
+        })
+        let lineEl = this.$refs.pic[index - 1]
+        this.$refs.listContent.scrollToElement(lineEl, 1000)
+      }, 100)
+    },
+    // 返回上一页
     back () {
       this.$router.back()
-    }
+    },
+    // 选择图片
+    choseImg (url) {
+      this.saveBackgroundImg(url)
+      this.$router.back()
+    },
+    // 实时获取滚动位置
+    scroll (pos) {
+      this.posY = pos.y
+    },
+    // 返回顶部
+    backTop () {
+      this.$refs.listContent.scrollTo(0, 0, 1000)
+    },
+    ...mapActions([
+      'saveBackgroundImg'
+    ])
   },
   components: {
-    Scroll
+    Scroll,
+    Top
   }
 }
 </script>
@@ -93,6 +135,25 @@ export default {
           width: 100%
           box-shadow: 0 10px 10px rgba(0, 0, 0, .2)
           border-radius: 10px
+          &.active
+            overflow: hidden
+          &.active::before
+            content: '';
+            display: block
+            position: absolute
+            top: -40px
+            right: -40px
+            width: 80px
+            height: 80px
+            transform: rotate(45deg)
+            background-color: #47a86c
+          &.active::after
+            content: '在用'
+            display: block
+            position: absolute
+            top: 12px
+            right: 3px
+            transform: rotate(45deg)
           .img
             width: 100%
             height: 100%
