@@ -5,6 +5,7 @@ const Shoplist = () => import('components/shoplist/shoplist')
 const Shopcat = () => import('components/shopcat/shopcat')
 const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
+const Address = () => import('components/address/address')
 
 Vue.use(Router)
 
@@ -29,6 +30,10 @@ export default new Router({
         {
           path: '/my/skin',
           component: Skin
+        },
+        {
+          path: '/my/address',
+          component: Address
         }
       ]
     }

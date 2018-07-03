@@ -1,16 +1,14 @@
 <template>
   <transition name="slide">
     <div class="skin">
-      <div class="back" @click="back">
-        <i class="iconfont icon">&#xe600;</i>
-      </div>
+      <back @back="back"></back>
       <scroll ref="listContent" class="skin-wrapper" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
         <ul>
           <li ref="pic" class="skin-item" v-for="(item, index) of pic" :key="index" @click="choseImg(item.imgUrl)">
             <div class="image" :class="{'active': item.imgUrl === backgroundImg}">
               <img class="img" :src="item.imgUrl">
               <div class="text">
-                <span>{{item.desc}}</span>
+                <span class="desc">{{item.desc}}</span>
               </div>
             </div>
           </li>
@@ -23,6 +21,7 @@
 
 <script>
 import Scroll from 'base/scroll/scroll'
+import Back from 'base/back/back'
 import Top from 'base/top/top'
 import {mapActions, mapGetters} from 'vuex'
 
@@ -91,6 +90,7 @@ export default {
   },
   components: {
     Scroll,
+    Back,
     Top
   }
 }
@@ -110,16 +110,6 @@ export default {
       transition: all 0.3s
     &.slide-enter, &.slide-leave-to
       transform: translate3d(100%, 0, 0)
-    .back
-      position: absolute
-      top: 0
-      left: 6px
-      z-index: 50
-      .icon
-        display: block;
-        padding: 10px;
-        font-size: $font-size-icon
-        color: $color-highlight-background
     .skin-wrapper
       overflow: hidden
       height: 100%
@@ -154,6 +144,7 @@ export default {
             top: 12px
             right: 3px
             transform: rotate(45deg)
+            color: $color-tab-background
           .img
             width: 100%
             height: 100%
@@ -170,4 +161,5 @@ export default {
             padding: 0 20px
             .desc
               font-size: $font-size-medium
+              color: $color-tab-background
 </style>

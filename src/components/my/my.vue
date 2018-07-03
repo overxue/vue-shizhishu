@@ -38,7 +38,7 @@
             <i class="iconfont">&#xe68b;</i>
           </div>
         </li>
-        <li class="bottom-item border-1px">
+        <router-link to="/my/address" tag="li" class="bottom-item border-1px">
           <div class="icon">
             <i class="iconfont icon-item">&#xe6d7;</i>
           </div>
@@ -48,7 +48,7 @@
           <div class="icon-back">
             <i class="iconfont">&#xe68b;</i>
           </div>
-        </li>
+        </router-link>
         <li class="bottom-item border-1px">
           <div class="icon">
             <i class="iconfont icon-item">&#xe626;</i>
@@ -99,6 +99,7 @@ export default {
       height: 200px
       text-align: center
       background-size: cover
+      color: $color-tab-background
       .img
         .image
           margin-top: 20px
@@ -124,7 +125,6 @@ export default {
     .my-bottom
       margin-top: 15px
       background: $color-tab-background
-      color: #aaa
       .bottom-item
         display: flex
         margin: 0 10px
@@ -148,7 +148,6 @@ export default {
           flex: 1
           .title
             font-size: $font-size-medium
-            color: $color-tab-text
         .icon-back
           flex: 0 0 auto
           color: $color-tab-color

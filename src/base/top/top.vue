@@ -41,14 +41,16 @@ export default {
 
   .top
     position: absolute
-    bottom: 20px
-    right: 10px
+    bottom: 10px
+    right: 0
     z-index: 5
     &.top-enter-active, &.top-leave-active
       transition: all 0.2s
     &.top-enter, &.top-leave-to
       transform: translate3d(0, 100%, 0)
     .top-icon
+      display: block
+      padding: 10px
       font-size: 40px
       color: $color-highlight-background
 </style>
