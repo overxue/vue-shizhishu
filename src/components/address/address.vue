@@ -23,7 +23,7 @@
                 <div class="edit">
                   <i class="iconfont edit-icon">&#xe657;</i><span class="desc-edit">编辑</span>
                 </div>
-                <div class="delete">
+                <div class="delete" @click="del">
                   <i class="iconfont del-icon">&#xe61e;</i><span class="desc-delete">删除</span>
                 </div>
               </div>
@@ -31,22 +31,34 @@
           </li>
         </ul>
       </scroll>
+      <div class="add-address">
+        <div class="desc">
+          <i class="iconfont icon-jia">&#xe601;</i>
+          <span class="text">新增地址</span>
+        </div>
+      </div>
+      <confim text="确认要删除该地址吗？" ref="confim"></confim>
     </div>
   </transition>
 </template>
 
 <script>
 import Back from 'base/back/back'
+import Confim from 'base/confim/confim'
 import Scroll from 'base/scroll/scroll'
 
 export default {
   methods: {
     back () {
       this.$router.back()
+    },
+    del () {
+      this.$refs.confim.show()
     }
   },
   components: {
     Back,
+    Confim,
     Scroll
   }
 }
@@ -74,10 +86,10 @@ export default {
         margin-bottom: 10px
         background: $color-tab-background
         &:last-child
-          margin-bottom: 0
+          margin-bottom: -80px
         .address-top
           padding: 20px
-          font-size: $font-size-medium-x
+          font-size: $font-size-medium
           border-1px($color-border)
           .text
             margin-bottom: 10px
@@ -87,46 +99,56 @@ export default {
             no-wrap()
       .address-bottom
         display: flex
-        padding: 10px 20px
+        align-items: center
+        padding: 0 20px
         font-size: $font-size-large
         .left
           flex: 1
-          line-height: 23px
           .radius
             display: inline-block
             vertical-align: top
-            width: 20px
-            height: 20px
+            width: 16px
+            height: 16px
             border-radius: 50%
+            line-height: 16px
             border: 1px solid $color-tab-text
           .desc
-            font-size: $font-size-medium-x
+            font-size: $font-size-medium
             color: $color-tab-text
         .right
           flex: 0 0 auto
-          .edit
+          .edit, .delete
             display: inline-block
             vertical-align: top
-            line-height: 21px
-            .edit-icon
+            line-height: 40px
+            .edit-icon, .del-icon
               display: inline-block
               vertical-align: top
-              font-size: $font-size-large-x
+              font-size: $font-size-center
               color: $color-highlight-background
-            .desc-edit
-              font-size: $font-size-medium-x
+            .desc-edit, .desc-delete
+              font-size: $font-size-medium
               color: $color-highlight-background
           .delete
-            display: inline-block
             margin-left: 10px
-            line-height: 21px
             .del-icon
-              display: inline-block
-              vertical-align: top
-              font-size: 23px
               color: $color-icon
             .desc-delete
-              font-size: $font-size-medium-x
               color: $color-icon
-              line-height: 16px
+    .add-address
+      position: fixed
+      bottom: 0
+      right: 0
+      left: 0
+      height: 40px
+      background: $color-tab-background
+      //border-t($color-border)
+      .desc
+        text-align: center
+        line-height: 40px
+        .icon-jia, .text
+          color: $color-highlight-background
+          font-size: $font-size-medium-x
+        .text
+          font-weight: 700
 </style>

@@ -139,11 +139,11 @@ export default {
           .icon-item
             color: $color-icon!important
         .icon
-          flex: 0 0 22px;
-          margin-right: 12px
+          flex: 0 0 20px;
+          margin-right: 10px
           .icon-item
             color: $color-highlight-background
-            font-size: $font-size-large-x
+            font-size: $font-size-center
         .text
           flex: 1
           .title
