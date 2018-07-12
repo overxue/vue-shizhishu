@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <keep-alive>
+      <!--<transition name="slider">-->
       <router-view></router-view>
+      <!--</transition>-->
     </keep-alive>
     <tab></tab>
   </div>
@@ -17,5 +19,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="stylus" rel="stylesheed/stylus">
+  //.slider-enter-active, .slider-leave-active
+   // will-change: transform;
+   // transition: all 500ms;
+  //.slider-enter
+  //  opacity: 0
+  //  transform: translate3d(100%, 0, 0)
+  // .slider-leave-active
+  //  opacity: 0
+   // transform: translate3d(-100%, 0, 0)
 </style>

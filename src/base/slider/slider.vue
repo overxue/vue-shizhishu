@@ -85,6 +85,7 @@ export default {
         },
         bounce: false,
         click: false
+        // useTransition: false
       })
       this.slider.on('scrollEnd', () => {
         let pageIndex = this.slider.getCurrentPage().pageX
@@ -145,7 +146,7 @@ export default {
         width: 8px
         height: 8px
         border-radius: 50%
-        background: $color-text-l
+        background: #ccc
         &.active
           width: 20px
           border-radius: 5px

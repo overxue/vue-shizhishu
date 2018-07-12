@@ -20,6 +20,11 @@ export default {
     listenScroll: {
       type: Boolean,
       default: false
+    },
+    // 是否显示滚动条
+    scrollbar: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -35,7 +40,8 @@ export default {
 
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        scrollbar: this.scrollbar
       })
 
       if (this.listenScroll) {
