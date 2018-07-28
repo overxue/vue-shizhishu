@@ -16,7 +16,7 @@
     </div>
     <div class="my-bottom">
       <ul>
-        <li class="bottom-item border-1px">
+        <li class="bottom-item">
           <div class="icon">
             <i class="iconfont icon-item">&#xe8c3;</i>
           </div>
@@ -27,7 +27,7 @@
             <i class="iconfont">&#xe68b;</i>
           </div>
         </li>
-        <li class="bottom-item border-1px">
+        <li class="bottom-item">
           <div class="icon">
             <i class="iconfont icon-item">&#xe65f;</i>
           </div>
@@ -38,7 +38,7 @@
             <i class="iconfont">&#xe68b;</i>
           </div>
         </li>
-        <router-link to="/my/address" tag="li" class="bottom-item border-1px">
+        <router-link to="/my/address" tag="li" class="bottom-item">
           <div class="icon">
             <i class="iconfont icon-item">&#xe6d7;</i>
           </div>
@@ -49,7 +49,7 @@
             <i class="iconfont">&#xe68b;</i>
           </div>
         </router-link>
-        <li class="bottom-item border-1px">
+        <li class="bottom-item">
           <div class="icon">
             <i class="iconfont icon-item">&#xe626;</i>
           </div>

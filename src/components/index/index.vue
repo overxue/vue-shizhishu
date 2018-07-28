@@ -236,7 +236,8 @@ export default {
       this.sell = new BScroll(this.$refs.sell, {
         scrollX: true,
         scrollY: false,
-        click: true
+        click: true,
+        scrollbar: true
       })
     }
   },
@@ -327,6 +328,7 @@ export default {
                       margin: 0 auto
                       white-space:normal
                       font-size: $font-size-small
+                      line-height: 14px
                 .radius-top
                   position: absolute
                   top: 0
