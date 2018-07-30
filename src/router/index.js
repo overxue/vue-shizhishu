@@ -6,6 +6,7 @@ const Shopcat = () => import('components/shopcat/shopcat')
 const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
 const Address = () => import('components/address/address')
+const Login = () => import('components/login/login')
 
 Vue.use(Router)
 
@@ -36,6 +37,10 @@ export default new Router({
           component: Address
         }
       ]
+    },
+    {
+      path: '/login',
+      component: Login
     }
   ]
 })
