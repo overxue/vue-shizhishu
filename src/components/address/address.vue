@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition name="fade-transform" mode="out-in">
     <div class="address">
       <back @back="back"></back>
       <scroll class="address-wrapper">
@@ -75,10 +75,6 @@ export default {
     z-index: 100
     width: 100%
     background: $color-background
-    &.slide-enter-active, &.slide-leave-active
-      transition: all 0.3s
-    &.slide-enter, &.slide-leave-to
-      transform: translate3d(100%, 0, 0)
     .address-wrapper
       overflow: hidden
       height: 100%

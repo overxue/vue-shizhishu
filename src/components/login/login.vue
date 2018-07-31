@@ -17,7 +17,7 @@
             <i class="iconfont hide" @click="hidePassword" v-show="type !== 'password'">&#xe6dd;</i>
             <span class="forget">忘记密码</span>
           </div>
-          <div class="log" @click="login">
+          <div class="log" @click="login" :class="{'active': loginForm.username && loginForm.password}">
             <span class="text">登录</span>
           </div>
           <div class="login-bottom">
@@ -163,11 +163,13 @@ export default {
         .log
           width: 100%
           height: 50px
-          background: $color-highlight-background
+          background: rgba(78,184,40, 0.3)
           margin-top: 40px
           border-radius: 25px
           line-height: 50px
           text-align: center
+          &.active
+            background: $color-highlight-background
           .text
             color: $color-font
             font-size: 16px

@@ -1,21 +1,21 @@
 <template>
-  <transition name="slide">
+  <transition name="fade-transform" mode="out-in">
     <div class="skin">
-      <back @back="back"></back>
-      <scroll ref="listContent" class="skin-wrapper" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
-        <ul>
-          <li ref="pic" class="skin-item" v-for="(item, index) of pic" :key="index" @click="choseImg(item.imgUrl)">
-            <div class="image" :class="{'active': item.imgUrl === backgroundImg}">
-              <img class="img" :src="item.imgUrl">
-              <div class="text">
-                <span class="desc">{{item.desc}}</span>
-              </div>
+    <back @back="back"></back>
+    <scroll ref="listContent" class="skin-wrapper" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
+      <ul>
+        <li ref="pic" class="skin-item" v-for="(item, index) of pic" :key="index" @click="choseImg(item.imgUrl)">
+          <div class="image" :class="{'active': item.imgUrl === backgroundImg}">
+            <img class="img" :src="item.imgUrl">
+            <div class="text">
+              <span class="desc">{{item.desc}}</span>
             </div>
-          </li>
-        </ul>
-      </scroll>
-      <top :posY="posY" @top="backTop"></top>
-    </div>
+          </div>
+        </li>
+      </ul>
+    </scroll>
+    <top :posY="posY" @top="backTop"></top>
+  </div>
   </transition>
 </template>
 
@@ -65,7 +65,7 @@ export default {
         })
         let lineEl = this.$refs.pic[index - 1]
         this.$refs.listContent.scrollToElement(lineEl, 1000)
-      }, 100)
+      }, 500)
     },
     // 返回上一页
     back () {
@@ -106,10 +106,6 @@ export default {
     z-index: 100
     width: 100%
     background: $color-background
-    &.slide-enter-active, &.slide-leave-active
-      transition: all 0.3s
-    &.slide-enter, &.slide-leave-to
-      transform: translate3d(100%, 0, 0)
     .skin-wrapper
       overflow: hidden
       height: 100%

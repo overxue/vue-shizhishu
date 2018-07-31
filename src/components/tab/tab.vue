@@ -1,29 +1,36 @@
 <template>
-  <div class="tab">
-    <router-link tag="div" to="/" class="tab-item" exact>
-      <div class="tab-link">
-        <i class="iconfont icon">&#xe61a;</i>
-        <span class="text">首页</span>
-      </div>
-    </router-link>
-    <router-link tag="div" to="/shoplist" class="tab-item">
-      <div class="tab-link">
-        <i class="iconfont icon">&#xe602;</i>
-        <span class="text">菜园子</span>
-      </div>
-    </router-link>
-    <router-link tag="div" to="/shopcat" class="tab-item">
-      <div class="tab-link">
-        <i class="iconfont icon">&#xe63e;</i>
-        <span class="text">菜篮子</span>
-      </div>
-    </router-link>
-    <router-link tag="div" to="/my" class="tab-item">
-      <div class="tab-link">
-        <i class="iconfont icon">&#xe713;</i>
-        <span class="text">我的</span>
-      </div>
-    </router-link>
+  <div>
+    <transition name="fade-transform" mode="out-in">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </transition>
+    <div class="tab">
+      <router-link tag="div" to="/home" class="tab-item" exact>
+        <div class="tab-link">
+          <i class="iconfont icon">&#xe61a;</i>
+          <span class="text">首页</span>
+        </div>
+      </router-link>
+      <router-link tag="div" to="/shoplist" class="tab-item">
+        <div class="tab-link">
+          <i class="iconfont icon">&#xe602;</i>
+          <span class="text">菜园子</span>
+        </div>
+      </router-link>
+      <router-link tag="div" to="/shopcat" class="tab-item">
+        <div class="tab-link">
+          <i class="iconfont icon">&#xe63e;</i>
+          <span class="text">菜篮子</span>
+        </div>
+      </router-link>
+      <router-link tag="div" to="/my" class="tab-item">
+        <div class="tab-link">
+          <i class="iconfont icon">&#xe713;</i>
+          <span class="text">我的</span>
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Tab from 'components/tab/tab'
 const Index = () => import('components/index/index')
 const Shoplist = () => import('components/shoplist/shoplist')
 const Shopcat = () => import('components/shopcat/shopcat')
@@ -14,29 +15,47 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Index
+      component: Tab,
+      redirect: '/home',
+      children: [{
+        path: '/home',
+        component: Index
+      }]
     },
     {
       path: '/shoplist',
-      component: Shoplist
+      component: Tab,
+      redirect: '/shoplist/index',
+      children: [{
+        path: '/shoplist/index',
+        component: Shoplist
+      }]
     },
     {
       path: '/shopcat',
-      component: Shopcat
+      component: Tab,
+      redirect: '/shopcat/index',
+      children: [{
+        path: '/shopcat/index',
+        component: Shopcat
+      }]
     },
     {
       path: '/my',
-      component: My,
-      children: [
-        {
-          path: '/my/skin',
-          component: Skin
-        },
-        {
-          path: '/my/address',
-          component: Address
-        }
-      ]
+      component: Tab,
+      redirect: '/my/index',
+      children: [{
+        path: '/my/index',
+        component: My
+      }]
+    },
+    {
+      path: '/my/skin',
+      component: Skin
+    },
+    {
+      path: '/my/address',
+      component: Address
     },
     {
       path: '/login',
