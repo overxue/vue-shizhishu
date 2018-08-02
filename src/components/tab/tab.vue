@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <transition name="fade-transform" mode="out-in">
       <keep-alive>
         <router-view></router-view>
@@ -41,32 +41,38 @@ export default {}
 <style scoped lang="stylus" rel="stylesheed/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
-
-  .tab
+  .container
     position: fixed
-    display: flex
+    top: 0
     left: 0
     bottom: 0
     right: 0
-    height: 50px
-    background: $color-tab-background
-    .tab-item
-      // 让所有弹性盒模型对象的子元素都有相同的长度，且忽略它们内部的内容
-      flex: 1
-      text-align: center
-      .tab-link
-        margin-top: 3px
-        .icon
-          font-size: $font-size-icon
-          color: $color-tab-color
-        .text
-          display: block
+    width:  100%
+    .tab
+      position: absolute
+      display: flex
+      left: 0
+      bottom: 0
+      right: 0
+      height: 50px
+      background: $color-tab-background
+      .tab-item
+        // 让所有弹性盒模型对象的子元素都有相同的长度，且忽略它们内部的内容
+        flex: 1
+        text-align: center
+        .tab-link
           margin-top: 3px
-          font-size: $font-size-medium
-          color: $color-tab-text
-      &.router-link-active
-        .icon
-          color: $color-highlight-background
-        .text
-          color: $color-highlight-background
+          .icon
+            font-size: $font-size-icon
+            color: $color-tab-color
+          .text
+            display: block
+            margin-top: 3px
+            font-size: $font-size-medium
+            color: $color-tab-text
+        &.router-link-active
+          .icon
+            color: $color-highlight-background
+          .text
+            color: $color-highlight-background
 </style>

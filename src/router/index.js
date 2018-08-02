@@ -8,6 +8,7 @@ const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
 const Address = () => import('components/address/address')
 const Login = () => import('components/login/login')
+const Verification = () => import('components/login/verification')
 
 Vue.use(Router)
 
@@ -17,37 +18,24 @@ export default new Router({
       path: '/',
       component: Tab,
       redirect: '/home',
-      children: [{
-        path: '/home',
-        component: Index
-      }]
-    },
-    {
-      path: '/shoplist',
-      component: Tab,
-      redirect: '/shoplist/index',
-      children: [{
-        path: '/shoplist/index',
-        component: Shoplist
-      }]
-    },
-    {
-      path: '/shopcat',
-      component: Tab,
-      redirect: '/shopcat/index',
-      children: [{
-        path: '/shopcat/index',
-        component: Shopcat
-      }]
-    },
-    {
-      path: '/my',
-      component: Tab,
-      redirect: '/my/index',
-      children: [{
-        path: '/my/index',
-        component: My
-      }]
+      children: [
+        {
+          path: '/home',
+          component: Index
+        },
+        {
+          path: '/shoplist',
+          component: Shoplist
+        },
+        {
+          path: '/shopcat',
+          component: Shopcat
+        },
+        {
+          path: '/my',
+          component: My
+        }
+      ]
     },
     {
       path: '/my/skin',
@@ -60,6 +48,10 @@ export default new Router({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/login/code',
+      component: Verification
     }
   ]
 })

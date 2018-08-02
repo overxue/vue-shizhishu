@@ -1,6 +1,5 @@
 <template>
-  <transition name="fade-transform" mode="out-in">
-    <div class="address">
+  <div class="address">
       <back @back="back"></back>
       <scroll class="address-wrapper">
         <ul>
@@ -39,7 +38,6 @@
       </div>
       <confim text="确认要删除该地址吗？" ref="confim"></confim>
     </div>
-  </transition>
 </template>
 
 <script>

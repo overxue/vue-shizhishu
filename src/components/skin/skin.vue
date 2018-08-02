@@ -1,6 +1,5 @@
 <template>
-  <transition name="fade-transform" mode="out-in">
-    <div class="skin">
+  <div class="skin">
     <back @back="back"></back>
     <scroll ref="listContent" class="skin-wrapper" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
       <ul>
@@ -15,8 +14,7 @@
       </ul>
     </scroll>
     <top :posY="posY" @top="backTop"></top>
-  </div>
-  </transition>
+</div>
 </template>
 
 <script>
