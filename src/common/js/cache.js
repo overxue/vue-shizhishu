@@ -1,12 +1,32 @@
 import storage from 'good-storage'
 
-const SEARCH_KEY = '__bgimage__'
+const BGIMAGE = '__bgimage__'
+const ACCESS_TOKEN = '__access_token__'
+const EXPIRES_IN = '__expires_in__'
 
 export function saveBgimg (imgurl) {
-  storage.set(SEARCH_KEY, imgurl)
+  storage.set(BGIMAGE, imgurl)
   return imgurl
 }
 
 export function loadBgimg () {
-  return storage.get(SEARCH_KEY, 'http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg')
+  return storage.get(BGIMAGE, 'http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg')
+}
+
+export function loadAccessToken () {
+  return storage.get(ACCESS_TOKEN)
+}
+
+export function saveAccessToken (token) {
+  storage.set(ACCESS_TOKEN, token)
+  return token
+}
+
+export function saveExpiresIn (time) {
+  storage.set(EXPIRES_IN, time)
+  return time
+}
+
+export function loadExpiresIn () {
+  return storage.get(EXPIRES_IN)
 }

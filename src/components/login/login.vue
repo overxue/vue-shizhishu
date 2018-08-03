@@ -29,13 +29,15 @@
 </template>
 
 <script>
+import {login} from 'api/login'
 import Back from 'base/back/back'
+import {mapActions} from 'vuex'
 export default {
   data () {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: '18656085176',
+        password: '123456'
       },
       deleteHide: {
         username: false,
@@ -73,11 +75,23 @@ export default {
       })
     },
     login () {
-      console.log(this.loginForm)
+      login(this.loginForm.username, this.loginForm.password).then((res) => {
+        if (res.status === 401) {
+          console.log(res.data.message)
+        } else if (res) {
+          this.saveToken({
+            token: res.data.access_token,
+            time: res.data.expires_in
+          })
+        }
+      })
     },
     back () {
       this.$router.back()
-    }
+    },
+    ...mapActions([
+      'saveToken'
+    ])
   },
   computed: {
     username () {

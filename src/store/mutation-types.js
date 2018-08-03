@@ -1,1 +1,5 @@
 export const SET_BACKGROUND_IMG = 'SET_BACKGROUND_IMG'
+
+export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
+
+export const SET_EXPIRES_IN = 'SET_EXPIRES_IN'
