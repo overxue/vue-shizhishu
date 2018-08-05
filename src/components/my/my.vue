@@ -1,21 +1,21 @@
 <template>
   <div class="my">
     <div class="my-wrapper">
-      <!--<div class="my-top" :style="bgStyl">-->
-        <!--<div class="img">-->
-          <!--<img class="image" width="100" height="100" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKrViabiahwZF1NQZBKpSA5QoibSnKGQE0nljAvpJP8CZgGVbd5AKBRoucJk8a5Ypns2DZdUqq0icU9qw/132">-->
-        <!--</div>-->
-        <!--<div class="top-center">-->
-          <!--<span class="top-text">薛聪</span>-->
-        <!--</div>-->
-        <!--<div class="top-bottom">-->
-          <!--<span class="top-bottom-item">186****5175</span>-->
-        <!--</div>-->
-        <!--<div class="top-pifu" @click="choseskin">-->
-          <!--<i class="iconfont icon">&#xe606;</i>-->
-        <!--</div>-->
-      <!--</div>-->
-      <div class="login" @click="toLogin">
+      <div class="my-top" :style="bgStyl" v-if="token">
+        <div class="img">
+          <img class="image" width="100" height="100" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKrViabiahwZF1NQZBKpSA5QoibSnKGQE0nljAvpJP8CZgGVbd5AKBRoucJk8a5Ypns2DZdUqq0icU9qw/132">
+        </div>
+        <div class="top-center">
+          <span class="top-text">薛聪</span>
+        </div>
+        <div class="top-bottom">
+          <span class="top-bottom-item">186****5175</span>
+        </div>
+        <div class="top-pifu" @click="choseskin">
+          <i class="iconfont icon">&#xe606;</i>
+        </div>
+      </div>
+      <div class="login" @click="toLogin" v-else>
         <div class="login-image">
           <img src="https://gw.alicdn.com/tfscom/TB1_n4PKXXXXXcYXXXXNx3t4VXX-120-120.jpg_q30" width="80" height="80">
         </div>
@@ -74,12 +74,16 @@
           </li>
         </ul>
       </div>
+      <div class="login-out" v-if="token" @click="loginOut">
+        <span>退出登录</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {loginOut} from 'api/login'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   computed: {
@@ -87,7 +91,8 @@ export default {
       return `background-image: url(${this.backgroundImg})`
     },
     ...mapGetters([
-      'backgroundImg'
+      'backgroundImg',
+      'token'
     ])
   },
   methods: {
@@ -100,7 +105,20 @@ export default {
       this.$router.push({
         path: '/login'
       })
-    }
+    },
+    loginOut () {
+      loginOut().then((res) => {
+        console.log(res)
+        if (res.status === 204) {
+          this.clearLoginInformation()
+        }
+      }).catch((error) => {
+        console.log(error.response.data)
+      })
+    },
+    ...mapActions([
+      'clearLoginInformation'
+    ])
   }
 }
 </script>
@@ -198,4 +216,12 @@ export default {
           .icon-back
             flex: 0 0 auto
             color: $color-tab-color
+      .login-out
+        margin: 20px
+        height: 40px
+        background: $color-icon
+        border-radius: 20px
+        text-align: center
+        line-height: 40px
+        color: $color-font
 </style>

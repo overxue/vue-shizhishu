@@ -1,5 +1,5 @@
 import * as types from './mutation-types'
-import {saveBgimg, saveAccessToken, saveExpiresIn} from 'common/js/cache'
+import {saveBgimg, saveAccessToken, saveExpiresIn, clearAccessToken, clearExpiresIn} from 'common/js/cache'
 import dayjs from 'dayjs'
 
 export const saveBackgroundImg = function ({commit}, imgurl) {
@@ -10,4 +10,9 @@ export const saveToken = function ({commit}, {token, time}) {
   let times = dayjs().add(time, 'second').valueOf()
   commit(types.SET_ACCESS_TOKEN, saveAccessToken(token))
   commit(types.SET_EXPIRES_IN, saveExpiresIn(times))
+}
+
+export const clearLoginInformation = function ({commit}) {
+  commit(types.SET_EXPIRES_IN, clearExpiresIn())
+  commit(types.SET_ACCESS_TOKEN, clearAccessToken())
 }

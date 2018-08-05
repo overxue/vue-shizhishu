@@ -83,6 +83,7 @@ export default {
             token: res.data.access_token,
             time: res.data.expires_in
           })
+          this.$router.back()
         }
       })
     },
