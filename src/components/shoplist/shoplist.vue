@@ -311,6 +311,7 @@ export default {
       height: 100%
       display: flex
       .menu-wrapper
+        position: relative
         flex: 0 0 80px
         width: 80px
         background: #f3f5f7

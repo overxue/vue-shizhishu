@@ -290,6 +290,7 @@ export default {
             color: $color-tab-color
             font-size: $font-size-medium
         .sell
+          position: relative
           padding: 10px
           .sell-wraper
             width: 100%
