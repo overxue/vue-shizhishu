@@ -1,5 +1,6 @@
 import axios from 'axios'
-import state from 'store'
+import store from 'store'
+// import router from '../router'
 
 //  创建axios实例
 const service = axios.create({
@@ -9,7 +10,7 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use((config) => {
-  let token = state.getters.token
+  let token = store.getters.accessToken
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`
   }
@@ -21,7 +22,7 @@ service.interceptors.request.use((config) => {
 
 // respone拦截器
 service.interceptors.response.use((response) => {
-  console.log(response)
+  // console.log(response)
   return response
 }, (error) => {
   let err = error.response

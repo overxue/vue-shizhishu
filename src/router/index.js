@@ -39,11 +39,17 @@ export default new Router({
     },
     {
       path: '/my/skin',
-      component: Skin
+      component: Skin,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/my/address',
-      component: Address
+      component: Address,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '/login',

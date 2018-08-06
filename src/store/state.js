@@ -10,9 +10,9 @@ const state = {
     email: ''
   },
   // access_token
-  access_token: loadAccessToken(),
+  accessToken: loadAccessToken(),
   // 过期时间
-  expires_in: loadExpiresIn()
+  expiredAt: loadExpiresIn()
 }
 
 export default state

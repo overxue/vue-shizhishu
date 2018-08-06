@@ -5,10 +5,10 @@ const mutations = {
     state.backgroundImg = imgurl
   },
   [types.SET_ACCESS_TOKEN] (state, token) {
-    state.access_token = token
+    state.accessToken = token
   },
-  [types.SET_EXPIRES_IN] (state, time) {
-    state.expires_in = time
+  [types.SET_EXPIRES_AT] (state, time) {
+    state.expiredAt = time
   }
 }
 export default mutations

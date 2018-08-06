@@ -1,5 +1,5 @@
 export const backgroundImg = state => state.backgroundImg
 
-export const token = state => state.access_token
+export const accessToken = state => state.accessToken
 
-// export const expires_in = state => state.expires_in
+export const expiresAt = state => state.expiredAt

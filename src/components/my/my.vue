@@ -1,7 +1,7 @@
 <template>
   <div class="my">
     <div class="my-wrapper">
-      <div class="my-top" :style="bgStyl" v-if="token">
+      <div class="my-top" :style="bgStyl" v-if="accessToken">
         <div class="img">
           <img class="image" width="100" height="100" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKrViabiahwZF1NQZBKpSA5QoibSnKGQE0nljAvpJP8CZgGVbd5AKBRoucJk8a5Ypns2DZdUqq0icU9qw/132">
         </div>
@@ -74,7 +74,7 @@
           </li>
         </ul>
       </div>
-      <div class="login-out" v-if="token" @click="loginOut">
+      <div class="login-out" v-if="accessToken" @click="loginOut">
         <span>退出登录</span>
       </div>
     </div>
@@ -92,7 +92,7 @@ export default {
     },
     ...mapGetters([
       'backgroundImg',
-      'token'
+      'accessToken'
     ])
   },
   methods: {

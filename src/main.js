@@ -5,6 +5,7 @@ import store from './store'
 import fastclick from 'fastclick'
 
 import 'common/stylus/index.styl'
+import 'common/js/permission'
 
 Vue.config.productionTip = false
 

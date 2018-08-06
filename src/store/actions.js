@@ -9,10 +9,10 @@ export const saveBackgroundImg = function ({commit}, imgurl) {
 export const saveToken = function ({commit}, {token, time}) {
   let times = dayjs().add(time, 'second').valueOf()
   commit(types.SET_ACCESS_TOKEN, saveAccessToken(token))
-  commit(types.SET_EXPIRES_IN, saveExpiresIn(times))
+  commit(types.SET_EXPIRES_AT, saveExpiresIn(times))
 }
 
 export const clearLoginInformation = function ({commit}) {
-  commit(types.SET_EXPIRES_IN, clearExpiresIn())
+  commit(types.SET_EXPIRES_AT, clearExpiresIn())
   commit(types.SET_ACCESS_TOKEN, clearAccessToken())
 }

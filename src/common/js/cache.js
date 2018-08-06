@@ -1,8 +1,8 @@
 import storage from 'good-storage'
 
-const BGIMAGE = '__bgimage__'
-const ACCESS_TOKEN = '__access_token__'
-const EXPIRES_IN = '__expires_in__'
+const BGIMAGE = '__bgImage__'
+const ACCESS_TOKEN = '__accessToken__'
+const EXPIRES_IN = '__expiresIn__'
 
 export function saveBgimg (imgurl) {
   storage.set(BGIMAGE, imgurl)
