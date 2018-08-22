@@ -76,11 +76,13 @@
         </div>
       </div>
     </scroll>
+    <loading v-show="!bannerList.length && !coupons.length && !categoryProducts.length"></loading>
   </div>
 </template>
 
 <script>
 import Slider from 'base/slider/slider'
+import Loading from 'base/loading/loading'
 import BScroll from 'better-scroll'
 import Scroll from 'base/scroll/scroll'
 import {getBanner} from 'api/banner'
@@ -152,7 +154,8 @@ export default {
   },
   components: {
     Slider,
-    Scroll
+    Scroll,
+    Loading
   }
 }
 </script>
