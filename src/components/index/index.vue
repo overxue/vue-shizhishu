@@ -2,7 +2,7 @@
   <div class="index">
     <scroll class="index-content">
       <div>
-        <div class="slider-wrapper">
+        <div class="slider-wrapper" v-if="bannerList.length">
           <slider>
             <div v-for="(item, index) of bannerList" :key="index">
               <a href="javascript:void(0)">
@@ -11,7 +11,7 @@
             </div>
           </slider>
         </div>
-        <div class="shop-wrapper">
+        <div class="shop-wrapper" v-if="coupons.length">
           <div class="shop-top">
             <div class="icon">
               <i class="iconfont icon-item">&#xe603;</i>
@@ -26,59 +26,23 @@
           <div class="sell">
             <div class="sell-wraper" ref="sell">
               <ul class="sell-list" ref="sellGroup">
-                <li class="sell-borer">
+                <li class="sell-borer" v-for="(coupon, index) of coupons" :key="index">
                   <div class="radius-top"></div>
                   <div class="radius-bottom"></div>
                   <div class="sell-price">
                     <div class="sell-price-item">
                       <div class="sell-desc">
-                        <span class="sell-desc-title">￥</span><span class="sell-desc-many">20</span>
+                        <div class="sell-desc-mon">
+                          <span class="sell-desc-title">￥</span><span class="sell-desc-many">{{coupon.money}}</span>
+                        </div>
+                        <div class="sell-desc-rule">
+                          <span>{{coupon.description}}</span>
+                          <p>{{coupon.expirAt}} 到期</p>
+                        </div>
                       </div>
                     </div>
                     <div class="sell-price-right">
-                      <div class="sell-right-desc">全场商品满20-10</div>
-                    </div>
-                  </div>
-                </li>
-                <li class="sell-borer">
-                  <div class="radius-top"></div>
-                  <div class="radius-bottom"></div>
-                  <div class="sell-price">
-                    <div class="sell-price-item">
-                      <div class="sell-desc">
-                        <span class="sell-desc-title">￥</span><span class="sell-desc-many">20</span>
-                      </div>
-                    </div>
-                    <div class="sell-price-right">
-                      <div class="sell-right-desc">全场商品满20-10</div>
-                    </div>
-                  </div>
-                </li>
-                <li class="sell-borer">
-                  <div class="radius-top"></div>
-                  <div class="radius-bottom"></div>
-                  <div class="sell-price">
-                    <div class="sell-price-item">
-                      <div class="sell-desc">
-                        <span class="sell-desc-title">￥</span><span class="sell-desc-many">20</span>
-                      </div>
-                    </div>
-                    <div class="sell-price-right">
-                      <div class="sell-right-desc">全场商品满20-10</div>
-                    </div>
-                  </div>
-                </li>
-                <li class="sell-borer">
-                  <div class="radius-top"></div>
-                  <div class="radius-bottom"></div>
-                  <div class="sell-price">
-                    <div class="sell-price-item">
-                      <div class="sell-desc">
-                        <span class="sell-desc-title">￥</span><span class="sell-desc-many">20</span>
-                      </div>
-                    </div>
-                    <div class="sell-price-right">
-                      <div class="sell-right-desc">全场商品满20-10</div>
+                      <div class="sell-right-desc">立即领取</div>
                     </div>
                   </div>
                 </li>
@@ -86,111 +50,26 @@
             </div>
           </div>
         </div>
-        <div class="shop-wrapper">
+        <div class="shop-wrapper" v-for="(item, index) of categoryProducts" :key="index">
           <div class="shop-top">
             <div class="icon">
-              <i class="iconfont icon-item">&#xe60e;</i>
+              <i class="iconfont icon-item" v-html="item.iconfont"></i>
             </div>
             <div class="text">
-              <p class="title">新鲜蔬菜</p>
+              <p class="title">{{item.name}}</p>
             </div>
             <div class="icon-back">
               <span>新鲜每一天</span>
             </div>
           </div>
           <ul class="shop-bottom">
-            <li class="bottom-item">
+            <li class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
               <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
+                <img width="125" height="125" :src="product.image">
               </div>
-              <div class="title">丝瓜</div>
+              <div class="title">{{product.title}}</div>
               <div class="price">
-                <span class="pric">￥3</span><span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="shop-wrapper">
-          <div class="shop-top">
-            <div class="icon">
-              <i class="iconfont icon-item">&#xe60e;</i>
-            </div>
-            <div class="text">
-              <p class="title">新鲜蔬菜</p>
-            </div>
-            <div class="icon-back">
-              <i class="iconfont">&#xe68b;</i>
-            </div>
-          </div>
-          <ul class="shop-bottom">
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
-              </div>
-            </li>
-            <li class="bottom-item">
-              <div class="img">
-                <img width="125" height="125" src="https://s.lovejixiaoyue.cn/images/201706/source_img/27_G_1497851581998.jpg">
-              </div>
-              <div class="title">丝瓜</div>
-              <div class="price">
-                <span class="pric">￥3</span>
-                <span class="ke">/斤(500g)</span>
+                <span class="pric">￥{{product.price}}</span><span class="ke">/{{product.unit}}</span>
               </div>
             </li>
           </ul>
@@ -204,23 +83,45 @@
 import Slider from 'base/slider/slider'
 import BScroll from 'better-scroll'
 import Scroll from 'base/scroll/scroll'
+import {getBanner} from 'api/banner'
+import {getCoupon} from 'api/coupon'
+import {getCategoryProduct} from 'api/category'
 
 export default {
   data () {
     return {
-      bannerList: [
-        { id: '26683290', imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/baner/1.jpg' },
-        { id: '25793398', imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/baner/2.jpg' },
-        { id: '25793398', imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/baner/3.jpg' },
-        { id: '25793398', imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/baner/4.jpg' }
-      ]
+      bannerList: [],
+      coupons: [],
+      categoryProducts: []
     }
   },
-  mounted () {
-    this._initSlider()
-    this._initScroll()
+  created () {
+    this._getBanner()
+    this._getCoupon()
+    this._getCategoryProduct()
   },
   methods: {
+    _getBanner () {
+      getBanner().then((res) => {
+        if (res.status === 200) {
+          this.bannerList = res.data.data
+        }
+      })
+    },
+    _getCoupon () {
+      getCoupon().then((res) => {
+        if (res.status === 200) {
+          this.coupons = res.data.data
+        }
+      })
+    },
+    _getCategoryProduct () {
+      getCategoryProduct().then((res) => {
+        if (res.status === 200) {
+          this.categoryProducts = res.data.data
+        }
+      })
+    },
     _initSlider () {
       this.children = this.$refs.sellGroup.children
       let margin = 6
@@ -238,6 +139,14 @@ export default {
         scrollY: false,
         click: true,
         scrollbar: true
+      })
+    }
+  },
+  watch: {
+    coupons () {
+      this.$nextTick(() => {
+        this._initSlider()
+        this._initScroll()
       })
     }
   },
@@ -302,50 +211,56 @@ export default {
                 position: relative
                 display: inline-block
                 margin-right: 6px
-                width: 160px
-                height: 70px
+                width: 190px
+                height: 80px
                 background: $color-sell-background
                 color: $color-font
                 .sell-price
                   display: flex
                   align-items: center
                   .sell-price-item
-                    flex: 0 0 94px
-                    height: 70px
-                    text-align: center
+                    flex: 0 0 150px
+                    height: 80px
                     .sell-desc
-                      padding: 10px
-                      border-right: 1px solid $color-text-d
-                      margin-top: 12.5px
-                      .sell-desc-title
-                        font-size: $font-size-small
-                      .sell-desc-many
-                        font-weight: 700
-                        font-size: $font-size-icon
+                      padding: 10px 0
+                      border-right: 1px dashed $color-text-d
+                      margin-top: 16px
+                      .sell-desc-mon
+                        display: inline-block
+                        margin-left: 10px
+                        .sell-desc-title
+                          font-size: $font-size-small
+                        .sell-desc-many
+                          font-weight: 700
+                          font-size: $font-size-icon
+                      .sell-desc-rule
+                        font-size: 12px
+                        display: inline-block
+                        margin-left: 5px
+                        p
+                          padding-top: 3px
                   .sell-price-right
-                    flex: 0 0 66px
+                    flex: 0 0 40px
                     .sell-right-desc
-                      width: 50px
-                      margin: 0 auto
+                      width: 14px
                       white-space:normal
-                      font-size: $font-size-small
-                      line-height: 14px
+                      padding: 3px 6px
+                      text-align: center
+                      font-size: 12px
+                      margin: 0 auto
+                      line-height: 15px
+                .radius-top, .radius-bottom
+                  position: absolute
+                  left: 146px
+                  width: 8px
+                  height: 4px
+                  background: $color-font
                 .radius-top
-                  position: absolute
                   top: 0
-                  left: 90px
-                  width: 8px
-                  height: 4px
                   border-radius:0 0 4px 4px; /* 左上、右上、右下、左下 */
-                  background: $color-font
                 .radius-bottom
-                  position: absolute
                   bottom: 0
-                  left: 90px
-                  width: 8px
-                  height: 4px
                   border-radius:4px 4px 0 0; /* 左上、右上、右下、左下 */
-                  background: $color-font
                 border-radius: 5px
                 &:last-child
                   margin-right: 0
@@ -365,6 +280,12 @@ export default {
             &:nth-of-type(even)
               margin-right: 0
             .title
+              margin: 0 1px
+              overflow: hidden
+              text-overflow: ellipsis
+              display: -webkit-box
+              -webkit-box-orient: vertical
+              -webkit-line-clamp: 2
               margin-top: 5px
             .price
               padding: 10px 0
