@@ -2,14 +2,8 @@
   <div class="index">
     <scroll class="index-content">
       <div>
-        <div class="slider-wrapper" v-if="bannerList.length">
-          <slider>
-            <div v-for="(item, index) of bannerList" :key="index">
-              <a href="javascript:void(0)">
-                <img :src="item.imgUrl">
-              </a>
-            </div>
-          </slider>
+        <div class="slider-wrapper">
+          <swiper :bannerList="bannerList"></swiper>
         </div>
         <div class="shop-wrapper" v-if="coupons.length">
           <div class="shop-top">
@@ -81,8 +75,8 @@
 </template>
 
 <script>
-import Slider from 'base/slider/slider'
 import Loading from 'base/loading/loading'
+import Swiper from 'base/swiper/swiper'
 import BScroll from 'better-scroll'
 import Scroll from 'base/scroll/scroll'
 import {getBanner} from 'api/banner'
@@ -153,9 +147,9 @@ export default {
     }
   },
   components: {
-    Slider,
     Scroll,
-    Loading
+    Loading,
+    Swiper
   }
 }
 </script>
@@ -173,9 +167,11 @@ export default {
       height: 100%
       overflow: hidden
       .slider-wrapper
-        position: relative
-        width: 100%
         overflow: hidden
+        width: 100%
+        height: 0
+        padding-bottom: 40%
+        background: $color-background
       .shop-wrapper
         margin-top: 10px
         width: 100%
