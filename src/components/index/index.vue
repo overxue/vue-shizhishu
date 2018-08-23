@@ -59,7 +59,7 @@
           <ul class="shop-bottom">
             <li class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
               <div class="img">
-                <img width="125" height="125" :src="product.image">
+                <img width="125" height="125" v-lazy="product.image">
               </div>
               <div class="title">{{product.title}}</div>
               <div class="price">
