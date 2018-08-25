@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="sell">
-            <div class="sell-wraper" ref="sell">
+            <scroll class="sell-wraper" :scrollX="scrollX" :scrollY="scrollY">
               <ul class="sell-list" ref="sellGroup">
                 <li class="sell-borer" v-for="(coupon, index) of coupons" :key="index">
                   <div class="radius-top"></div>
@@ -41,7 +41,7 @@
                   </div>
                 </li>
               </ul>
-            </div>
+            </scroll>
           </div>
         </div>
         <div class="shop-wrapper" v-for="(item, index) of categoryProducts" :key="index">
@@ -77,7 +77,6 @@
 <script>
 import Loading from 'base/loading/loading'
 import Swiper from 'base/swiper/swiper'
-import BScroll from 'better-scroll'
 import Scroll from 'base/scroll/scroll'
 import {getBanner} from 'api/banner'
 import {getCoupon} from 'api/coupon'
@@ -88,7 +87,9 @@ export default {
     return {
       bannerList: [],
       coupons: [],
-      categoryProducts: []
+      categoryProducts: [],
+      scrollX: true,
+      scrollY: false
     }
   },
   created () {
@@ -112,7 +113,7 @@ export default {
       })
     },
     _getCategoryProduct () {
-      getCategoryProduct().then((res) => {
+      getCategoryProduct(0).then((res) => {
         if (res.status === 200) {
           this.categoryProducts = res.data.data
         }
@@ -128,21 +129,12 @@ export default {
         width += childWidth
       }
       this.$refs.sellGroup.style.width = width + 'px'
-    },
-    _initScroll () {
-      this.sell = new BScroll(this.$refs.sell, {
-        scrollX: true,
-        scrollY: false,
-        click: true,
-        scrollbar: true
-      })
     }
   },
   watch: {
     coupons () {
       this.$nextTick(() => {
         this._initSlider()
-        this._initScroll()
       })
     }
   },

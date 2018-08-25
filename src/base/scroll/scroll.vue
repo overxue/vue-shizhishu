@@ -25,6 +25,14 @@ export default {
     scrollbar: {
       type: Boolean,
       default: true
+    },
+    scrollX: {
+      type: Boolean,
+      default: false
+    },
+    scrollY: {
+      type: Boolean,
+      default: true
     }
   },
   mounted () {
@@ -39,6 +47,8 @@ export default {
       }
 
       this.scroll = new BScroll(this.$refs.wrapper, {
+        scrollX: this.scrollX,
+        scrollY: this.scrollY,
         probeType: this.probeType,
         click: this.click,
         scrollbar: this.scrollbar
