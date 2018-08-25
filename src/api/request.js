@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from 'store'
+import {http} from './config'
 // import router from '../router'
 
 //  创建axios实例
 const service = axios.create({
-  baseURL: 'http://shizhishu.test',
+  baseURL: http,
   timeout: 5000
 })
 
@@ -27,6 +28,8 @@ service.interceptors.response.use((response) => {
 }, (error) => {
   let err = error.response
   if (err.status === 500) {
+    console.log(err.data.message)
+  } else if (err.status === 401) {
     console.log(err.data.message)
   }
   return Promise.reject(error)

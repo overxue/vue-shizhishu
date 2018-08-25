@@ -1,34 +1,38 @@
 <template>
   <div class="address">
+    <div class="address-content">
       <back @back="back"></back>
       <scroll class="address-wrapper">
-        <ul>
-          <li class="address-item">
+        <transition-group name="list" tag="ul">
+          <li :key="address.id" class="address-item" v-for="address in addresses">
             <div class="address-top">
               <div class="text">
-                <span class="name">薛聪</span>
-                <span class="phone">18656085175</span>
+                <span class="name">{{address.contact_name}}</span>
+                <span class="phone">{{address.contact_phone}}</span>
               </div>
               <div class="add">
-                南京市雨花台区大周路88号
+                {{address.address}}
               </div>
             </div>
             <div class="address-bottom">
-              <div class="left">
-                <div class="radius"></div>
-                <span class="desc">设为默认</span>
+              <div class="left" :class="{'current':address.default_address}" @click="defaultAddress(address.id, address.default_address)">
+                <div class="radius">
+                  <i class="iconfont radius-icon" v-if="address.default_address">&#xe61f;</i>
+                </div>
+                <span class="desc" v-if="address.default_address">默认地址</span>
+                <span class="desc" v-else>设为默认</span>
               </div>
               <div class="right">
                 <div class="edit">
                   <i class="iconfont edit-icon">&#xe657;</i><span class="desc-edit">编辑</span>
                 </div>
-                <div class="delete" @click="del">
+                <div class="delete" @click="del(address.id)">
                   <i class="iconfont del-icon">&#xe61e;</i><span class="desc-delete">删除</span>
                 </div>
               </div>
             </div>
           </li>
-        </ul>
+        </transition-group>
       </scroll>
       <div class="add-address">
         <div class="desc">
@@ -36,28 +40,74 @@
           <span class="text">新增地址</span>
         </div>
       </div>
-      <confim text="确认要删除该地址吗？" ref="confim"></confim>
     </div>
+    <confim text="确认要删除该地址吗？" ref="confim" @confirm="confirm"></confim>
+    <loading v-show="!addresses.length"></loading>
+    <load v-show="showLoading" desc="设置中"></load>
+  </div>
 </template>
 
 <script>
 import Back from 'base/back/back'
 import Confim from 'base/confim/confim'
 import Scroll from 'base/scroll/scroll'
+import Load from 'base/loading/loadingmore'
+import loading from 'base/loading/loading'
+import {getAddress, defaultAddress, delAddress} from 'api/address'
 
 export default {
+  name: 'addresses',
+  data () {
+    return {
+      addresses: [],
+      showLoading: false,
+      address_id: ''
+    }
+  },
+  created () {
+    this._getAddress()
+  },
   methods: {
+    _getAddress () {
+      getAddress().then((res) => {
+        if (res.status === 200) {
+          this.addresses = res.data.data
+          this.showLoading = false
+        }
+      })
+    },
+    defaultAddress (id, def) {
+      if (def) {
+        return
+      }
+      this.showLoading = true
+      defaultAddress(id).then((res) => {
+        if (res.status === 200) {
+          this._getAddress()
+        }
+      })
+    },
     back () {
       this.$router.back()
     },
-    del () {
+    del (id) {
+      this.address_id = id
       this.$refs.confim.show()
+    },
+    confirm () {
+      delAddress(this.address_id).then((res) => {
+        if (res.status === 204) {
+          this._getAddress()
+        }
+      })
     }
   },
   components: {
     Back,
     Confim,
-    Scroll
+    Scroll,
+    Load,
+    loading
   }
 }
 </script>
@@ -70,79 +120,103 @@ export default {
     position: fixed
     top: 0
     bottom: 0
-    z-index: 100
     width: 100%
     background: $color-background
-    .address-wrapper
-      overflow: hidden
-      height: 100%
-      .address-item
-        margin-bottom: 10px
-        background: $color-tab-background
-        &:last-child
-          margin-bottom: -80px
-        .address-top
-          padding: 20px
-          font-size: $font-size-medium
-          border-1px($color-border)
-          .text
-            margin-bottom: 10px
-            .name
-              font-weight: 700
-          .add
-            no-wrap()
-      .address-bottom
-        display: flex
-        align-items: center
-        padding: 0 20px
-        font-size: $font-size-large
-        .left
-          flex: 1
-          .radius
-            display: inline-block
-            vertical-align: top
-            width: 16px
-            height: 16px
-            border-radius: 50%
-            line-height: 16px
-            border: 1px solid $color-tab-text
-          .desc
-            font-size: $font-size-medium
-            color: $color-tab-text
-        .right
-          flex: 0 0 auto
-          .edit, .delete
-            display: inline-block
-            vertical-align: top
-            line-height: 40px
-            .edit-icon, .del-icon
-              display: inline-block
-              vertical-align: top
-              font-size: $font-size-center
-              color: $color-highlight-background
-            .desc-edit, .desc-delete
-              font-size: $font-size-medium
-              color: $color-highlight-background
-          .delete
-            margin-left: 10px
-            .del-icon
-              color: $color-icon
-            .desc-delete
-              color: $color-icon
-    .add-address
+    .address-content
       position: fixed
-      bottom: 0
-      right: 0
-      left: 0
-      height: 40px
-      background: $color-tab-background
-      //border-t($color-border)
-      .desc
-        text-align: center
-        line-height: 40px
-        .icon-jia, .text
-          color: $color-highlight-background
-          font-size: $font-size-medium-x
-        .text
-          font-weight: 700
+      top: 0
+      bottom: 40px
+      width: 100%
+      .address-wrapper
+        overflow: hidden
+        height: 100%
+        .address-item
+          height: 118px
+          margin-bottom: 10px
+          background: $color-tab-background
+          &.list-leave-active
+            transition: all 0.1s linear
+          &.list-leave-to
+            height: 0px
+            .address-top, .address-bottom
+              display: none
+          .address-top
+            padding: 20px
+            font-size: $font-size-medium
+            border-1px($color-border)
+            .text
+              margin-bottom: 10px
+              .name
+                font-weight: 700
+            .add
+              no-wrap()
+          .address-bottom
+            display: flex
+            align-items: center
+            padding: 0 20px
+            font-size: $font-size-large
+            .left
+              flex: 0 0 100px
+              padding: 10px 0
+              &.current
+                .radius
+                  background: $color-highlight-background
+                  border: 1px solid $color-highlight-background
+                  .radius-icon
+                    color: $color-font
+                .desc
+                  color: $color-highlight-background
+              .radius
+                display: inline-block
+                vertical-align: top
+                width: 16px
+                height: 16px
+                border-radius: 50%
+                line-height: 16px
+                border: 1px solid $color-tab-text
+                text-align: center
+                .radius-icon
+                  line-height: 20px
+                  font-weight: 600
+              .desc
+                font-size: $font-size-medium
+                color: $color-tab-text
+            .right
+              flex: 1
+              text-align: right
+              .edit, .delete
+                display: inline-block
+                vertical-align: top
+                line-height: 40px
+                .edit-icon, .del-icon
+                  display: inline-block
+                  vertical-align: top
+                  font-size: $font-size-center
+                  color: $color-highlight-background
+                .desc-edit, .desc-delete
+                  font-size: $font-size-medium
+                  color: $color-highlight-background
+                .desc-edit
+                  margin-left: 2px
+              .delete
+                margin-left: 10px
+                .del-icon
+                  color: $color-icon
+                .desc-delete
+                  color: $color-icon
+      .add-address
+        position: fixed
+        bottom: 0
+        right: 0
+        left: 0
+        height: 40px
+        background: $color-tab-background
+        .desc
+          text-align: center
+          line-height: 40px
+          .icon-jia, .text
+            color: $color-highlight-background
+            font-size: $font-size-medium-x
+          .text
+            font-weight: 700
 </style>

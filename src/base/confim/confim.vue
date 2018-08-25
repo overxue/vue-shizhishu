@@ -1,5 +1,5 @@
 <template>
-  <transition name="confirm-fade">
+  <transition name="fade">
     <div class="confirm" v-show="showFlag">
       <div class="confirm-wrapper">
         <div class="confirm-content">
@@ -65,10 +65,10 @@ export default {
     bottom: 0
     z-index: 998
     background-color: $color-background-d
-    &.confirm-fade-enter-active
-      animation: confirm-fadein 0.3s
-      .confirm-content
-        animation: confirm-zoom 0.3s
+    .fade-enter-active, .fade-leave-active
+      transition: opacity .5s
+    .fade-enter, .fade-leave-to
+      opacity: 0
     .confirm-wrapper
       position: absolute
       top: 50%
@@ -99,17 +99,4 @@ export default {
             &.left
               border-right: 1px solid $color-border
               color: $color-text
-  @keyframes confirm-fadein
-    0%
-      opacity: 0
-    100%
-      opacity: 1
-
-  @keyframes confirm-zoom
-    0%
-      transform: scale(0)
-    50%
-      transform: scale(1.1)
-    100%
-      transform: scale(1)
 </style>

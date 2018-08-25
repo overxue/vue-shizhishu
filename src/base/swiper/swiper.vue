@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped lang="stylus" rel="stylesheet/stylus">
   .swiper >>> .swiper-pagination-bullet
     border-radius: 50%
     background: #ccc

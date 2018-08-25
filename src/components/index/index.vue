@@ -83,6 +83,7 @@ import {getCoupon} from 'api/coupon'
 import {getCategoryProduct} from 'api/category'
 
 export default {
+  name: 'home',
   data () {
     return {
       bannerList: [],

@@ -41,15 +41,12 @@ export default {}
         display: inline-block
         animation: line-scale-pulse-out 0.9s 0s infinite cubic-bezier(0.85, 0.25, 0.37, 0.85);
         @keyframes line-scale-pulse-out
-          0% {
+          0%
             transform: scaley(1)
-          }
-          50% {
+          50%
             transform: scaley(0.4)
-          }
-          100% {
+          100%
             transform: scaley(1)
-          }
       & > div:nth-child(1), & > div:nth-child(5)
         animation-delay: 0.4s !important
       & > div:nth-child(2), & > div:nth-child(4)

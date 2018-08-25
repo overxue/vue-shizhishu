@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition name="fade-transform" mode="out-in">
-      <keep-alive>
+      <keep-alive :exclude="exclude">
         <router-view></router-view>
       </keep-alive>
     </transition>
@@ -12,6 +12,11 @@
 import Tab from 'components/tab/tab'
 
 export default {
+  data () {
+    return {
+      exclude: 'addresses'
+    }
+  },
   components: {
     Tab
   }
