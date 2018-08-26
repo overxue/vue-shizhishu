@@ -70,10 +70,8 @@ export default {
   methods: {
     _getAddress () {
       getAddress().then((res) => {
-        if (res.status === 200) {
-          this.addresses = res.data.data
-          this.showLoading = false
-        }
+        this.addresses = res.data
+        this.showLoading = false
       })
     },
     defaultAddress (id, def) {
@@ -82,9 +80,7 @@ export default {
       }
       this.showLoading = true
       defaultAddress(id).then((res) => {
-        if (res.status === 200) {
-          this._getAddress()
-        }
+        this._getAddress()
       })
     },
     back () {
@@ -96,9 +92,7 @@ export default {
     },
     confirm () {
       delAddress(this.address_id).then((res) => {
-        if (res.status === 204) {
-          this._getAddress()
-        }
+        this._getAddress()
       })
     }
   },

@@ -78,13 +78,13 @@
         <span>退出登录</span>
       </div>
     </div>
-    <loading v-show="!userName"></loading>
+    <loading v-show="!userName && accessToken"></loading>
   </div>
 </template>
 
 <script>
 import Loading from 'base/loading/loading'
-import {loginOut, getUserInfo, refreshToken} from 'api/login'
+import {loginOut, getUserInfo} from 'api/login'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
@@ -125,34 +125,31 @@ export default {
   methods: {
     _getUserInfo () {
       getUserInfo().then((res) => {
-        if (res.status === 200) {
-          this.saveUserInfo({
-            name: res.data.name,
-            phone: res.data.phone
-          })
-        }
+        this.saveUserInfo({
+          name: res.name,
+          phone: res.phone
+        })
       }).catch((error) => {
-        let err = error.response
+        console.log(error)
+        // let err = error.response
         // 一种直接过期，不能刷新  过期了，可以刷新
         // 返回401   message: 'Token has expired'
-        if (err.status === 401 && err.data.message === 'Token has expired') {
-          // this.clearLoginInformation()
-          refreshToken().then((res) => {
-            if (res.status === 201) {
-              // 刷新成功
-              this.saveToken({
-                token: res.data.access_token,
-                time: res.data.expires_in
-              }).then(() => {
-                this._getUserInfo()
-              })
-            }
-          }).catch((error) => {
-            console.log(error.response.data.message)
-          })
-        } else {
-          this.clearLoginInformation()
-        }
+        // if (err.status === 401 && err.data.message === 'Token has expired') {
+        //   // this.clearLoginInformation()
+        //   refreshToken().then((res) => {
+        //     // 刷新成功
+        //     this.saveToken({
+        //       token: res.access_token,
+        //       time: res.expires_in
+        //     }).then(() => {
+        //       this._getUserInfo()
+        //     })
+        //   }).catch((error) => {
+        //     console.log(error.response.data.message)
+        //   })
+        // } else {
+        //   this.clearLoginInformation()
+        // }
       })
     },
     choseskin () {

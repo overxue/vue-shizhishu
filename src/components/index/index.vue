@@ -13,12 +13,12 @@
             <div class="text">
               <p class="title">购物专享券</p>
             </div>
-            <div class="icon-back">
+            <div class="icon-back" @click="receiveCoupons(1)">
               <span>领券购物更优惠</span>
             </div>
           </div>
           <div class="sell">
-            <scroll class="sell-wraper" :scrollX="scrollX" :scrollY="scrollY">
+            <scroll class="sell-wraper" :scrollX="scrollX" :scrollY="scrollY" :click="click">
               <ul class="sell-list" ref="sellGroup">
                 <li class="sell-borer" v-for="(coupon, index) of coupons" :key="index">
                   <div class="radius-top"></div>
@@ -35,7 +35,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="sell-price-right">
+                    <div class="sell-price-right" @click.stop.prevent="receiveCoupon(coupon.id)">
                       <div class="sell-right-desc">立即领取</div>
                     </div>
                   </div>
@@ -71,6 +71,7 @@
       </div>
     </scroll>
     <loading v-show="!bannerList.length && !coupons.length && !categoryProducts.length"></loading>
+    <tip :message="message"></tip>
   </div>
 </template>
 
@@ -78,8 +79,9 @@
 import Loading from 'base/loading/loading'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
+import Tip from 'base/tip/tip'
 import {getBanner} from 'api/banner'
-import {getCoupon} from 'api/coupon'
+import {getCoupon, receiveCoupon} from 'api/coupon'
 import {getCategoryProduct} from 'api/category'
 
 export default {
@@ -90,7 +92,9 @@ export default {
       coupons: [],
       categoryProducts: [],
       scrollX: true,
-      scrollY: false
+      scrollY: false,
+      click: false,
+      message: ''
     }
   },
   created () {
@@ -101,23 +105,17 @@ export default {
   methods: {
     _getBanner () {
       getBanner().then((res) => {
-        if (res.status === 200) {
-          this.bannerList = res.data.data
-        }
+        this.bannerList = res.data
       })
     },
     _getCoupon () {
       getCoupon().then((res) => {
-        if (res.status === 200) {
-          this.coupons = res.data.data
-        }
+        this.coupons = res.data
       })
     },
     _getCategoryProduct () {
       getCategoryProduct(0).then((res) => {
-        if (res.status === 200) {
-          this.categoryProducts = res.data.data
-        }
+        this.categoryProducts = res.data
       })
     },
     _initSlider () {
@@ -130,6 +128,16 @@ export default {
         width += childWidth
       }
       this.$refs.sellGroup.style.width = width + 'px'
+    },
+    receiveCoupon (id) {
+      receiveCoupon(id).then((res) => {
+        console.log(res)
+      }).catch((error) => {
+        let err = error.response
+        if (err.status === 401) {
+          this.message = err.data.message
+        }
+      })
     }
   },
   watch: {
@@ -142,7 +150,8 @@ export default {
   components: {
     Scroll,
     Loading,
-    Swiper
+    Swiper,
+    Tip
   }
 }
 </script>

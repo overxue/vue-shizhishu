@@ -1,20 +1,15 @@
-import axios from 'axios'
-import {http} from './config'
+import request from './request'
 
 export function getCategoryProduct (type) {
-  const url = `${http}/api/categories?include=products&type=${type}`
-  return axios.get(url).then((res) => {
-    return Promise.resolve(res)
-  }).catch((error) => {
-    console.log(error)
+  return request({
+    url: `/api/categories?include=products&type=${type}`,
+    method: 'get'
   })
 }
 
 export function getCateogry () {
-  const url = `${http}/api/categories`
-  return axios.get(url).then((res) => {
-    return Promise.resolve(res)
-  }).catch((error) => {
-    console.log(error)
+  return request({
+    url: '/api/categories',
+    method: 'get'
   })
 }

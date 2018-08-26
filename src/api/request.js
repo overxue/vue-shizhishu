@@ -11,9 +11,12 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use((config) => {
-  let token = store.getters.accessToken
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`
+  // 判断当前路由是否需要登录
+  if (router.currentRoute.meta.auth || router.currentRoute.fullPath === '/my') {
+    let token = store.getters.accessToken
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
   }
   return config
 }, (error) => {
@@ -23,12 +26,14 @@ service.interceptors.request.use((config) => {
 
 // respone拦截器
 service.interceptors.response.use((response) => {
-  // console.log(response)
-  return response
+  if (response.status === 200 || response.status === 201 || response.status === 204) {
+    return response.data
+  }
 }, (error) => {
   let err = error.response
-  if (err.status === 500) {
-    // The token has been blacklisted token过了刷新时间
+  // 刷新token 500  接口请求token   401    The token has been blacklisted
+  if (err.status === 500 || (err.status === 401 && err.data.message === 'The token has been blacklisted')) {
+    // The token has been blacklisted token 过了刷新时间
     console.log(err)
     if (router.currentRoute.fullPath === '/my') {
       store.dispatch('clearLoginInformation')
@@ -37,6 +42,9 @@ service.interceptors.response.use((response) => {
         router.push({path: '/login'})
       })
     }
+  } else if (err.status === 401 && err.data.message === 'Token has expired') {
+    // 过期
+    console.log('过期')
   }
   return Promise.reject(error)
 })

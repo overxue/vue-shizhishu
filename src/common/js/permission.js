@@ -9,12 +9,10 @@ router.beforeEach((to, from, next) => {
       if (dayjs().isAfter(dayjs(store.getters.expiresAt))) {
         // token 过期
         refreshToken().then((res) => {
-          if (res.status === 201) {
-            // 刷新成功
-            store.dispatch('saveToken', {token: res.data.access_token, time: res.data.expires_in}).then(() => {
-              next()
-            })
-          }
+          // 刷新成功
+          store.dispatch('saveToken', {token: res.access_token, time: res.expires_in}).then(() => {
+            next()
+          })
         }).catch((error) => {
           // 刷新失败
           console.log(error.response.status)

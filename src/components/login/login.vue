@@ -76,19 +76,15 @@ export default {
     },
     login () {
       login(this.loginForm.username, this.loginForm.password).then((res) => {
-        if (res.status === 401) {
-          console.log(res.data.message)
-        } else if (res.status === 201) {
-          this.saveToken({
-            token: res.data.meta.access_token,
-            time: res.data.meta.expires_in
-          })
-          this.saveUserInfo({
-            name: res.data.name,
-            phone: res.data.phone
-          })
-          this.$router.back()
-        }
+        this.saveToken({
+          token: res.meta.access_token,
+          time: res.meta.expires_in
+        })
+        this.saveUserInfo({
+          name: res.name,
+          phone: res.phone
+        })
+        this.$router.back()
       })
     },
     back () {

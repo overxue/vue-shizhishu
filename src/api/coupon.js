@@ -1,12 +1,15 @@
-import axios from 'axios'
-import {http} from './config'
+import request from './request'
 
 export function getCoupon () {
-  const url = `${http}/api/coupons`
+  return request({
+    url: '/api/coupons',
+    method: 'get'
+  })
+}
 
-  return axios.get(url).then((res) => {
-    return Promise.resolve(res)
-  }).catch((error) => {
-    console.log(error)
+export function receiveCoupon (id) {
+  return request({
+    url: `/api/coupons/${id}/receives`,
+    method: 'post'
   })
 }

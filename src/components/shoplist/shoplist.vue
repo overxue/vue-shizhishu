@@ -83,19 +83,15 @@ export default {
     },
     _getCategory () {
       getCateogry().then((res) => {
-        if (res.status === 200) {
-          this.categories = res.data.data
-        }
+        this.categories = res.data
       })
     },
     _getCategoryProduct () {
       getCategoryProduct(1).then((res) => {
-        if (res.status === 200) {
-          this.categoryProducts = res.data.data
-          this.$nextTick(() => {
-            this._calculateHeight()
-          })
-        }
+        this.categoryProducts = res.data
+        this.$nextTick(() => {
+          this._calculateHeight()
+        })
       })
     },
     _calculateHeight () {
