@@ -1,15 +1,15 @@
 <template>
   <div class="my">
     <div class="my-wrapper">
-      <div class="my-top" :style="bgStyl" v-if="accessToken">
+      <div class="my-top" :style="bgStyl" v-if="accessToken && userName">
         <div class="img">
           <img class="image" width="100" height="100" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKrViabiahwZF1NQZBKpSA5QoibSnKGQE0nljAvpJP8CZgGVbd5AKBRoucJk8a5Ypns2DZdUqq0icU9qw/132">
         </div>
         <div class="top-center">
-          <span class="top-text">薛聪</span>
+          <span class="top-text">{{userName}}</span>
         </div>
         <div class="top-bottom">
-          <span class="top-bottom-item">186****5175</span>
+          <span class="top-bottom-item">{{userPhone}}</span>
         </div>
         <div class="top-pifu" @click="choseskin">
           <i class="iconfont icon">&#xe606;</i>
@@ -74,28 +74,87 @@
           </li>
         </ul>
       </div>
-      <div class="login-out" v-if="accessToken" @click="loginOut">
+      <div class="login-out" v-if="accessToken && userName" @click="loginOut">
         <span>退出登录</span>
       </div>
     </div>
+    <loading v-show="!userName"></loading>
   </div>
 </template>
 
 <script>
-import {loginOut} from 'api/login'
+import Loading from 'base/loading/loading'
+import {loginOut, getUserInfo, refreshToken} from 'api/login'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    if (from.fullPath === '/login') {
+      next(vm => {
+        // 通过 `vm` 访问组件实例
+        vm.isRequest = false
+      })
+    } else {
+      next(vm => {
+        // 通过 `vm` 访问组件实例
+        vm.isRequest = true
+      })
+    }
+  },
+  data () {
+    return {
+      isRequest: true
+    }
+  },
+  created () {
+    if (this.accessToken && this.isRequest) {
+      this._getUserInfo()
+    }
+  },
   computed: {
     bgStyl () {
       return `background-image: url(${this.backgroundImg})`
     },
     ...mapGetters([
       'backgroundImg',
-      'accessToken'
+      'accessToken',
+      'userName',
+      'userPhone'
     ])
   },
   methods: {
+    _getUserInfo () {
+      getUserInfo().then((res) => {
+        if (res.status === 200) {
+          this.saveUserInfo({
+            name: res.data.name,
+            phone: res.data.phone
+          })
+        }
+      }).catch((error) => {
+        let err = error.response
+        // 一种直接过期，不能刷新  过期了，可以刷新
+        // 返回401   message: 'Token has expired'
+        if (err.status === 401 && err.data.message === 'Token has expired') {
+          // this.clearLoginInformation()
+          refreshToken().then((res) => {
+            if (res.status === 201) {
+              // 刷新成功
+              this.saveToken({
+                token: res.data.access_token,
+                time: res.data.expires_in
+              }).then(() => {
+                this._getUserInfo()
+              })
+            }
+          }).catch((error) => {
+            console.log(error.response.data.message)
+          })
+        } else {
+          this.clearLoginInformation()
+        }
+      })
+    },
     choseskin () {
       this.$router.push({
         path: '/my/skin'
@@ -108,7 +167,6 @@ export default {
     },
     loginOut () {
       loginOut().then((res) => {
-        console.log(res)
         if (res.status === 204) {
           this.clearLoginInformation()
         }
@@ -117,8 +175,13 @@ export default {
       })
     },
     ...mapActions([
-      'clearLoginInformation'
+      'clearLoginInformation',
+      'saveToken',
+      'saveUserInfo'
     ])
+  },
+  components: {
+    Loading
   }
 }
 </script>

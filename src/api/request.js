@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from 'store'
 import {http} from './config'
-// import router from '../router'
+import router from '../router'
 
 //  创建axios实例
 const service = axios.create({
@@ -28,9 +28,15 @@ service.interceptors.response.use((response) => {
 }, (error) => {
   let err = error.response
   if (err.status === 500) {
-    console.log(err.data.message)
-  } else if (err.status === 401) {
-    console.log(err.data.message)
+    // The token has been blacklisted token过了刷新时间
+    console.log(err)
+    if (router.currentRoute.fullPath === '/my') {
+      store.dispatch('clearLoginInformation')
+    } else {
+      store.dispatch('clearLoginInformation').then(() => {
+        router.push({path: '/login'})
+      })
+    }
   }
   return Promise.reject(error)
 })

@@ -78,10 +78,14 @@ export default {
       login(this.loginForm.username, this.loginForm.password).then((res) => {
         if (res.status === 401) {
           console.log(res.data.message)
-        } else if (res) {
+        } else if (res.status === 201) {
           this.saveToken({
-            token: res.data.access_token,
-            time: res.data.expires_in
+            token: res.data.meta.access_token,
+            time: res.data.meta.expires_in
+          })
+          this.saveUserInfo({
+            name: res.data.name,
+            phone: res.data.phone
           })
           this.$router.back()
         }
@@ -91,7 +95,8 @@ export default {
       this.$router.back()
     },
     ...mapActions([
-      'saveToken'
+      'saveToken',
+      'saveUserInfo'
     ])
   },
   computed: {

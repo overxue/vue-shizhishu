@@ -12,7 +12,12 @@ export const saveToken = function ({commit}, {token, time}) {
   commit(types.SET_EXPIRES_AT, saveExpiresIn(times))
 }
 
+export const saveUserInfo = function ({commit}, {name, phone}) {
+  commit(types.SET_USER_INFO, {name, phone})
+}
+
 export const clearLoginInformation = function ({commit}) {
+  commit(types.SET_USER_INFO, {name: '', phone: ''})
   commit(types.SET_EXPIRES_AT, clearExpiresIn())
   commit(types.SET_ACCESS_TOKEN, clearAccessToken())
 }

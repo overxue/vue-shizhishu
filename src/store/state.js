@@ -6,8 +6,7 @@ const state = {
   // 个人信息
   userInfo: {
     name: '',
-    phone: '',
-    email: ''
+    phone: ''
   },
   // access_token
   accessToken: loadAccessToken(),

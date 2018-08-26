@@ -26,3 +26,10 @@ export function refreshToken () {
     method: 'put'
   })
 }
+
+export function getUserInfo () {
+  return request({
+    url: '/api/user',
+    method: 'get'
+  })
+}
