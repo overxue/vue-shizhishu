@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
             next()
           })
         }).catch((error) => {
-          // 刷新失败
+          // 刷新失败  在request.js里面处理过了
           console.log(error.response.status)
         })
       } else {

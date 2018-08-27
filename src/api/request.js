@@ -43,8 +43,23 @@ service.interceptors.response.use((response) => {
       })
     }
   } else if (err.status === 401 && err.data.message === 'Token has expired') {
-    // 过期
-    console.log('过期')
+    // 过期 先调用刷新接口
+    let url = error.config.url
+    let method = error.config.method
+    let res = service.request({
+      url: '/api/authorizations/current',
+      method: 'put'
+    }).then((res) => {
+      store.dispatch('saveToken', {token: res.access_token, time: res.expires_in})
+      // 再次调用之前请求接口
+      return service.request({
+        url: url,
+        method: method
+      }).then((res) => {
+        return res
+      })
+    })
+    return res
   }
   return Promise.reject(error)
 })

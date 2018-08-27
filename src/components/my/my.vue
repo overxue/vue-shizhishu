@@ -129,27 +129,6 @@ export default {
           name: res.name,
           phone: res.phone
         })
-      }).catch((error) => {
-        console.log(error)
-        // let err = error.response
-        // 一种直接过期，不能刷新  过期了，可以刷新
-        // 返回401   message: 'Token has expired'
-        // if (err.status === 401 && err.data.message === 'Token has expired') {
-        //   // this.clearLoginInformation()
-        //   refreshToken().then((res) => {
-        //     // 刷新成功
-        //     this.saveToken({
-        //       token: res.access_token,
-        //       time: res.expires_in
-        //     }).then(() => {
-        //       this._getUserInfo()
-        //     })
-        //   }).catch((error) => {
-        //     console.log(error.response.data.message)
-        //   })
-        // } else {
-        //   this.clearLoginInformation()
-        // }
       })
     },
     choseskin () {
