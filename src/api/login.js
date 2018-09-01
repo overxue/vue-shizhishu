@@ -42,3 +42,14 @@ export function getCaptcha (phone, status) {
     }
   })
 }
+
+export function getCodes (key, code) {
+  return request({
+    url: '/api/verificationCodes',
+    method: 'post',
+    data: {
+      captcha_key: key,
+      captcha_code: code
+    }
+  })
+}

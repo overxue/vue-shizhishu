@@ -30,6 +30,9 @@ export default {
     onFocus () {
       this.showIcon = true
     },
+    setQuery () {
+      this.query = ''
+    },
     onBlur () {
       this.showIcon = false
     }

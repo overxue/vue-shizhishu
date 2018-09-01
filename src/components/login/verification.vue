@@ -7,16 +7,14 @@
           <img src="./login.png" width="80" height="80"/>
         </div>
         <div class="userinput">
-          <input type="text" placeholder="请输入手机号" class="input-item" v-model="login.phone"/>
-          <i class="iconfont icon-x">&#xe611;</i>
+          <text-input type="text" placeholder="请输入手机号" @query="phoneQuery"></text-input>
         </div>
         <div class="passwordinput" v-if="captcha_image_content">
-          <input type="text" placeholder="请输入验证码" class="password" />
-          <i class="iconfont icon-xx">&#xe611;</i>
+          <text-input type="text" placeholder="请输入验证码" @query="CaptchaQuery" ref="captcha"></text-input>
           <img width="120" height="40" :src="captcha_image_content" @click="getCaptcha"/>
         </div>
-        <div class="log">
-          <span class="text" @click="getCaptcha">获取验证码</span>
+        <div class="log" :class="{'active': showLogin}" @click="getCode">
+          <span class="text">获取验证码</span>
         </div>
         <div class="login-bottom">
           <router-link to="/login" class="message-login" tag="span">账户密码登录</router-link><span class="register">新用户注册</span>
@@ -28,21 +26,51 @@
 
 <script>
 import Back from 'base/back/back'
-import {getCaptcha} from 'api/login'
+import TextInput from 'base/input/input'
+import {getCaptcha, getCodes} from 'api/login'
 export default {
   data () {
     return {
-      login: {
-        phone: ''
-      },
+      phone: '',
+      captcha_code: '',
       captcha_image_content: '',
       expired_at: '',
       captcha_key: ''
     }
   },
   methods: {
+    phoneQuery (query) {
+      this.phone = query
+    },
+    CaptchaQuery (query) {
+      this.captcha_code = query
+    },
+    getCode () {
+      if (this.captcha_code) {
+        this.getCodes()
+      } else {
+        this.getCaptcha()
+      }
+    },
+    getCodes () {
+      getCodes(this.captcha_key, this.captcha_code).then((res) => {
+        console.log(res)
+      }).catch((error) => {
+        let err = error.response
+        if (err.status === 401) {
+          console.log(err.data.message)
+          this.getCaptcha()
+        } else if (err.status === 422) {
+          console.log(err.data.message)
+          this.getCaptcha()
+        }
+      })
+    },
     getCaptcha () {
-      getCaptcha(this.login.phone, 'login').then((res) => {
+      if (this.captcha_code) {
+        this.$refs.captcha.setQuery()
+      }
+      getCaptcha(this.phone, 'login').then((res) => {
         this.captcha_image_content = res.captcha_image_content
         this.expired_at = res.expired_at
         this.captcha_key = res.captcha_key
@@ -52,8 +80,20 @@ export default {
       this.$router.back()
     }
   },
+  computed: {
+    showLogin () {
+      if (this.phone && this.captcha_code) {
+        return true
+      } else if (this.phone && !this.captcha_image_content) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
   components: {
-    Back
+    Back,
+    TextInput
   }
 }
 </script>
