@@ -7,21 +7,19 @@
           <img src="./login.png" width="80" height="80"/>
         </div>
         <div class="userinput">
-          <input v-model="loginForm.username" @focus="onFocus" @blur="onBlur" type="text" placeholder="邮箱/手机号" class="input-item"/>
-          <i class="iconfont icon-x" v-show="deleteHide.username" @click="clear">&#xe611;</i>
+          <text-input type="text" placeholder="邮箱/手机号" @query="UserQuery"></text-input>
         </div>
         <div class="passwordinput">
-          <input v-model="loginForm.password" @focus="onFocus('password')" @blur="onBlur" :type="type" placeholder="请输入密码" class="password" />
-          <i class="iconfont icon-xx" v-show="deleteHide.password" @click="clear('password')">&#xe611;</i>
+          <text-input :type="type" placeholder="请输入密码" @query="PwdQuery"></text-input>
           <i class="iconfont hide" @click="hidePassword" v-show="type === 'password'">&#xe70f;</i>
           <i class="iconfont hide" @click="hidePassword" v-show="type !== 'password'">&#xe6dd;</i>
           <span class="forget">忘记密码</span>
         </div>
-        <div class="log" @click="login" :class="{'active': loginForm.username && loginForm.password}">
+        <div class="log" @click="login" :class="{'active': showLogin}">
           <span class="text">登录</span>
         </div>
         <div class="login-bottom">
-          <span class="message-login" @click="codeLogin">短信验证码登录</span><span class="register">新用户注册</span>
+          <router-link to="/login/code" class="message-login" tag="span">短信验证码登录</router-link><span class="register">新用户注册</span>
         </div>
       </div>
     </div>
@@ -29,50 +27,29 @@
 </template>
 
 <script>
-import {login} from 'api/login'
 import Back from 'base/back/back'
+import TextInput from 'base/input/input'
+import {login} from 'api/login'
 import {mapActions} from 'vuex'
 export default {
   data () {
     return {
       loginForm: {
-        username: '18656085176',
-        password: '123456'
+        username: '',
+        password: ''
       },
-      deleteHide: {
-        username: false,
-        password: false
-      },
-      type: 'password',
-      loginStatus: 'passwordLogin'
+      type: 'password'
     }
   },
   methods: {
+    UserQuery (query) {
+      this.loginForm.username = query
+    },
+    PwdQuery (query) {
+      this.loginForm.password = query
+    },
     hidePassword () {
       this.type = this.type === 'password' ? 'text' : 'password'
-    },
-    clear (param) {
-      if (param === 'password') {
-        this.loginForm.password = ''
-        return
-      }
-      this.loginForm.username = ''
-    },
-    onBlur () {
-      this.deleteHide.password = false
-      this.deleteHide.username = false
-    },
-    onFocus (param) {
-      if (param === 'password') {
-        this.deleteHide.password = this.loginForm.password !== ''
-      } else {
-        this.deleteHide.username = this.loginForm.username !== ''
-      }
-    },
-    codeLogin () {
-      this.$router.push({
-        'path': '/login/code'
-      })
     },
     login () {
       login(this.loginForm.username, this.loginForm.password).then((res) => {
@@ -96,31 +73,13 @@ export default {
     ])
   },
   computed: {
-    username () {
-      return this.loginForm.username
-    },
-    password () {
-      return this.loginForm.password
-    }
-  },
-  watch: {
-    username (newVal) {
-      if (newVal) {
-        this.deleteHide.username = true
-      } else {
-        this.deleteHide.username = false
-      }
-    },
-    password (newVal) {
-      if (newVal) {
-        this.deleteHide.password = true
-      } else {
-        this.deleteHide.password = false
-      }
+    showLogin () {
+      return this.loginForm.username && this.loginForm.password
     }
   },
   components: {
-    Back
+    Back,
+    TextInput
   }
 }
 </script>
@@ -181,6 +140,7 @@ export default {
             margin-right: 10px
             color: $color-tab-color
           .forget
+            flex: 0 0 67px
             padding-left: 10px
             font-size: 14px
             border-left: 1px solid $color-border

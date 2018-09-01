@@ -88,26 +88,13 @@ import {loginOut, getUserInfo} from 'api/login'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
-  beforeRouteEnter (to, from, next) {
-    if (from.fullPath === '/login') {
-      next(vm => {
-        // 通过 `vm` 访问组件实例
-        vm.isRequest = false
-      })
-    } else {
-      next(vm => {
-        // 通过 `vm` 访问组件实例
-        vm.isRequest = true
-      })
-    }
-  },
   data () {
     return {
-      isRequest: true
+      isRequest: ''
     }
   },
   created () {
-    if (this.accessToken && this.isRequest) {
+    if (this.accessToken && !this.userName) {
       this._getUserInfo()
     }
   },
@@ -143,9 +130,7 @@ export default {
     },
     loginOut () {
       loginOut().then((res) => {
-        if (res.status === 204) {
-          this.clearLoginInformation()
-        }
+        this.clearLoginInformation()
       }).catch((error) => {
         console.log(error.response.data)
       })

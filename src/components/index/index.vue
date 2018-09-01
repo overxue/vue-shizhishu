@@ -141,10 +141,12 @@ export default {
     }
   },
   watch: {
-    coupons () {
-      this.$nextTick(() => {
-        this._initSlider()
-      })
+    coupons (nVal) {
+      if (nVal.length > 0) {
+        this.$nextTick(() => {
+          this._initSlider()
+        })
+      }
     }
   },
   components: {

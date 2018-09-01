@@ -34,7 +34,6 @@ service.interceptors.response.use((response) => {
   // 刷新token 500  接口请求token   401    The token has been blacklisted
   if (err.status === 500 || (err.status === 401 && err.data.message === 'The token has been blacklisted')) {
     // The token has been blacklisted token 过了刷新时间
-    console.log(err)
     if (router.currentRoute.fullPath === '/my') {
       store.dispatch('clearLoginInformation')
     } else {
