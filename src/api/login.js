@@ -53,3 +53,14 @@ export function getCodes (key, code) {
     }
   })
 }
+
+export function Codelogin (key, code) {
+  return request({
+    url: 'api/code/authorizations',
+    method: 'post',
+    data: {
+      verification_key: key,
+      verification_code: code
+    }
+  })
+}

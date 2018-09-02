@@ -42,8 +42,11 @@
       </div>
     </div>
     <confim text="确认要删除该地址吗？" ref="confim" @confirm="confirm"></confim>
-    <loading v-show="!addresses.length"></loading>
+    <loading v-show="!addresses.length && !showNull"></loading>
     <load v-show="showLoading" desc="设置中"></load>
+    <div class="no-result-wrapper" v-show="showNull">
+      <no-result title="暂无地址，快去添加吧 ~"></no-result>
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,7 @@ import Confim from 'base/confim/confim'
 import Scroll from 'base/scroll/scroll'
 import Load from 'base/loading/loadingmore'
 import loading from 'base/loading/loading'
+import NoResult from 'base/no-result/no-result'
 import {getAddress, defaultAddress, delAddress} from 'api/address'
 
 export default {
@@ -61,7 +65,8 @@ export default {
     return {
       addresses: [],
       showLoading: false,
-      address_id: ''
+      address_id: '',
+      showNull: false
     }
   },
   created () {
@@ -71,6 +76,9 @@ export default {
     _getAddress () {
       getAddress().then((res) => {
         this.addresses = res.data
+        if (!res.data.length) {
+          this.showNull = true
+        }
         this.showLoading = false
       })
     },
@@ -101,7 +109,8 @@ export default {
     Confim,
     Scroll,
     Load,
-    loading
+    loading,
+    NoResult
   }
 }
 </script>
@@ -213,4 +222,9 @@ export default {
             font-size: $font-size-medium-x
           .text
             font-weight: 700
+    .no-result-wrapper
+      position: absolute
+      width: 100%
+      top: 30%
+      transform: translateY(-50%)
 </style>

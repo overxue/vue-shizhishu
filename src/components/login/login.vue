@@ -16,7 +16,7 @@
           <span class="forget">忘记密码</span>
         </div>
         <div class="log" @click="login" :class="{'active': showLogin}">
-          <span class="text">登录</span>
+          <span class="text">登 录</span>
         </div>
         <div class="login-bottom">
           <router-link to="/login/code" class="message-login" tag="span">短信验证码登录</router-link><span class="register">新用户注册</span>

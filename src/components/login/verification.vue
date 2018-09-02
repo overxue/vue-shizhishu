@@ -9,12 +9,18 @@
         <div class="userinput">
           <text-input type="text" placeholder="请输入手机号" @query="phoneQuery"></text-input>
         </div>
-        <div class="passwordinput" v-if="captcha_image_content">
+        <div class="passwordinput" v-if="captcha.captcha_image_content">
           <text-input type="text" placeholder="请输入验证码" @query="CaptchaQuery" ref="captcha"></text-input>
-          <img width="120" height="40" :src="captcha_image_content" @click="getCaptcha"/>
+          <img width="120" height="40" :src="captcha.captcha_image_content" @click="getCaptcha"/>
         </div>
-        <div class="log" :class="{'active': showLogin}" @click="getCode">
-          <span class="text">获取验证码</span>
+        <div class="passwordinput">
+          <text-input type="text" placeholder="请输入短信验证码" @query="VerificationQuery"></text-input>
+          <div class="button" :class="{'active': showButton}" @click="getCode">
+            <span>{{text}}</span>
+          </div>
+        </div>
+        <div class="log" :class="{'active': showLogin}" @click="Codelogin">
+          <span class="text">登 录</span>
         </div>
         <div class="login-bottom">
           <router-link to="/login" class="message-login" tag="span">账户密码登录</router-link><span class="register">新用户注册</span>
@@ -27,15 +33,28 @@
 <script>
 import Back from 'base/back/back'
 import TextInput from 'base/input/input'
-import {getCaptcha, getCodes} from 'api/login'
+import {getCaptcha, getCodes, Codelogin} from 'api/login'
+import {mapActions} from 'vuex'
 export default {
   data () {
     return {
       phone: '',
+      // 图片验证码返回参数
+      captcha: {
+        captcha_image_content: '',
+        expired_at: '',
+        captcha_key: ''
+      },
+      // 图片验证码
       captcha_code: '',
-      captcha_image_content: '',
-      expired_at: '',
-      captcha_key: ''
+      // 短信验证码
+      verification_code: '',
+      verification: {
+        key: '',
+        expired_at: ''
+      },
+      text: '获取验证码',
+      show: false
     }
   },
   methods: {
@@ -45,6 +64,9 @@ export default {
     CaptchaQuery (query) {
       this.captcha_code = query
     },
+    VerificationQuery (query) {
+      this.verification_code = query
+    },
     getCode () {
       if (this.captcha_code) {
         this.getCodes()
@@ -52,9 +74,30 @@ export default {
         this.getCaptcha()
       }
     },
+    time () {
+      let time = 60
+      let timer = setInterval(() => {
+        time--
+        this.text = `${time}s后获取`
+        if (!this.show) {
+          this.show = true
+        }
+        if (time === 0) {
+          this.text = '获取验证码'
+          this.show = false
+          clearInterval(timer)
+        }
+      }, 1000)
+    },
+    // 获取短信验证码
     getCodes () {
-      getCodes(this.captcha_key, this.captcha_code).then((res) => {
-        console.log(res)
+      if (this.show) {
+        return
+      }
+      getCodes(this.captcha.captcha_key, this.captcha_code).then((res) => {
+        this.verification.key = res.key
+        this.verification.expired_at = res.expired_at
+        this.time()
       }).catch((error) => {
         let err = error.response
         if (err.status === 401) {
@@ -66,29 +109,54 @@ export default {
         }
       })
     },
+    // 获取图片验证码
     getCaptcha () {
-      if (this.captcha_code) {
-        this.$refs.captcha.setQuery()
+      if (!this.showButton) {
+        return
       }
       getCaptcha(this.phone, 'login').then((res) => {
-        this.captcha_image_content = res.captcha_image_content
-        this.expired_at = res.expired_at
-        this.captcha_key = res.captcha_key
+        this.captcha.captcha_image_content = res.captcha_image_content
+        this.captcha.expired_at = res.expired_at
+        this.captcha.captcha_key = res.captcha_key
+        if (this.captcha_code) {
+          this.$refs.captcha.setQuery()
+        }
+      })
+    },
+    // 短信验证码登录接口
+    Codelogin () {
+      if (!this.showLogin) {
+        return
+      }
+      Codelogin(this.verification.key, this.verification_code).then((res) => {
+        this.saveToken({
+          token: res.meta.access_token,
+          time: res.meta.expires_in
+        })
+        this.saveUserInfo({
+          name: res.name,
+          phone: res.phone
+        })
+        this.$router.back()
       })
     },
     back () {
       this.$router.back()
-    }
+    },
+    ...mapActions([
+      'saveToken',
+      'saveUserInfo'
+    ])
   },
   computed: {
     showLogin () {
-      if (this.phone && this.captcha_code) {
-        return true
-      } else if (this.phone && !this.captcha_image_content) {
-        return true
-      } else {
+      return this.verification_code
+    },
+    showButton () {
+      if (this.show) {
         return false
       }
+      return this.phone
     }
   },
   components: {
@@ -148,6 +216,18 @@ export default {
             padding: 10px
             font-weight: 700
             color: $color-tab-color
+          .button
+            flex: 0 0 90px
+            text-align: center
+            line-height: 25px
+            border-radius: 14.5px
+            &.active
+              background: rgba(202, 235, 216, 0.3)
+              span
+                color: $color-highlight-background
+            span
+              font-size: 12px
+              color: rgba(78,184,40, 0.3)
         .log
           width: 100%
           height: 50px
