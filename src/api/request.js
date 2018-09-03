@@ -61,9 +61,14 @@ service.interceptors.response.use((response) => {
     })
     return res
   } else if (err.status === 401) {
+    if (router.currentRoute.fullPath === '/login/code') {
+      return Promise.reject(error)
+    }
     Message.warning(err.data.message)
   } else if (err.status === 422) {
-    // console.log(error.config.data)
+    if (router.currentRoute.fullPath === '/login/code') {
+      return Promise.reject(error)
+    }
     let miss = Object.values(err.data.errors)
     Message.warning(miss[0][0])
   } else if (err.status === 429) {

@@ -76,7 +76,7 @@ export default {
     },
     time () {
       let time = 60
-      let timer = setInterval(() => {
+      this.timer = setInterval(() => {
         time--
         this.text = `${time}s后获取`
         if (!this.show) {
@@ -85,7 +85,7 @@ export default {
         if (time === 0) {
           this.text = '获取验证码'
           this.show = false
-          clearInterval(timer)
+          clearInterval(this.timer)
         }
       }, 1000)
     },
@@ -100,11 +100,7 @@ export default {
         this.time()
       }).catch((error) => {
         let err = error.response
-        if (err.status === 401) {
-          console.log(err.data.message)
-          this.getCaptcha()
-        } else if (err.status === 422) {
-          console.log(err.data.message)
+        if (err.status === 401 || err.status === 422) {
           this.getCaptcha()
         }
       })
@@ -121,9 +117,15 @@ export default {
         if (this.captcha_code) {
           this.$refs.captcha.setQuery()
         }
+      }).catch((error) => {
+        let err = error.response
+        if (err.status === 422) {
+          let miss = Object.values(err.data.errors)
+          this.$message.warning(miss[0][0])
+        }
       })
     },
-    // 短信验证码登录接口
+    // 登录接口
     Codelogin () {
       if (!this.showLogin) {
         return
@@ -138,6 +140,15 @@ export default {
           phone: res.phone
         })
         this.$router.back()
+      }).catch((error) => {
+        let err = error.response
+        if (err.status === 401) {
+          this.$message.error(err.data.message)
+        } else if (err.status === 422) {
+          this.getCaptcha()
+          this.verification_code = ''
+          this.$message.error(err.data.message)
+        }
       })
     },
     back () {
@@ -150,13 +161,24 @@ export default {
   },
   computed: {
     showLogin () {
-      return this.verification_code
+      return this.verification_code && this.captcha_code
     },
     showButton () {
       if (this.show) {
         return false
       }
       return this.phone
+    }
+  },
+  watch: {
+    phone (nVal) {
+      if (this.captcha.captcha_image_content) {
+        this.captcha.captcha_image_content = ''
+        this.text = '获取验证码'
+        this.show = false
+        this.captcha_code = ''
+        clearInterval(this.timer)
+      }
     }
   },
   components: {

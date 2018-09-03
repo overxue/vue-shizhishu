@@ -13,9 +13,6 @@ router.beforeEach((to, from, next) => {
           store.dispatch('saveToken', {token: res.access_token, time: res.expires_in}).then(() => {
             next()
           })
-        }).catch((error) => {
-          // 刷新失败  在request.js里面处理过了
-          console.log(error.response.status)
         })
       } else {
         next()
