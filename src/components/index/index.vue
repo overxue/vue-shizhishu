@@ -98,7 +98,6 @@ export default {
     }
   },
   created () {
-    this.$message.warning('你大爷')
     this._getBanner()
     this._getCoupon()
     this._getCategoryProduct()

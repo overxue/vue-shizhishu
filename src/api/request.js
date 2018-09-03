@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from 'store'
 import {http} from './config'
 import router from '../router'
+import Message from 'common/js/message'
 
 //  创建axios实例
 const service = axios.create({
@@ -59,8 +60,17 @@ service.interceptors.response.use((response) => {
       })
     })
     return res
+  } else if (err.status === 401) {
+    Message.warning(err.data.message)
+  } else if (err.status === 422) {
+    // console.log(error.config.data)
+    let miss = Object.values(err.data.errors)
+    Message.warning(miss[0][0])
+  } else if (err.status === 429) {
+    Message.error('操作过于频繁，请稍后再试')
   }
-  return Promise.reject(error)
+  // return Promise.reject(error)
+  return new Promise(() => {})
 })
 
 export default service

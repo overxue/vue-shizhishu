@@ -60,6 +60,7 @@ export default {
     top: 20px
     left: 50%
     width: 80%
+    z-index: 2000
     transform: translateX(-50%)
     &.message-enter-active, &.message-leave-active
       transition: all 0.2s
