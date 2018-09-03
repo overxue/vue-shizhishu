@@ -13,7 +13,8 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use((config) => {
   // 判断当前路由是否需要登录
-  if (router.currentRoute.meta.auth || router.currentRoute.fullPath === '/my') {
+  let path = router.currentRoute.fullPath
+  if (router.currentRoute.meta.auth || path === '/my' || path === '/home') {
     let token = store.getters.accessToken
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
@@ -64,7 +65,11 @@ service.interceptors.response.use((response) => {
     if (router.currentRoute.fullPath === '/login/code') {
       return Promise.reject(error)
     }
-    Message.warning(err.data.message)
+    if (!store.getters.accessToken) {
+      Message.warning('请先登录')
+    } else {
+      Message.warning(err.data.message)
+    }
   } else if (err.status === 422) {
     if (router.currentRoute.fullPath === '/login/code') {
       return Promise.reject(error)

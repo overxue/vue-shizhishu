@@ -131,12 +131,7 @@ export default {
     },
     receiveCoupon (id) {
       receiveCoupon(id).then((res) => {
-        console.log(res)
-      }).catch((error) => {
-        let err = error.response
-        if (err.status === 401) {
-          this.message = err.data.message
-        }
+        this.$message.success('领取成功')
       })
     }
   },
