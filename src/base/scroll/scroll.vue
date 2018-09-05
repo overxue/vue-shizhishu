@@ -24,7 +24,7 @@ export default {
     // 是否显示滚动条
     scrollbar: {
       type: Boolean,
-      default: true
+      default: false
     },
     scrollX: {
       type: Boolean,

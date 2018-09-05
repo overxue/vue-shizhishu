@@ -57,7 +57,7 @@
             </div>
           </div>
           <ul class="shop-bottom">
-            <li class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
+            <router-link tag="li" to="shop/1" class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
               <div class="img">
                 <img width="125" height="125" v-lazy="product.image">
               </div>
@@ -65,13 +65,12 @@
               <div class="price">
                 <span class="pric">￥{{product.price}}</span><span class="ke">/{{product.unit}}</span>
               </div>
-            </li>
+            </router-link>
           </ul>
         </div>
       </div>
     </scroll>
     <loading v-show="!bannerList.length && !coupons.length && !categoryProducts.length"></loading>
-    <tip :message="message"></tip>
   </div>
 </template>
 
@@ -79,7 +78,6 @@
 import Loading from 'base/loading/loading'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
-import Tip from 'base/tip/tip'
 import {getBanner} from 'api/banner'
 import {getCoupon, receiveCoupon} from 'api/coupon'
 import {getCategoryProduct} from 'api/category'
@@ -93,8 +91,7 @@ export default {
       categoryProducts: [],
       scrollX: true,
       scrollY: false,
-      click: false,
-      message: ''
+      click: false
     }
   },
   created () {
@@ -147,8 +144,7 @@ export default {
   components: {
     Scroll,
     Loading,
-    Swiper,
-    Tip
+    Swiper
   }
 }
 </script>

@@ -9,6 +9,7 @@ const Skin = () => import('components/skin/skin')
 const Address = () => import('components/address/address')
 const Login = () => import('components/login/login')
 const Verification = () => import('components/login/verification')
+const Shop = () => import('components/shop/shop')
 
 Vue.use(Router)
 
@@ -58,6 +59,10 @@ export default new Router({
     {
       path: '/login/code',
       component: Verification
+    },
+    {
+      path: '/shop/:id',
+      component: Shop
     }
   ]
 })

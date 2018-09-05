@@ -1,7 +1,7 @@
 <template>
   <div class="input">
     <input v-model="query" @focus="onFocus" @blur="onBlur" :type="type" :placeholder="placeholder" class="input-item"/>
-    <i class="iconfont icon-x" v-show="query && showIcon" @click="clear">&#xe611;</i>
+    <i class="iconfont icon-x" v-show="query && showIcon && show" @click="clear">&#xe611;</i>
   </div>
 </template>
 
@@ -15,6 +15,10 @@ export default {
     placeholder: {
       type: String,
       default: '请输入内容'
+    },
+    show: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
