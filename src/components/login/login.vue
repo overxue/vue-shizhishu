@@ -29,8 +29,8 @@
 <script>
 import Back from 'base/back/back'
 import TextInput from 'base/input/input'
-import {login} from 'api/login'
-import {mapActions} from 'vuex'
+import { login } from 'api/login'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {

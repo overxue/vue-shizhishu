@@ -84,8 +84,8 @@
 
 <script>
 import Loading from 'base/loading/loading'
-import {loginOut, getUserInfo} from 'api/login'
-import {mapGetters, mapActions} from 'vuex'
+import { loginOut, getUserInfo } from 'api/login'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {

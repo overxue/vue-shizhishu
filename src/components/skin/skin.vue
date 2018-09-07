@@ -21,7 +21,7 @@
 import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
 import Top from 'base/top/top'
-import {mapActions, mapGetters} from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -30,19 +30,19 @@ export default {
       listenScroll: true,
       posY: 0,
       pic: [
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg', desc: '默认'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_1.jpg', desc: '公路'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_2.jpg', desc: '黑夜森林'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_3.jpg', desc: '鱼与水'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_4.jpg', desc: '山之剪影'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_5.jpg', desc: '火山'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_6.jpg', desc: '科技'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_7.jpg', desc: '沙漠'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_8.jpg', desc: '叶子'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_9.jpg', desc: '早餐'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_10.jpg', desc: '英伦骑车'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_11.jpg', desc: '草原'},
-        {imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_12.jpg', desc: '城市'}
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/moren.jpg', desc: '默认' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_1.jpg', desc: '公路' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_2.jpg', desc: '黑夜森林' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_3.jpg', desc: '鱼与水' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_4.jpg', desc: '山之剪影' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_5.jpg', desc: '火山' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_6.jpg', desc: '科技' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_7.jpg', desc: '沙漠' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_8.jpg', desc: '叶子' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_9.jpg', desc: '早餐' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_10.jpg', desc: '英伦骑车' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_11.jpg', desc: '草原' },
+        { imgUrl: 'http://oprwd6vhr.bkt.clouddn.com/background/user_bg_12.jpg', desc: '城市' }
       ]
     }
   },

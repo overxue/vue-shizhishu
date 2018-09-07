@@ -66,15 +66,15 @@ import TextInput from 'base/input/input'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
-import {getProductDetail} from 'api/product'
+import { getProductDetail } from 'api/product'
 
 export default {
   name: 'productDetail',
   data () {
     return {
       bannerList: [
-        {imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670541.jpg'},
-        {imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670543.jpg'}
+        { imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670541.jpg' },
+        { imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670543.jpg' }
       ],
       showIcon: false,
       productDetail: {}

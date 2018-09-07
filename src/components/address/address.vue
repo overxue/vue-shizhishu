@@ -57,7 +57,7 @@ import Scroll from 'base/scroll/scroll'
 import Load from 'base/loading/loadingmore'
 import loading from 'base/loading/loading'
 import NoResult from 'base/no-result/no-result'
-import {getAddress, defaultAddress, delAddress} from 'api/address'
+import { getAddress, defaultAddress, delAddress } from 'api/address'
 
 export default {
   name: 'addresses',

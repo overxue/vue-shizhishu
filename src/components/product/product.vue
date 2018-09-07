@@ -47,7 +47,7 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
-import {getCateogry, getCategoryProduct} from 'api/category'
+import { getCateogry, getCategoryProduct } from 'api/category'
 export default {
   data () {
     return {

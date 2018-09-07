@@ -33,8 +33,8 @@
 <script>
 import Back from 'base/back/back'
 import TextInput from 'base/input/input'
-import {getCaptcha, getCodes, Codelogin} from 'api/login'
-import {mapActions} from 'vuex'
+import { getCaptcha, getCodes, Codelogin } from 'api/login'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {

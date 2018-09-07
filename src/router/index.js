@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Tab from 'components/tab/tab'
+const Tab = () => import('components/tab/tab')
 const Index = () => import('components/index/index')
 const Product = () => import('components/product/product')
 const Shopcat = () => import('components/shopcat/shopcat')
@@ -62,7 +62,7 @@ export default new Router({
       component: Verification
     },
     {
-      path: '/product/:id',
+      path: '/goods/:id',
       component: ProductDetail
     }
   ]

@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <scroll class="index-content">
+    <scroll class="index-content" ref="shop">
       <div>
         <div class="slider-wrapper">
           <swiper :bannerList="bannerList"></swiper>
@@ -57,7 +57,7 @@
             </div>
           </div>
           <ul class="shop-bottom">
-            <router-link tag="li" :to="`product/${product.id}`" class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
+            <router-link tag="li" :to="`goods/${product.id}`" class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
               <div class="img">
                 <img width="125" height="125" v-lazy="product.image">
               </div>
@@ -78,9 +78,9 @@
 import Loading from 'base/loading/loading'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
-import {getBanner} from 'api/banner'
-import {getCoupon, receiveCoupon} from 'api/coupon'
-import {getCategoryProduct} from 'api/category'
+import { getBanner } from 'api/banner'
+import { getCoupon, receiveCoupon } from 'api/coupon'
+import { getCategoryProduct } from 'api/category'
 
 export default {
   name: 'home',
@@ -140,6 +140,10 @@ export default {
         })
       }
     }
+  },
+  activated () {
+    console.log(process.env.BASE_URL)
+    this.$refs.shop.refresh()
   },
   components: {
     Scroll,

@@ -1,7 +1,7 @@
 import router from '../../router'
 import store from 'store'
 import dayjs from 'dayjs'
-import {refreshToken} from 'api/login'
+import { refreshToken } from 'api/login'
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.auth)) {
@@ -10,7 +10,7 @@ router.beforeEach((to, from, next) => {
         // token 过期
         refreshToken().then((res) => {
           // 刷新成功
-          store.dispatch('saveToken', {token: res.access_token, time: res.expires_in}).then(() => {
+          store.dispatch('saveToken', { token: res.access_token, time: res.expires_in }).then(() => {
             next()
           })
         })

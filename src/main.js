@@ -17,10 +17,8 @@ Vue.use(VueLazyLoad, {
 })
 Vue.use(Message)
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
   render: h => h(App)
-})
+}).$mount('#app')

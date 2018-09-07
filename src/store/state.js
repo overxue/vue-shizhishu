@@ -1,4 +1,4 @@
-import {loadBgimg, loadAccessToken, loadExpiresIn} from 'common/js/cache'
+import { loadBgimg, loadAccessToken, loadExpiresIn } from 'common/js/cache'
 
 const state = {
   // 个人中心背景图片

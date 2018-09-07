@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from 'store'
-import {http} from './config'
+import { http } from './config'
 import router from '../router'
 import Message from 'common/js/message'
 
@@ -40,7 +40,7 @@ service.interceptors.response.use((response) => {
       store.dispatch('clearLoginInformation')
     } else {
       store.dispatch('clearLoginInformation').then(() => {
-        router.push({path: '/login'})
+        router.push({ path: '/login' })
       })
     }
   } else if (err.status === 401 && err.data.message === 'Token has expired') {
@@ -51,7 +51,7 @@ service.interceptors.response.use((response) => {
       url: '/api/authorizations/current',
       method: 'put'
     }).then((res) => {
-      store.dispatch('saveToken', {token: res.access_token, time: res.expires_in})
+      store.dispatch('saveToken', { token: res.access_token, time: res.expires_in })
       // 再次调用之前请求接口
       return service.request({
         url: url,
