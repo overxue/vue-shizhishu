@@ -12,7 +12,7 @@
           <span class="text">首页</span>
         </div>
       </router-link>
-      <router-link tag="div" to="/shoplist" class="tab-item">
+      <router-link tag="div" to="/product" class="tab-item">
         <div class="tab-link">
           <i class="iconfont icon">&#xe602;</i>
           <span class="text">菜园子</span>

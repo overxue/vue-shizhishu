@@ -2,18 +2,19 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Tab from 'components/tab/tab'
 const Index = () => import('components/index/index')
-const Shoplist = () => import('components/shoplist/shoplist')
+const Product = () => import('components/product/product')
 const Shopcat = () => import('components/shopcat/shopcat')
 const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
 const Address = () => import('components/address/address')
 const Login = () => import('components/login/login')
 const Verification = () => import('components/login/verification')
-const Shop = () => import('components/shop/shop')
+const ProductDetail = () => import('components/product-detail/product-detail')
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -25,8 +26,8 @@ export default new Router({
           component: Index
         },
         {
-          path: '/shoplist',
-          component: Shoplist
+          path: '/product',
+          component: Product
         },
         {
           path: '/shopcat',
@@ -61,8 +62,8 @@ export default new Router({
       component: Verification
     },
     {
-      path: '/shop/:id',
-      component: Shop
+      path: '/product/:id',
+      component: ProductDetail
     }
   ]
 })

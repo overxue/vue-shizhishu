@@ -66,18 +66,32 @@ import TextInput from 'base/input/input'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
+import {getProductDetail} from 'api/product'
 
 export default {
+  name: 'productDetail',
   data () {
     return {
       bannerList: [
         {imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670541.jpg'},
         {imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670543.jpg'}
       ],
-      showIcon: false
+      showIcon: false,
+      productDetail: {}
     }
   },
+  created () {
+    console.log('123')
+    this._getProductDetail()
+  },
   methods: {
+    _getProductDetail () {
+      const id = this.$route.params.id
+      getProductDetail(id).then((res) => {
+        this.productDetail = res
+        console.log(res)
+      })
+    },
     back () {
       this.$router.back()
     }

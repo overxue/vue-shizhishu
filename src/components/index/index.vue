@@ -57,7 +57,7 @@
             </div>
           </div>
           <ul class="shop-bottom">
-            <router-link tag="li" to="shop/1" class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
+            <router-link tag="li" :to="`product/${product.id}`" class="bottom-item" v-for="(product, ind) of item.products.data" :key="ind">
               <div class="img">
                 <img width="125" height="125" v-lazy="product.image">
               </div>
