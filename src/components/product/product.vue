@@ -16,7 +16,7 @@
           <li v-for="(categoryProduct, index) in categoryProducts" :key="index" ref="foodList">
             <h1 class="title">{{categoryProduct.name}}</h1>
             <ul>
-              <li class="food-item" v-for="(item, ind) in categoryProduct.products.data" :key="ind">
+              <li class="food-item" v-for="(item, ind) in categoryProduct.products.data" :key="ind" @click="detail(item.id)">
                 <div class="icon">
                   <img v-lazy="item.image" width="57" height="57">
                 </div>
@@ -113,6 +113,11 @@ export default {
         let el = menuList[index]
         this.$refs.menuWrapper.scrollToElement(el, 300)
       }
+    },
+    detail (id) {
+      this.$router.push({
+        path: `/goods/${id}`
+      })
     }
   },
   watch: {

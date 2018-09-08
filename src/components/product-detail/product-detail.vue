@@ -8,19 +8,25 @@
           </div>
           <div class="content">
             <div class="content-wrapper">
-              <h1 class="title">西红柿</h1>
+              <h1 class="title">{{productDetail.title}}</h1>
               <div class="price">
-                <span class="price-p">价格:</span><span class="price-f">￥</span><span class="price-m">6.00</span><span class="price-r">/斤(500g)</span>
+                <span class="price-p">价格:</span><span class="price-f">￥</span><span class="price-m">{{productDetail.price}}</span><span class="price-r">/{{productDetail.unit}}</span>
               </div>
-              <div class="shop-weight">
+              <div class="shop-weight" v-if="productDetail.unit === '斤'">
                 <span>购买重量:</span>
                 <div class="weight-i">
-                  <text-input type="number" placeholder="请输入购买重量" :show="showIcon"></text-input>
+                  <text-input type="number" placeholder="请输入购买重量" :show="showIcon" @query="query"></text-input>
                 </div>
                 <span>g</span>
-                <span class="weight-l">4两</span>
+                <span class="weight-l" v-show="weight">({{weight}})</span>
               </div>
-              <div class="desc">
+              <div class="shop-weight" v-else>
+                <span>购买数量:</span>
+                <div class="weight-il">
+                  <input-number :number="number" @query="query"></input-number>
+                </div>
+              </div>
+              <div class="desc" v-if="productDetail.unit === '斤'">
                 <p class="desc-l">温馨提示:</p>
                 <p class="desc-r">500g = 1斤 = 10两</p>
               </div>
@@ -49,15 +55,16 @@
             </div>
             <div class="content-and">
               <span class="content-heji">金额:</span>
-              <span class="content-price">￥212.36</span>
+              <span class="content-price">￥{{total}}</span>
             </div>
           </div>
         </div>
         <div class="content-right">
-          <div class="pay">加入菜篮子</div>
+          <div class="pay" :class="{'extra': total > 0}">加入菜篮子</div>
         </div>
       </div>
     </div>
+    <loading v-show="!productDetail.productImages"></loading>
   </div>
 </template>
 
@@ -66,41 +73,72 @@ import TextInput from 'base/input/input'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
+import Loading from 'base/loading/loading'
+import InputNumber from 'base/input/input-number'
 import { getProductDetail } from 'api/product'
 
 export default {
   name: 'productDetail',
   data () {
     return {
-      bannerList: [
-        { imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670541.jpg' },
-        { imgUrl: 'https://s.lovejixiaoyue.cn/images/201706/source_img/6_P_1497270670543.jpg' }
-      ],
       showIcon: false,
-      productDetail: {}
+      productDetail: [],
+      number: 1,
+      inputValue: 0
     }
   },
   created () {
-    console.log('123')
     this._getProductDetail()
+  },
+  computed: {
+    bannerList () {
+      if (this.productDetail.productImages) {
+        return this.productDetail.productImages.data
+      }
+    },
+    total () {
+      let price = this.productDetail.price
+      let prix = this.productDetail.unit === '斤' ? price / 500 : price
+      return (prix * this.inputValue).toFixed(2)
+    },
+    weight () {
+      if (this.productDetail.unit !== '斤') return
+      let weight = this.inputValue / 50
+      if (this.inputValue % 500 !== 0 && this.inputValue > 499) {
+        let res = (weight / 10).toString().split('.')
+        return `${res[0]}斤${res[1]}两`
+      } else if (this.inputValue < 500 && this.inputValue !== 0 && this.inputValue !== '') {
+        return `${weight}两`
+      } else if (this.inputValue % 500 === 0 && this.inputValue > 499) {
+        return `${weight / 10}斤`
+      }
+    }
   },
   methods: {
     _getProductDetail () {
       const id = this.$route.params.id
       getProductDetail(id).then((res) => {
         this.productDetail = res
-        console.log(res)
+        if (this.productDetail.unit !== '斤') {
+          this.inputValue = 1
+        }
       })
     },
     back () {
       this.$router.back()
+    },
+    query (nVal) {
+      console.log(nVal)
+      this.inputValue = nVal
     }
   },
   components: {
     Swiper,
     TextInput,
     Scroll,
-    Back
+    Back,
+    Loading,
+    InputNumber
   }
 }
 </script>
@@ -168,6 +206,13 @@ export default {
                 .weight-i
                   margin: 0 10px
                   width: 150px
+                .weight-il
+                  display: flex
+                  background: $color-background
+                  height: 25px
+                  line-height: 25px
+                  margin-top: 12.5px
+                  margin-left: 10px
                 .weight-l
                   margin-left: 15px
                   color: $color-shop-color
@@ -238,6 +283,8 @@ export default {
             text-align: center
             font-size: $font-size-medium
             font-weight: 700
-            background: $color-highlight-background
+            background: $color-tab-text
             color: #fff
+            &.extra
+              background: $color-highlight-background
 </style>

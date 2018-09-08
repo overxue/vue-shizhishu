@@ -34,8 +34,8 @@ export default {
     onFocus () {
       this.showIcon = true
     },
-    setQuery () {
-      this.query = ''
+    setQuery (query) {
+      this.query = query
     },
     onBlur () {
       this.showIcon = false
@@ -43,7 +43,12 @@ export default {
   },
   watch: {
     query (nVal) {
-      this.$emit('query', nVal)
+      let val = nVal
+      if (parseInt(nVal) <= 0 && this.type === 'number') {
+        val = 1
+        this.setQuery(val)
+      }
+      this.$emit('query', val)
     }
   }
 }
