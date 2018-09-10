@@ -5,13 +5,13 @@
         <transition-group name="list" tag="ul">
           <li :key="cart.id" class="shopcat-item" v-for="(cart, index) of carts">
             <div class="shopcat-left" @click="selectProduct(index)">
-              <img :src="cart.product.image" width="75" height="75">
+              <img v-lazy="cart.product.image" width="75" height="75">
               <div class="left-icon">
                 <i class="iconfont icon-success" :class="{'icon-success-active': cart.select}">&#xe605;</i>
               </div>
             </div>
             <div class="shopcat-right">
-              <span class="right-del" @click="del(cart.id)">✘</span>
+              <span class="right-del" @click="del(cart.id, index)">✘</span>
               <h2 class="right-top">{{cart.product.title}}</h2>
               <span class="right-center">价格:￥{{cart.product.price}}/{{cart.product.unit}}</span>
               <span class="right-bottom">金额:￥{{cart.money}}</span>
@@ -33,7 +33,7 @@
             </div>
             <div class="content-and">
               <span class="content-heji">合计:</span>
-              <span class="content-price">￥212.36</span>
+              <span class="content-price">￥{{total}}</span>
             </div>
           </div>
         </div>
@@ -56,7 +56,19 @@ export default {
   data () {
     return {
       carts: [],
-      selectedAllStatus: false
+      selectedAllStatus: false,
+      allStatus: []
+    }
+  },
+  computed: {
+    total () {
+      let total = 0
+      this.carts.forEach((res, index) => {
+        if (this.carts[index].select) {
+          total += parseFloat(res.money)
+        }
+      })
+      return total.toFixed(2)
     }
   },
   methods: {
@@ -72,24 +84,51 @@ export default {
       this.carts.forEach((res, index) => {
         allStatus[index] = res.select
       })
+      this.allStatus = allStatus
       allStatus.includes(false) ? this.selectedAllStatus = false : this.selectedAllStatus = true
     },
     selectAll () {
       let status = this.selectedAllStatus
       status = !status
-      this.carts.forEach((res) => {
+      this.carts.forEach((res, index) => {
         res.select = status
+        this.allStatus[index] = status
       })
       this.selectedAllStatus = status
     },
-    del (id) {
+    del (id, index) {
       delCart(id).then((res) => {
         this._getCart()
+        this.allStatus.splice(index, 1)
       })
     }
   },
   activated () {
     this._getCart()
+  },
+  watch: {
+    carts (nVal, Val) {
+      let length = Val.length
+      let nlength = nVal.length
+      if (this.selectedAllStatus && nlength <= length) {
+        this.selectedAllStatus = false
+        this.selectAll()
+      } else {
+        let res = this.allStatus.includes(true)
+        if (res) {
+          if (nlength > length && length > 0) {
+            let arra = Array.from({ length: nlength - length }, () => false)
+            this.allStatus = [...arra, ...this.allStatus]
+            this.selectedAllStatus = false
+          }
+          nVal.forEach((res, index) => {
+            if (this.allStatus[index]) {
+              res.select = true
+            }
+          })
+        }
+      }
+    }
   },
   components: {
     Scroll,
@@ -125,9 +164,11 @@ export default {
           border-1px($color-border)
           &:last-child
             border-none()
+          &.list-enter-active
+            transition: all .2s linear
           &.list-leave-active
             transition: all .1s linear
-          &.list-leave-to
+          &.list-enter, &.list-leave-to
             height: 0px
             .shopcat-left, .shopcat-right
               display: none

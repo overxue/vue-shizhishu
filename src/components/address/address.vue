@@ -137,16 +137,17 @@ export default {
           height: 118px
           margin-bottom: 10px
           background: $color-tab-background
+          &.list-enter-active
+            transition: all 0.5s linear
           &.list-leave-active
             transition: all 0.1s linear
-          &.list-leave-to
+          &.list-enter, &.list-leave-to
             height: 0px
-            .address-top, .address-bottom
-              display: none
           .address-top
             padding: 20px
             font-size: $font-size-medium
             border-1px($color-border)
+            background: #fff
             .text
               margin-bottom: 10px
               .name
@@ -158,6 +159,7 @@ export default {
             align-items: center
             padding: 0 20px
             font-size: $font-size-large
+            background: #fff
             .left
               flex: 0 0 100px
               padding: 10px 0
