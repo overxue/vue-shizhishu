@@ -59,7 +59,7 @@
             </div>
           </div>
         </div>
-        <div class="content-right">
+        <div class="content-right" @click="addCart">
           <div class="pay" :class="{'extra': total > 0}">加入菜篮子</div>
         </div>
       </div>
@@ -76,6 +76,7 @@ import Back from 'base/back/back'
 import Loading from 'base/loading/loading'
 import InputNumber from 'base/input/input-number'
 import { getProductDetail } from 'api/product'
+import { addCart } from 'api/cart'
 
 export default {
   name: 'productDetail',
@@ -128,8 +129,12 @@ export default {
       this.$router.back()
     },
     query (nVal) {
-      console.log(nVal)
       this.inputValue = nVal
+    },
+    addCart () {
+      addCart(this.productDetail.id, this.inputValue).then((res) => {
+        this.$message.success('添加购物车成功')
+      })
     }
   },
   components: {

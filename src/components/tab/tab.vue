@@ -6,7 +6,7 @@
       </keep-alive>
     </transition>
     <div class="tab">
-      <router-link tag="div" to="/home" class="tab-item" exact>
+      <router-link tag="div" to="/" class="tab-item" exact>
         <div class="tab-link">
           <i class="iconfont icon">&#xe61a;</i>
           <span class="text">首页</span>

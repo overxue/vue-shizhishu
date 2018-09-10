@@ -267,23 +267,20 @@ export default {
           justify-content: space-between
           padding: 10px 10px 0 10px
           .bottom-item
-            flex: 1
+            flex: 170px
             text-align: center
             border: 1px solid $color-shop-border
             border-radius: 10px
             box-shadow: 5px 5px 5px #eee
             margin-right: 10px
             margin-bottom: 10px
+            overflow: hidden
             &:nth-of-type(even)
               margin-right: 0
             .title
               margin: 0 1px
-              overflow: hidden
-              text-overflow: ellipsis
-              display: -webkit-box
-              -webkit-box-orient: vertical
-              -webkit-line-clamp: 2
               margin-top: 5px
+              no-wrap()
             .price
               padding: 10px 0
               .pric

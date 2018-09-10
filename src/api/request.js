@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use((config) => {
   // 判断当前路由是否需要登录
   let path = router.currentRoute.fullPath
-  if (router.currentRoute.meta.auth || path === '/my' || path === '/home') {
+  if (router.currentRoute.meta.auth || path === '/my' || path === '/home' || path.indexOf('/goods/') !== -1 || path === '/shopcat') {
     let token = store.getters.accessToken
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`

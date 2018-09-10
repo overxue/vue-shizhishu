@@ -62,10 +62,8 @@ export default {
     }
   },
   created () {
-    setTimeout(() => {
-      this._getCategory()
-      this._getCategoryProduct()
-    }, 1000)
+    this._getCategory()
+    this._getCategoryProduct()
   },
   computed: {
     fixedTitle () {
@@ -132,7 +130,8 @@ export default {
       for (let i = 0; i < listHeight.length - 1; i++) {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
-        if (-newY >= height1 && -newY < height2) {
+        // -newY + 1   谷歌计算newY高度正常   火狐少1  所以加1   不知道是不是火狐bug还是什么
+        if (-newY + 1 >= height1 && -newY + 1 < height2) {
           this._followScroll(i)
           this.currentIndex = i
           this.diff = height2 + newY
@@ -209,6 +208,7 @@ export default {
       .foods-wrapper
         flex: 1
         background: #fff
+        overflow: hidden
         .title
           padding-left: 14px
           height: 26px
@@ -230,15 +230,14 @@ export default {
             margin-right: 10px
           .content
             flex: 1
+            overflow: hidden
             .name
-              //overflow: hidden;
-              //white-space: nowrap;
-              //text-overflow: ellipsis;
               margin: 2px 0 8px
               height: 14px
               line-height: 14px
               font-size: 14px
               color: #07111b
+              no-wrap()
             .extra
               line-height: 10px
               font-size: 10px

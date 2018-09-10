@@ -19,10 +19,10 @@ export default new Router({
     {
       path: '/',
       component: Tab,
-      redirect: '/home',
+      redirect: '/',
       children: [
         {
-          path: '/home',
+          path: '/',
           component: Index
         },
         {

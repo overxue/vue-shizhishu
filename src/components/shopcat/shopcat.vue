@@ -2,326 +2,33 @@
   <div class="shop">
     <div class="shopcat">
       <scroll class="shopcat-wrapper">
-        <ul>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
+        <transition-group name="list" tag="ul">
+          <li :key="cart.id" class="shopcat-item" v-for="(cart, index) of carts">
+            <div class="shopcat-left" @click="selectProduct(index)">
+              <img :src="cart.product.image" width="75" height="75">
               <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
+                <i class="iconfont icon-success" :class="{'icon-success-active': cart.select}">&#xe605;</i>
               </div>
             </div>
             <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
+              <span class="right-del" @click="del(cart.id)">✘</span>
+              <h2 class="right-top">{{cart.product.title}}</h2>
+              <span class="right-center">价格:￥{{cart.product.price}}/{{cart.product.unit}}</span>
+              <span class="right-bottom">金额:￥{{cart.money}}</span>
               <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
+                <input-number :number="cart.amount"></input-number>
               </div>
             </div>
           </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="shopcat-item">
-            <div class="shopcat-left">
-              <img src="https://s.lovejixiaoyue.cn/images/201706/source_img/52_G_1498123205025.jpg" width="75" height="75">
-              <div class="left-icon">
-                <i class="iconfont icon-success icon-success-active">&#xe605;</i>
-              </div>
-            </div>
-            <div class="shopcat-right">
-              <span class="right-del">✘</span>
-              <h2 class="right-top">汇源100%橙汁 1L</h2>
-              <span class="right-center">价格:￥15.00/盒</span>
-              <span class="right-bottom">金额:￥0.50</span>
-              <div class="right-number">
-                <div class="num-shu">
-                  <span class="num-item">数量:</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">－</span>
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-input">
-                  <input type="number" value="9" class="num-input-item">
-                </div>
-                <span class="num-weight"></span>
-                <div class="num-shu">
-                  <span class="num-jian">＋</span>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
+        </transition-group>
       </scroll>
     </div>
     <div class="shopcat-bottom">
       <div class="content">
         <div class="content-left">
           <div class="content-all">
-            <div class="content-icon">
-              <i class="iconfont icon-success">&#xe605;</i>
+            <div class="content-icon" @click="selectAll">
+              <i class="iconfont icon-success" :class="{'icon-success-active': selectedAllStatus}">&#xe605;</i>
               <span class="con-all">全选</span>
             </div>
             <div class="content-and">
@@ -335,15 +42,59 @@
         </div>
       </div>
     </div>
+    <loading v-show="!carts.length"></loading>
   </div>
 </template>
 
 <script>
 import Scroll from 'base/scroll/scroll'
+import InputNumber from 'base/input/input-number'
+import { getCart, delCart } from 'api/cart'
+import loading from 'base/loading/loading'
 
 export default {
+  data () {
+    return {
+      carts: [],
+      selectedAllStatus: false
+    }
+  },
+  methods: {
+    _getCart () {
+      getCart().then((res) => {
+        this.carts = res.data
+      })
+    },
+    selectProduct (index) {
+      let product = this.carts[index]
+      product.select = !product.select
+      let allStatus = []
+      this.carts.forEach((res, index) => {
+        allStatus[index] = res.select
+      })
+      allStatus.includes(false) ? this.selectedAllStatus = false : this.selectedAllStatus = true
+    },
+    selectAll () {
+      let status = this.selectedAllStatus
+      status = !status
+      this.carts.forEach((res) => {
+        res.select = status
+      })
+      this.selectedAllStatus = status
+    },
+    del (id) {
+      delCart(id).then((res) => {
+        this._getCart()
+      })
+    }
+  },
+  activated () {
+    this._getCart()
+  },
   components: {
-    Scroll
+    Scroll,
+    InputNumber,
+    loading
   }
 }
 </script>
@@ -369,10 +120,17 @@ export default {
         .shopcat-item
           display: flex
           padding: 15px
+          height: 77.5px
           background: $color-tab-background
           border-1px($color-border)
           &:last-child
             border-none()
+          &.list-leave-active
+            transition: all .1s linear
+          &.list-leave-to
+            height: 0px
+            .shopcat-left, .shopcat-right
+              display: none
           .shopcat-left
             position: relative
             flex: 0 0 75px
@@ -389,6 +147,7 @@ export default {
                   color: $color-highlight-background
           .shopcat-right
             position: relative
+            overflow: hidden
             flex: 1
             font-size: $font-size-medium
             .right-del
@@ -400,6 +159,7 @@ export default {
               color: $color-tab-text
             .right-top
               font-size: $font-size-medium-x
+              no-wrap()
             .right-center
               margin-top: 10px
               display: block
@@ -459,9 +219,12 @@ export default {
             padding: 0 15px
             height: 100%
             .content-icon
+              padding: 5px 0
               .icon-success
                 font-size: $font-size-large-x
                 color: $color-tab-text
+                &.icon-success-active
+                  color: $color-highlight-background
               .con-all
                 display: inline-block
                 vertical-align: top
