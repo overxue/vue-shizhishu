@@ -50,7 +50,7 @@
               <i class="iconfont">&#xe68b;</i>
             </div>
           </li>
-          <router-link to="/my/address" tag="li" class="bottom-item">
+          <router-link to="/address" tag="li" class="bottom-item">
             <div class="icon">
               <i class="iconfont icon-item">&#xe6d7;</i>
             </div>
@@ -120,7 +120,7 @@ export default {
     },
     choseskin () {
       this.$router.push({
-        path: '/my/skin'
+        path: '/skin'
       })
     },
     toLogin () {

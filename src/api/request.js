@@ -62,16 +62,16 @@ service.interceptors.response.use((response) => {
     })
     return res
   } else if (err.status === 401) {
-    if (router.currentRoute.fullPath === '/login/code') {
+    if (router.currentRoute.fullPath === '/code' || router.currentRoute.fullPath === '/register') {
       return Promise.reject(error)
     }
-    if (!store.getters.accessToken) {
+    if (!store.getters.accessToken && !err.data.message) {
       Message.warning('请先登录')
     } else {
       Message.warning(err.data.message)
     }
   } else if (err.status === 422) {
-    if (router.currentRoute.fullPath === '/login/code') {
+    if (router.currentRoute.fullPath === '/code' || router.currentRoute.fullPath === '/register') {
       return Promise.reject(error)
     }
     let miss = Object.values(err.data.errors)

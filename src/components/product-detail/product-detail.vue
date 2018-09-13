@@ -48,7 +48,7 @@
       <div class="content">
         <div class="content-left">
           <div class="content-all">
-            <div class="content-icon">
+            <div class="content-icon" @click="goCat">
               <i class="iconfont icon">&#xe63e;</i>
               <div class="icon-test">菜篮子</div>
               <div class="cicle">14</div>
@@ -135,6 +135,10 @@ export default {
       addCart(this.productDetail.id, this.inputValue).then((res) => {
         this.$message.success('添加购物车成功')
       })
+    },
+    goCat () {
+      this.$router.push('/shopcat')
+      // this.$router.push({name: 'shopcat'})
     }
   },
   components: {

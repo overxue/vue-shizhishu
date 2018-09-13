@@ -19,7 +19,7 @@
           <span class="text">登 录</span>
         </div>
         <div class="login-bottom">
-          <router-link to="/login/code" class="message-login" tag="span">短信验证码登录</router-link><span class="register">新用户注册</span>
+          <router-link to="/code" class="message-login" tag="span" replace>短信验证码登录</router-link><router-link to="/register" class="register" tag="span" replace>新用户注册</router-link>
         </div>
       </div>
     </div>
@@ -32,13 +32,21 @@ import TextInput from 'base/input/input'
 import { login } from 'api/login'
 import { mapActions } from 'vuex'
 export default {
+  name: 'login',
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.path = from.path
+      next()
+    })
+  },
   data () {
     return {
       loginForm: {
         username: '',
         password: ''
       },
-      type: 'password'
+      type: 'password',
+      path: ''
     }
   },
   methods: {
@@ -52,6 +60,9 @@ export default {
       this.type = this.type === 'password' ? 'text' : 'password'
     },
     login () {
+      if (!this.showLogin) {
+        return
+      }
       login(this.loginForm.username, this.loginForm.password).then((res) => {
         this.saveToken({
           token: res.meta.access_token,
@@ -61,10 +72,14 @@ export default {
           name: res.name,
           phone: res.phone
         })
-        this.$router.back()
+        this.back()
       })
     },
     back () {
+      if (this.path === '/') {
+        this.$router.replace('/')
+        return
+      }
       this.$router.back()
     },
     ...mapActions([

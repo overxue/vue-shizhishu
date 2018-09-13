@@ -7,23 +7,34 @@
           <img src="./login.png" width="80" height="80"/>
         </div>
         <div class="userinput">
-          <text-input type="text" placeholder="请输入手机号" @query="phoneQuery"></text-input>
+          <text-input type="text" placeholder="请输入手机号" @query="phoneQuery" ref="phone"></text-input>
         </div>
         <div class="passwordinput" v-if="captcha.captcha_image_content">
           <text-input type="text" placeholder="请输入验证码" @query="CaptchaQuery" ref="captcha"></text-input>
           <img width="120" height="40" :src="captcha.captcha_image_content" @click="getCaptcha"/>
         </div>
         <div class="passwordinput">
-          <text-input type="text" placeholder="请输入短信验证码" @query="VerificationQuery"></text-input>
+          <text-input type="text" placeholder="请输入短信验证码" @query="VerificationQuery" ref="code"></text-input>
           <div class="button" :class="{'active': showButton}" @click="getCode">
             <span>{{text}}</span>
           </div>
         </div>
-        <div class="log" :class="{'active': showLogin}" @click="Codelogin">
-          <span class="text">登 录</span>
+        <div class="passwordinput" v-if="$route.meta.title === '注册'">
+          <text-input type="text" placeholder="请输入用户名" ref="username" @query="usernameQuery"></text-input>
         </div>
-        <div class="login-bottom">
-          <router-link to="/login" class="message-login" tag="span">账户密码登录</router-link><span class="register">新用户注册</span>
+        <div class="passwordinput" v-if="$route.meta.title === '注册'">
+          <text-input :type="type" placeholder="请输入密码" @query="PwdQuery" ref="password"></text-input>
+          <i class="iconfont hide" @click="hidePassword" v-show="type === 'password'">&#xe70f;</i>
+          <i class="iconfont hide" @click="hidePassword" v-show="type !== 'password'">&#xe6dd;</i>
+        </div>
+        <div class="log" :class="{'active': showLogin}" @click="Codelogin">
+          <span class="text">{{$route.meta.title}}</span>
+        </div>
+        <div class="login-bottom" v-if="$route.meta.title === '注册'">
+          <router-link to="/login" class="message-login" tag="span" replace>账户密码登录</router-link><router-link to="/code" class="register" tag="span" replace>短信验证码登录</router-link>
+        </div>
+        <div class="login-bottom" v-else>
+          <router-link to="/login" class="message-login" tag="span" replace>账户密码登录</router-link><router-link to="/register" class="register" tag="span" replace>新用户注册</router-link>
         </div>
       </div>
     </div>
@@ -33,9 +44,10 @@
 <script>
 import Back from 'base/back/back'
 import TextInput from 'base/input/input'
-import { getCaptcha, getCodes, Codelogin } from 'api/login'
+import { getCaptcha, getCodes, Codelogin, register } from 'api/login'
 import { mapActions } from 'vuex'
 export default {
+  name: 'verification',
   data () {
     return {
       phone: '',
@@ -54,7 +66,10 @@ export default {
         expired_at: ''
       },
       text: '获取验证码',
-      show: false
+      show: false,
+      username: '',
+      password: '',
+      type: 'password'
     }
   },
   methods: {
@@ -66,6 +81,15 @@ export default {
     },
     VerificationQuery (query) {
       this.verification_code = query
+    },
+    usernameQuery (query) {
+      this.username = query
+    },
+    PwdQuery (query) {
+      this.password = query
+    },
+    hidePassword () {
+      this.type = this.type === 'password' ? 'text' : 'password'
     },
     getCode () {
       if (this.captcha_code) {
@@ -110,7 +134,8 @@ export default {
       if (!this.showButton) {
         return
       }
-      getCaptcha(this.phone, 'login').then((res) => {
+      let status = this.$router.currentRoute.path === '/register' ? 'register' : 'login'
+      getCaptcha(this.phone, status).then((res) => {
         this.captcha.captcha_image_content = res.captcha_image_content
         this.captcha.expired_at = res.expired_at
         this.captcha.captcha_key = res.captcha_key
@@ -125,30 +150,52 @@ export default {
         }
       })
     },
+    userinfo (res) {
+      this.saveToken({
+        token: res.meta.access_token,
+        time: res.meta.expires_in
+      })
+      this.saveUserInfo({
+        name: res.name,
+        phone: res.phone
+      })
+      this.$router.back()
+    },
+    error (err) {
+      if (err.status === 401) {
+        this.$message.error(err.data.message)
+      } else if (err.status === 422 && err.data.message !== '422 Unprocessable Entity') {
+        this.show = false
+        this.$refs.captcha.setQuery('')
+        this.$refs.code.setQuery('')
+        this.text = '获取验证码'
+        clearInterval(this.timer)
+        this.$message.error(err.data.message)
+        this.getCaptcha()
+      } else if (err.data.message === '422 Unprocessable Entity') {
+        let miss = Object.values(err.data.errors)
+        this.$message.warning(miss[0][0])
+      }
+    },
     // 登录接口
     Codelogin () {
       if (!this.showLogin) {
         return
       }
+      if (this.$router.currentRoute.path === '/register') {
+        register(this.verification.key, this.verification_code, this.username, this.password).then((res) => {
+          this.userinfo(res)
+        }).catch((error) => {
+          let err = error.response
+          this.error(err)
+        })
+        return
+      }
       Codelogin(this.verification.key, this.verification_code).then((res) => {
-        this.saveToken({
-          token: res.meta.access_token,
-          time: res.meta.expires_in
-        })
-        this.saveUserInfo({
-          name: res.name,
-          phone: res.phone
-        })
-        this.$router.back()
+        this.userinfo(res)
       }).catch((error) => {
         let err = error.response
-        if (err.status === 401) {
-          this.$message.error(err.data.message)
-        } else if (err.status === 422) {
-          this.getCaptcha()
-          this.verification_code = ''
-          this.$message.error(err.data.message)
-        }
+        this.error(err)
       })
     },
     back () {
@@ -161,12 +208,13 @@ export default {
   },
   computed: {
     showLogin () {
+      if (this.$router.currentRoute.path === '/register') {
+        return this.verification_code && this.captcha_code && this.username && this.password
+      }
       return this.verification_code && this.captcha_code
     },
     showButton () {
-      if (this.show) {
-        return false
-      }
+      if (this.show) return false
       return this.phone
     }
   },
@@ -179,6 +227,18 @@ export default {
         this.captcha_code = ''
         clearInterval(this.timer)
       }
+    },
+    '$route' () {
+      this.$refs.phone.setQuery('')
+      if (this.captcha.captcha_image_content) {
+        this.$refs.captcha.setQuery('')
+        this.captcha.captcha_image_content = ''
+      }
+      this.$refs.code.setQuery('')
+      this.text = '获取验证码'
+      this.captcha_code = ''
+      this.show = false
+      clearInterval(this.timer)
     }
   },
   components: {
@@ -201,7 +261,7 @@ export default {
     background: $color-background
     .ver-item
       position: absolute
-      top: 40%
+      top: 50%
       left: 50%
       transform: translate(-50%, -50%)
       width: 100%
@@ -228,6 +288,10 @@ export default {
             color: $color-tab-color
         .passwordinput
           margin-top: 20px
+          .hide
+            padding: 10px
+            font-size: 18px
+            color: $color-tab-color
           .password
             flex: 1
             height: 30px

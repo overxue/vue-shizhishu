@@ -80,12 +80,10 @@ export default {
     selectProduct (index) {
       let product = this.carts[index]
       product.select = !product.select
-      let allStatus = []
       this.carts.forEach((res, index) => {
-        allStatus[index] = res.select
+        this.allStatus[index] = res.select
       })
-      this.allStatus = allStatus
-      allStatus.includes(false) ? this.selectedAllStatus = false : this.selectedAllStatus = true
+      this.allStatus.includes(false) ? this.selectedAllStatus = false : this.selectedAllStatus = true
     },
     selectAll () {
       let status = this.selectedAllStatus

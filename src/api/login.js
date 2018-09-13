@@ -56,11 +56,24 @@ export function getCodes (key, code) {
 
 export function Codelogin (key, code) {
   return request({
-    url: 'api/code/authorizations',
+    url: '/api/code/authorizations',
     method: 'post',
     data: {
       verification_key: key,
       verification_code: code
+    }
+  })
+}
+
+export function register (key, code, name, password) {
+  return request({
+    url: '/api/users',
+    method: 'post',
+    data: {
+      verification_key: key,
+      verification_code: code,
+      name,
+      password
     }
   })
 }

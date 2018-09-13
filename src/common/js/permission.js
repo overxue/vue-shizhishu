@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/login' })
     }
   } else {
-    if (to.path === '/login' && store.getters.accessToken) {
+    if ((to.path === '/login' || to.path === '/code' || to.path === '/register') && store.getters.accessToken) {
       next({ path: '/' })
     } else {
       next()

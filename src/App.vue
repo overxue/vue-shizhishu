@@ -14,7 +14,7 @@ import Tab from 'components/tab/tab'
 export default {
   data () {
     return {
-      exclude: ['addresses', 'productDetail']
+      exclude: ['addresses', 'productDetail', 'verification', 'login']
     }
   },
   components: {
