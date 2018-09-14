@@ -77,6 +77,7 @@ import Loading from 'base/loading/loading'
 import InputNumber from 'base/input/input-number'
 import { getProductDetail } from 'api/product'
 import { addCart } from 'api/cart'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'productDetail',
@@ -113,7 +114,10 @@ export default {
       } else if (this.inputValue % 500 === 0 && this.inputValue > 499) {
         return `${weight / 10}斤`
       }
-    }
+    },
+    ...mapGetters([
+      'accessToken'
+    ])
   },
   methods: {
     _getProductDetail () {
@@ -132,14 +136,23 @@ export default {
       this.inputValue = nVal
     },
     addCart () {
-      addCart(this.productDetail.id, this.inputValue).then((res) => {
-        this.$message.success('添加购物车成功')
-      })
+      if (!this.accessToken) {
+        let product = this.productDetail
+        delete (product.productImages)
+        let item = { product_id: product.id, amount: this.inputValue, select: false, money: product.price * this.inputValue, product }
+        this.saveShopCat(item)
+      } else {
+        addCart(this.productDetail.id, this.inputValue).then((res) => {
+          this.$message.success('添加购物车成功')
+        })
+      }
     },
     goCat () {
       this.$router.push('/shopcat')
-      // this.$router.push({name: 'shopcat'})
-    }
+    },
+    ...mapActions([
+      'saveShopCat'
+    ])
   },
   components: {
     Swiper,

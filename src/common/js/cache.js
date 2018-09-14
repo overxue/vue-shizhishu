@@ -3,6 +3,7 @@ import storage from 'good-storage'
 const BGIMAGE = '__bgImage__'
 const ACCESS_TOKEN = '__accessToken__'
 const EXPIRES_IN = '__expiresIn__'
+const SHOP_CAT = '__shopCat__'
 
 export function saveBgimg (imgurl) {
   storage.set(BGIMAGE, imgurl)
@@ -39,4 +40,9 @@ export function loadExpiresIn () {
 export function clearExpiresIn () {
   storage.remove(EXPIRES_IN)
   return ''
+}
+
+export function ShopCat (shop) {
+  storage.set(SHOP_CAT, shop)
+  return shop
 }

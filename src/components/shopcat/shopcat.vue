@@ -38,11 +38,21 @@
           </div>
         </div>
         <div class="content-right">
-          <div class="pay">结算</div>
+          <div class="pay" :class="{'extra': total > 0}">结算</div>
         </div>
       </div>
     </div>
     <loading v-show="!carts.length"></loading>
+    <!-- <div class="shop-empty">
+      <div class="empty-top">
+        <div>登录</div>
+        <p>登录后同步手机购物车中的商品</p>
+      </div>
+      <div class="empth-center">
+        <i class="iconfont">&#xe63e;</i>
+        <p>购物车是空的</p>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -51,6 +61,7 @@ import Scroll from 'base/scroll/scroll'
 import InputNumber from 'base/input/input-number'
 import { getCart, delCart } from 'api/cart'
 import loading from 'base/loading/loading'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -69,7 +80,10 @@ export default {
         }
       })
       return total.toFixed(2)
-    }
+    },
+    ...mapGetters([
+      'accessToken'
+    ])
   },
   methods: {
     _getCart () {
@@ -102,6 +116,7 @@ export default {
     }
   },
   activated () {
+    if (!this.accessToken) return
     this._getCart()
   },
   watch: {
@@ -282,6 +297,8 @@ export default {
             text-align: center
             font-size: $font-size-medium
             font-weight: 700
-            background: $color-highlight-background
+            background: $color-tab-text
             color: #fff
+            &.extra
+              background: $color-highlight-background
 </style>

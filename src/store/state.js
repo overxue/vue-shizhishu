@@ -11,7 +11,9 @@ const state = {
   // access_token
   accessToken: loadAccessToken(),
   // 过期时间
-  expiredAt: loadExpiresIn()
+  expiredAt: loadExpiresIn(),
+  // 购物车中的商品
+  shopCat: []
 }
 
 export default state

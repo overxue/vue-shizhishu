@@ -79,11 +79,13 @@
       </div>
     </div>
     <loading v-show="!userName && accessToken"></loading>
+    <confim text="确认退出？" ref="confim" @confirm="confirm"></confim>
   </div>
 </template>
 
 <script>
 import Loading from 'base/loading/loading'
+import Confim from 'base/confim/confim'
 import { loginOut, getUserInfo } from 'api/login'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -129,6 +131,9 @@ export default {
       })
     },
     loginOut () {
+      this.$refs.confim.show()
+    },
+    confirm () {
       loginOut().then((res) => {
         this.clearLoginInformation()
       }).catch((error) => {
@@ -142,7 +147,8 @@ export default {
     ])
   },
   components: {
-    Loading
+    Loading,
+    Confim
   }
 }
 </script>

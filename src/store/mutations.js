@@ -13,6 +13,9 @@ const mutations = {
   [types.SET_USER_INFO] (state, { name, phone }) {
     state.userInfo.name = name
     state.userInfo.phone = phone
+  },
+  [types.SET_SHOP_CAT] (state, shopcat) {
+    state.shopCat = shopcat
   }
 }
 export default mutations

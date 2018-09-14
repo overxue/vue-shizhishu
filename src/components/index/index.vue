@@ -81,6 +81,7 @@ import Scroll from 'base/scroll/scroll'
 import { getBanner } from 'api/banner'
 import { getCoupon, receiveCoupon } from 'api/coupon'
 import { getCategoryProduct } from 'api/category'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'home',
@@ -98,6 +99,11 @@ export default {
     this._getBanner()
     this._getCoupon()
     this._getCategoryProduct()
+  },
+  computed: {
+    ...mapGetters([
+      'accessToken'
+    ])
   },
   methods: {
     _getBanner () {
@@ -127,6 +133,7 @@ export default {
       this.$refs.sellGroup.style.width = width + 'px'
     },
     receiveCoupon (id) {
+      if (!this.accessToken) return this.$message.warning('请先登录')
       receiveCoupon(id).then((res) => {
         this.$message.success('领取成功')
       })
