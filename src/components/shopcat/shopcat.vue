@@ -23,7 +23,7 @@
         </transition-group>
       </scroll>
     </div>
-    <div class="shopcat-bottom">
+    <div class="shopcat-bottom" v-show="show">
       <div class="content">
         <div class="content-left">
           <div class="content-all">
@@ -42,17 +42,17 @@
         </div>
       </div>
     </div>
-    <loading v-show="!carts.length"></loading>
-    <!-- <div class="shop-empty">
-      <div class="empty-top">
-        <div>登录</div>
-        <p>登录后同步手机购物车中的商品</p>
+    <loading v-show="!carts.length && this.show"></loading>
+    <div class="shop-empty" v-if="!this.show">
+      <div class="empty-top" v-show="!this.accessToken">
+        <router-link tag="div" to="login" class="login">登录</router-link>
+        <p class="desc">登录后同步手机购物车中的商品</p>
       </div>
       <div class="empth-center">
-        <i class="iconfont">&#xe63e;</i>
-        <p>购物车是空的</p>
+        <i class="iconfont icon">&#xe63e;</i>
+        <p class="icon-empty">购物车是空的</p>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -68,7 +68,8 @@ export default {
     return {
       carts: [],
       selectedAllStatus: false,
-      allStatus: []
+      allStatus: [],
+      show: true
     }
   },
   computed: {
@@ -138,14 +139,26 @@ export default {
     ])
   },
   activated () {
+    this.show = true
     if (!this.accessToken) {
       this.carts = this.shopCat
+      if (!this.shopCat.length) {
+        this.show = false
+      } else {
+        this.selectedAllStatus = true
+        this.carts.forEach((res) => {
+          if (!res.select) {
+            this.selectedAllStatus = false
+          }
+        })
+      }
       return
     }
     this._getCart()
   },
   watch: {
     carts (nVal, Val) {
+      if (!nVal.length) this.show = false
       if (!this.accessToken) return
       let length = Val.length
       let nlength = nVal.length
@@ -328,4 +341,37 @@ export default {
             color: #fff
             &.extra
               background: $color-highlight-background
+    .shop-empty
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 280px
+      .empty-top
+        display: flex
+        align-items: center
+        .login
+          width: 70px
+          height: 25px
+          border-radius: 25px
+          border: 1px solid $color-tab-color
+          text-align: center
+          line-height: 25px
+          font-size: $font-size-small
+        .desc
+          margin-left: 10px
+          font-size: $font-size-medium
+          color: $color-tab-text
+      .empth-center
+        display: flex
+        align-items: center
+        justify-content: center
+        margin-top: 30px
+        .icon
+          font-size: 40px
+          color: $color-tab-color
+        .icon-empty
+          margin-left: 10px
+          font-size: $font-size-medium
+          color: $color-tab-text
 </style>
