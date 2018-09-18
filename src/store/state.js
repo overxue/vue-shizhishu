@@ -1,4 +1,4 @@
-import { loadBgimg, loadAccessToken, loadExpiresIn } from 'common/js/cache'
+import { loadBgimg, loadAccessToken, loadExpiresIn, loadShopCat } from 'common/js/cache'
 
 const state = {
   // 个人中心背景图片
@@ -13,7 +13,7 @@ const state = {
   // 过期时间
   expiredAt: loadExpiresIn(),
   // 购物车中的商品
-  shopCat: []
+  shopCat: loadShopCat()
 }
 
 export default state

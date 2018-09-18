@@ -2,6 +2,12 @@ import * as types from './mutation-types'
 import { saveBgimg, saveAccessToken, saveExpiresIn, clearAccessToken, clearExpiresIn, ShopCat } from 'common/js/cache'
 import dayjs from 'dayjs'
 
+function findIndex (shopCat, shop) {
+  return shopCat.findIndex((item) => {
+    return item.product_id === shop.product_id
+  })
+}
+
 export const saveBackgroundImg = function ({ commit }, imgurl) {
   commit(types.SET_BACKGROUND_IMG, saveBgimg(imgurl))
 }
@@ -37,8 +43,30 @@ export const saveShopCat = function ({ commit, state }, shop) {
   commit(types.SET_SHOP_CAT, ShopCat(shopCat))
 }
 
-function findIndex (shopCat, shop) {
-  return shopCat.findIndex((item) => {
-    return item.product_id === shop.product_id
+export const selectShop = function ({ commit, state }, shop) {
+  let shopCat = state.shopCat.slice()
+  let fpIndex = findIndex(shopCat, shop)
+  if (fpIndex > -1) {
+    shop.select = !shopCat[fpIndex].select
+    shopCat.splice(fpIndex, 1)
+    shopCat.splice(fpIndex, 0, shop)
+    commit(types.SET_SHOP_CAT, ShopCat(shopCat))
+  }
+}
+
+export const selectAllProduct = function ({ commit, state }, select) {
+  let shopCat = state.shopCat.slice()
+  let shop = []
+  shopCat.forEach((res, index) => {
+    let item = JSON.parse(JSON.stringify(res))
+    item.select = select
+    shop[index] = item
   })
+  commit(types.SET_SHOP_CAT, ShopCat(shop))
+}
+
+export const delShop = function ({ commit, state }, index) {
+  let shopCat = state.shopCat.slice()
+  shopCat.splice(index, 1)
+  commit(types.SET_SHOP_CAT, ShopCat(shopCat))
 }

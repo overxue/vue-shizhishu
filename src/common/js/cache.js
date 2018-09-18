@@ -46,3 +46,7 @@ export function ShopCat (shop) {
   storage.set(SHOP_CAT, shop)
   return shop
 }
+
+export function loadShopCat () {
+  return storage.get(SHOP_CAT, [])
+}

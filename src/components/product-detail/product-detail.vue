@@ -141,6 +141,7 @@ export default {
         delete (product.productImages)
         let item = { product_id: product.id, amount: this.inputValue, select: false, money: product.price * this.inputValue, product }
         this.saveShopCat(item)
+        this.$message.success('添加购物车成功')
       } else {
         addCart(this.productDetail.id, this.inputValue).then((res) => {
           this.$message.success('添加购物车成功')

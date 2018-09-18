@@ -3,7 +3,7 @@
     <div class="shopcat">
       <scroll class="shopcat-wrapper">
         <transition-group name="list" tag="ul">
-          <li :key="cart.id" class="shopcat-item" v-for="(cart, index) of carts">
+          <li :key="cart.product_id" class="shopcat-item" v-for="(cart, index) of carts">
             <div class="shopcat-left" @click="selectProduct(index)">
               <img v-lazy="cart.product.image" width="75" height="75">
               <div class="left-icon">
@@ -61,7 +61,7 @@ import Scroll from 'base/scroll/scroll'
 import InputNumber from 'base/input/input-number'
 import { getCart, delCart } from 'api/cart'
 import loading from 'base/loading/loading'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -82,7 +82,8 @@ export default {
       return total.toFixed(2)
     },
     ...mapGetters([
-      'accessToken'
+      'accessToken',
+      'shopCat'
     ])
   },
   methods: {
@@ -93,7 +94,13 @@ export default {
     },
     selectProduct (index) {
       let product = this.carts[index]
-      product.select = !product.select
+      if (!this.accessToken) {
+        product = JSON.parse(JSON.stringify(product))
+        this.selectShop(product)
+        this.carts = this.shopCat
+      } else {
+        product.select = !product.select
+      }
       this.carts.forEach((res, index) => {
         this.allStatus[index] = res.select
       })
@@ -102,25 +109,44 @@ export default {
     selectAll () {
       let status = this.selectedAllStatus
       status = !status
-      this.carts.forEach((res, index) => {
-        res.select = status
-        this.allStatus[index] = status
-      })
+      if (!this.accessToken) {
+        this.selectAllProduct(status)
+        this.carts = this.shopCat
+      } else {
+        this.carts.forEach((res, index) => {
+          res.select = status
+          this.allStatus[index] = status
+        })
+      }
       this.selectedAllStatus = status
     },
     del (id, index) {
+      if (!this.accessToken) {
+        this.delShop(index)
+        this.carts = this.shopCat
+        return
+      }
       delCart(id).then((res) => {
         this._getCart()
         this.allStatus.splice(index, 1)
       })
-    }
+    },
+    ...mapActions([
+      'selectShop',
+      'selectAllProduct',
+      'delShop'
+    ])
   },
   activated () {
-    if (!this.accessToken) return
+    if (!this.accessToken) {
+      this.carts = this.shopCat
+      return
+    }
     this._getCart()
   },
   watch: {
     carts (nVal, Val) {
+      if (!this.accessToken) return
       let length = Val.length
       let nlength = nVal.length
       if (this.selectedAllStatus && nlength <= length) {
@@ -190,6 +216,7 @@ export default {
             flex: 0 0 75px
             width: 75px
             margin-right: 10px
+            background: $color-background
             .left-icon
               position: absolute
               top: 0
