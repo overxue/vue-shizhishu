@@ -63,11 +63,12 @@ export default {
     width: 100%
     height: 50px
     .input-item
-      flex: 1
+      /*flex: 1*/
       width: 100%
       height: 30px
       background: $color-background
-      outline:none
+      outline: none
+      appearance: textfield
     .icon-x
       padding: 10px
       font-weight: 700

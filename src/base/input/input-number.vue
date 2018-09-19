@@ -91,4 +91,5 @@ export default {
         >>> .input-item
           height: 25px
           text-align: center
+          line-height: 25px
 </style>

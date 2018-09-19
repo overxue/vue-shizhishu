@@ -33,7 +33,7 @@
             </div>
             <div class="content-and">
               <span class="content-heji">合计:</span>
-              <span class="content-price">￥{{total}}</span>
+              <span class="content-price">￥<count-up class="content-price" start="10.00" :end="total"></count-up></span>
             </div>
           </div>
         </div>
@@ -59,8 +59,9 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import InputNumber from 'base/input/input-number'
-import { getCart, delCart } from 'api/cart'
 import loading from 'base/loading/loading'
+import CountUp from 'base/countup/countup'
+import { getCart, delCart } from 'api/cart'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -185,7 +186,8 @@ export default {
   components: {
     Scroll,
     InputNumber,
-    loading
+    loading,
+    CountUp
   }
 }
 </script>

@@ -34,13 +34,14 @@
           </li>
         </transition-group>
       </scroll>
-      <div class="add-address">
+      <router-link tag="div" to="address/add" class="add-address">
         <div class="desc">
           <i class="iconfont icon-jia">&#xe601;</i>
           <span class="text">新增地址</span>
         </div>
-      </div>
+      </router-link>
     </div>
+    <router-view></router-view>
     <confim text="确认要删除该地址吗？" ref="confim" @confirm="confirm"></confim>
     <loading v-show="!addresses.length && !showNull"></loading>
     <load v-show="showLoading" desc="设置中"></load>
@@ -137,9 +138,7 @@ export default {
           height: 118px
           margin-bottom: 10px
           background: $color-tab-background
-          &.list-enter-active
-            transition: all 0.5s linear
-          &.list-leave-active
+          &.list-enter-active, &.list-leave-active
             transition: all 0.1s linear
           &.list-enter, &.list-leave-to
             height: 0px

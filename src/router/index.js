@@ -7,6 +7,7 @@ const Shopcat = () => import('components/shopcat/shopcat')
 const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
 const Address = () => import('components/address/address')
+const AddressDetail = () => import('components/address-detail/address-detail')
 const Login = () => import('components/login/login')
 const Verification = () => import('components/login/verification')
 const ProductDetail = () => import('components/product-detail/product-detail')
@@ -51,6 +52,12 @@ export default new Router({
     {
       path: '/address',
       component: Address,
+      children: [
+        {
+          path: 'add',
+          component: AddressDetail
+        }
+      ],
       meta: {
         auth: true
       }

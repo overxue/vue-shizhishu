@@ -55,7 +55,7 @@
             </div>
             <div class="content-and">
               <span class="content-heji">金额:</span>
-              <span class="content-price">￥{{total}}</span>
+              <span class="content-price">￥<count-up class="content-price" :end="total"></count-up></span>
             </div>
           </div>
         </div>
@@ -75,6 +75,7 @@ import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
 import Loading from 'base/loading/loading'
 import InputNumber from 'base/input/input-number'
+import CountUp from 'base/countup/countup'
 import { getProductDetail } from 'api/product'
 import { addCart } from 'api/cart'
 import { mapGetters, mapActions } from 'vuex'
@@ -101,7 +102,8 @@ export default {
     total () {
       let price = this.productDetail.price
       let prix = this.productDetail.unit === '斤' ? price / 500 : price
-      return (prix * this.inputValue).toFixed(2)
+      let total = (prix * this.inputValue).toFixed(2)
+      return total
     },
     weight () {
       if (this.productDetail.unit !== '斤') return
@@ -139,7 +141,7 @@ export default {
       if (!this.accessToken) {
         let product = this.productDetail
         delete (product.productImages)
-        let item = { product_id: product.id, amount: this.inputValue, select: false, money: product.price * this.inputValue, product }
+        let item = { product_id: product.id, amount: parseInt(this.inputValue), select: false, money: product.price * this.inputValue, product }
         this.saveShopCat(item)
         this.$message.success('添加购物车成功')
       } else {
@@ -161,7 +163,8 @@ export default {
     Scroll,
     Back,
     Loading,
-    InputNumber
+    InputNumber,
+    CountUp
   }
 }
 </script>

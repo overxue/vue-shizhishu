@@ -65,9 +65,9 @@ export default {
     bottom: 0
     z-index: 998
     background-color: $color-background-d
-    .fade-enter-active, .fade-leave-active
+    &.fade-enter-active, &.fade-leave-active
       transition: opacity .5s
-    .fade-enter, .fade-leave-to
+    &.fade-enter, &.fade-leave-to
       opacity: 0
     .confirm-wrapper
       position: absolute
