@@ -65,7 +65,7 @@
             <div class="icon">
               <i class="iconfont icon-item">&#xe626;</i>
             </div>
-            <div class="text">
+            <div class="text" @click="showDetail">
               <p class="title">联系我们</p>
             </div>
             <div class="icon-back">
@@ -80,6 +80,43 @@
     </div>
     <loading v-show="!userName && accessToken"></loading>
     <confim text="确认退出？" ref="confim" @confirm="confirm"></confim>
+    <transition name="fade">
+      <div class="detail" v-show="detailShow">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <ul class="supports">
+              <li class="support-item">
+                <span class="icon phone"></span>
+                <span class="text">18656085175</span>
+              </li>
+              <li class="support-item">
+                <span class="icon qq"></span>
+                <span class="text">409771385</span>
+              </li>
+              <li class="support-item">
+                <span class="icon wechat"></span>
+                <span class="text">xuecong98</span>
+              </li>
+              <li class="support-item">
+                <span class="icon blog"></span>
+                <a target="_blank" href="https://overxue.com" class="text">https://overxue.com</a>
+              </li>
+              <li class="support-item">
+                <span class="icon github"></span>
+                <a target="_blank" href="https://github.com/overxue" class="text">https://github.com/overxue</a>
+              </li>
+              <li class="support-item">
+                <span class="icon weibo"></span>
+                <a target="_blank" href="https://weibo.com/u/3090183841" class="text">https://weibo.com/u/3090183841</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="detail-close" @click="hideDetail">
+          <i class="iconfont icondel">&#xe611;</i>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -92,7 +129,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      isRequest: ''
+      detailShow: false
     }
   },
   created () {
@@ -139,6 +176,12 @@ export default {
       }).catch((error) => {
         console.log(error.response.data)
       })
+    },
+    showDetail () {
+      this.detailShow = true
+    },
+    hideDetail () {
+      this.detailShow = false
     },
     ...mapActions([
       'clearLoginInformation',
@@ -254,4 +297,71 @@ export default {
         text-align: center
         line-height: 40px
         color: $color-font
+    .detail
+      position: fixed
+      z-index: 100
+      top: 0
+      left: 0
+      bottom: 50px
+      width: 100%
+      overflow: auto
+      backdrop-filter: blur(10px)
+      opacity: 1
+      background: rgba(7, 17, 27, 0.8)
+      &.fade-enter-active, &.fade-leave-active
+        transition: all 0.5s
+      &.fade-enter, &.fade-leave-to
+        transform: translate3d(0, -100%, 0)
+      .detail-wrapper
+        width: 100%
+        min-height: 100%
+        &.clearfix
+          display: inline-block
+        .detail-main
+          margin-top: 150px
+          padding-bottom: 150px
+          .supports
+            width: 60%
+            margin: 0 auto
+            .support-item
+              padding: 0 12px
+              margin-bottom: 12px
+              font-size: 0
+              &:last-child
+                margin-bottom: 0
+              .icon
+                display: inline-block
+                width: 20px
+                height: 20px
+                vertical-align: top
+                margin-right: 6px
+                background-size: 20px 20px
+                background-repeat: no-repeat
+                &.phone
+                  bg-image('phone')
+                &.wechat
+                  bg-image('wechat')
+                &.qq
+                  bg-image('qq')
+                &.github
+                  bg-image('github')
+                &.weibo
+                  bg-image('weibo')
+                &.blog
+                  bg-image('blog')
+              .text
+                line-height: 20px
+                font-size: 12px
+                color: #fff
+      .detail-close
+        position: relative
+        width: 32px
+        height: 32px
+        margin: -64px auto 0 auto
+        clear: both
+        line-height: 32px
+        text-align: center
+        .icondel
+          color: #fff
+          font-size: 24px
 </style>
