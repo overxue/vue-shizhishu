@@ -20,3 +20,18 @@ export function delAddress (id) {
     method: 'delete'
   })
 }
+
+export function addAddress (province, city, district, address, name, phone) {
+  return request({
+    url: '/api/addresses',
+    method: 'post',
+    data: {
+      province,
+      city,
+      district,
+      address,
+      contact_name: name,
+      contact_phone: phone
+    }
+  })
+}

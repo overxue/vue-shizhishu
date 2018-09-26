@@ -6,22 +6,23 @@
         <ul>
           <li class="address-item">
             <div class="address-desc">姓名</div>
-            <text-input type="text" name="contact_name" placeholder="姓名" class="user-input"></text-input>
+            <text-input type="text" placeholder="姓名" class="user-input" @query="contactName"></text-input>
           </li>
           <li class="address-item">
             <div class="address-desc">电话</div>
-            <text-input type="number" name="contact_phone" placeholder="手机号码" class="user-input"></text-input>
+            <text-input type="number" placeholder="手机号码" class="user-input" @query="contactPhone"></text-input>
           </li>
           <li class="address-item">
             <div class="address-desc">地址</div>
-            <div class="user-input" @click="show">123</div>
+            <text-input type="text" placeholder="选择地址" class="user-input" ref="addressInput"></text-input>
+            <div class="user-address" @click="show"></div>
           </li>
           <li class="address-item">
             <div class="address-desc">门牌号</div>
-            <text-input type="text" name="address" placeholder="例：5号楼203室" class="user-input"></text-input>
+            <text-input type="text" placeholder="例：5号楼203室" class="user-input" @query="contactAddress"></text-input>
           </li>
         </ul>
-        <div class="address-save">
+        <div class="address-save" @click="saveAddress">
           <span>保存</span>
         </div>
       </div>
@@ -37,6 +38,7 @@ import TextInput from 'base/input/input'
 import Back from 'base/back/back'
 import Picker from 'base/picker/picker'
 import { provinceList, cityList, areaList } from 'common/js/areaData'
+import { addAddress } from 'api/address'
 
 export default {
   data () {
@@ -45,13 +47,14 @@ export default {
       selectedIndex: [0, 0, 0],
       title: '地址选择',
       cancelTxt: '取消',
-      confirmTxt: '确定'
+      confirmTxt: '确定',
+      province: '',
+      city: '',
+      district: '',
+      contact_name: '',
+      contact_phone: '',
+      address: ''
     }
-  },
-  components: {
-    TextInput,
-    Back,
-    Picker
   },
   computed: {
     linkageData () {
@@ -59,9 +62,21 @@ export default {
       const cities = cityList[provinces[this.tempIndex[0]].value]
       const areas = areaList[cities[this.tempIndex[1]].value]
       return [provinces, cities, areas]
+    },
+    fullAddress () {
+      return `${this.province} ${this.city} ${this.district}`
     }
   },
   methods: {
+    contactName (query) {
+      this.contact_name = query
+    },
+    contactPhone (query) {
+      this.contact_phone = query
+    },
+    contactAddress (query) {
+      this.address = query
+    },
     back () {
       this.$router.back()
     },
@@ -70,8 +85,10 @@ export default {
       this.$refs.picker.show()
     },
     handleSelect (args) {
-      console.log(args[2])
-      // this.$emit('select', ...args)
+      this.province = args[2][0]
+      this.city = args[2][1]
+      this.district = args[2][2]
+      this.$refs.addressInput.setQuery(this.fullAddress)
     },
     handleChange (i, newIndex) {
       if (newIndex !== this.tempIndex[i]) {
@@ -82,7 +99,17 @@ export default {
 
         this.tempIndex.splice(i, 1, newIndex)
       }
+    },
+    saveAddress () {
+      addAddress(this.province, this.city, this.district, this.address, this.contact_name, this.contact_phone).then((res) => {
+        this.back()
+      })
     }
+  },
+  components: {
+    TextInput,
+    Back,
+    Picker
   }
 }
 </script>
@@ -128,6 +155,12 @@ export default {
           flex: 0 0 1
           >>> .input-item
             background: #fff
+        .user-address
+          position: absolute
+          left: 100px
+          right: 0
+          width: 100%
+          height: 50px
       .address-save
         margin: 20px
         height: 40px
