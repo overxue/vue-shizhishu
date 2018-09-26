@@ -14,7 +14,7 @@
           </li>
           <li class="address-item">
             <div class="address-desc">地址</div>
-            <div class="user-input">123</div>
+            <div class="user-input" @click="show">123</div>
           </li>
           <li class="address-item">
             <div class="address-desc">门牌号</div>
@@ -26,7 +26,8 @@
         </div>
       </div>
       <back @back="back"></back>
-      <picker @change="change"></picker>
+      <picker @select="handleSelect(arguments)" :data="linkageData" :selected-index="selectedIndex"
+          ref="picker" :title="title" @change="handleChange" :cancelTxt="cancelTxt" :confirmTxt="confirmTxt"></picker>
     </div>
   </transition>
 </template>
@@ -35,19 +36,52 @@
 import TextInput from 'base/input/input'
 import Back from 'base/back/back'
 import Picker from 'base/picker/picker'
+import { provinceList, cityList, areaList } from 'common/js/areaData'
 
 export default {
+  data () {
+    return {
+      tempIndex: [0, 0, 0],
+      selectedIndex: [0, 0, 0],
+      title: '地址选择',
+      cancelTxt: '取消',
+      confirmTxt: '确定'
+    }
+  },
   components: {
     TextInput,
     Back,
     Picker
   },
+  computed: {
+    linkageData () {
+      const provinces = provinceList
+      const cities = cityList[provinces[this.tempIndex[0]].value]
+      const areas = areaList[cities[this.tempIndex[1]].value]
+      return [provinces, cities, areas]
+    }
+  },
   methods: {
-    change (i, data) {
-      console.log(i, data)
-    },
     back () {
       this.$router.back()
+    },
+    show () {
+      this.$refs.picker.setData(this.linkageData)
+      this.$refs.picker.show()
+    },
+    handleSelect (args) {
+      console.log(args[2])
+      // this.$emit('select', ...args)
+    },
+    handleChange (i, newIndex) {
+      if (newIndex !== this.tempIndex[i]) {
+        for (let j = 2; j > i; j--) {
+          this.tempIndex.splice(j, 1, 0)
+          this.$refs.picker.scrollTo(j, 0)
+        }
+
+        this.tempIndex.splice(i, 1, newIndex)
+      }
     }
   }
 }

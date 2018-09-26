@@ -18,8 +18,7 @@
     "vue-awesome-swiper": "^2.6.7",
     "vue-lazyload": "^1.2.6",
     "fastclick": "^1.0.6",
-    "countup.js": "^1.9.3",
-    "china-area-data": "^4.0.0"
+    "countup.js": "^1.9.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
