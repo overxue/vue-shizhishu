@@ -105,6 +105,11 @@ export default {
       })
     }
   },
+  watch: {
+    '$route' (to, from) {
+      console.log(from)
+    }
+  },
   components: {
     Back,
     Confim,
@@ -138,8 +143,10 @@ export default {
           height: 118px
           margin-bottom: 10px
           background: $color-tab-background
-          &.list-enter-active, &.list-leave-active
-            transition: all 0.1s linear
+          &.list-enter-active
+            transition: all 1s linear
+          &.list-leave-active
+            transition: all .1s linear
           &.list-enter, &.list-leave-to
             height: 0px
           .address-top
@@ -222,6 +229,7 @@ export default {
             color: $color-highlight-background
             font-size: $font-size-medium-x
           .text
+            margin-left: 5px
             font-weight: 700
     .no-result-wrapper
       position: absolute

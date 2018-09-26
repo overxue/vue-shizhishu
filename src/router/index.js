@@ -55,7 +55,10 @@ export default new Router({
       children: [
         {
           path: 'add',
-          component: AddressDetail
+          component: AddressDetail,
+          meta: {
+            auth: true
+          }
         }
       ],
       meta: {

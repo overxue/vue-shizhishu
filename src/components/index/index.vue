@@ -274,7 +274,7 @@ export default {
           justify-content: space-between
           padding: 10px 10px 0 10px
           .bottom-item
-            flex: 170px
+            flex: 140px
             text-align: center
             border: 1px solid $color-shop-border
             border-radius: 10px

@@ -69,6 +69,7 @@ export default {
       background: $color-background
       outline: none
       appearance: textfield
+      caret-color: $color-highlight-background
     .icon-x
       padding: 10px
       font-weight: 700

@@ -27,11 +27,11 @@ export default {
       default: null
     }
   },
-  mounted(){
+  mounted () {
     this.initCountUp()
   },
-  methods:{
-    initCountUp(){
+  methods: {
+    initCountUp () {
       this.numAnim = new CountUp(this.$refs.countup, this.start, this.end, this.decimal, this.duration, this.options)
       this.numAnim.start()
     }

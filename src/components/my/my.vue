@@ -321,7 +321,7 @@ export default {
           margin-top: 150px
           padding-bottom: 150px
           .supports
-            width: 60%
+            width: 65%
             margin: 0 auto
             .support-item
               padding: 0 12px
