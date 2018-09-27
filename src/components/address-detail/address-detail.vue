@@ -2,15 +2,15 @@
   <transition name="slide">
     <div class="address-detail">
       <div class="address-wrapper">
-        <h1 class="title">新增地址</h1>
+        <h1 class="title">{{this.$route.meta.title}}</h1>
         <ul>
           <li class="address-item">
             <div class="address-desc">姓名</div>
-            <text-input type="text" placeholder="姓名" class="user-input" @query="contactName"></text-input>
+            <text-input type="text" placeholder="姓名" class="user-input" @query="contactName" ref="name"></text-input>
           </li>
           <li class="address-item">
             <div class="address-desc">电话</div>
-            <text-input type="number" placeholder="手机号码" class="user-input" @query="contactPhone"></text-input>
+            <text-input type="number" placeholder="手机号码" class="user-input" @query="contactPhone" ref="phone"></text-input>
           </li>
           <li class="address-item">
             <div class="address-desc">地址</div>
@@ -19,7 +19,7 @@
           </li>
           <li class="address-item">
             <div class="address-desc">门牌号</div>
-            <text-input type="text" placeholder="例：5号楼203室" class="user-input" @query="contactAddress"></text-input>
+            <text-input type="text" placeholder="例：5号楼203室" class="user-input" @query="contactAddress" ref="address"></text-input>
           </li>
         </ul>
         <div class="address-save" @click="saveAddress">
@@ -38,7 +38,7 @@ import TextInput from 'base/input/input'
 import Back from 'base/back/back'
 import Picker from 'base/picker/picker'
 import { provinceList, cityList, areaList } from 'common/js/areaData'
-import { addAddress } from 'api/address'
+import { addAddress, detailAddress, editAddress } from 'api/address'
 
 export default {
   data () {
@@ -56,6 +56,12 @@ export default {
       address: ''
     }
   },
+  created () {
+    let id = this.$route.params.id
+    if (id) {
+      this._getAddress(id)
+    }
+  },
   computed: {
     linkageData () {
       const provinces = provinceList
@@ -68,6 +74,32 @@ export default {
     }
   },
   methods: {
+    _getAddress (id) {
+      detailAddress(id).then((res) => {
+        this.setAddressItem(res.contact_name, res.contact_phone, res.address)
+        this.setAddress(res.province, res.city, res.district)
+        // this.pickerDefault(res.province, res.city, res.district)
+      })
+    },
+    pickerDefault (province, city, district) {
+      let provinceId = this.findIndex(provinceList, province)
+      let cities = cityList[provinceList[provinceId].value]
+      let cityId = this.findIndex(cities, city)
+      let districtId = this.findIndex(areaList[cities[cityId].value], district)
+      this.tempIndex = [provinceId, cityId, districtId]
+      this.selectedIndex = [provinceId, cityId, districtId]
+      console.log(this.selectedIndex)
+    },
+    setAddressItem (name, phone, address) {
+      this.$refs.name.setQuery(name)
+      this.$refs.phone.setQuery(phone)
+      this.$refs.address.setQuery(address)
+    },
+    findIndex (list, address) {
+      return list.findIndex((item) => {
+        return item.text === address
+      })
+    },
     contactName (query) {
       this.contact_name = query
     },
@@ -84,11 +116,14 @@ export default {
       this.$refs.picker.setData(this.linkageData)
       this.$refs.picker.show()
     },
-    handleSelect (args) {
-      this.province = args[2][0]
-      this.city = args[2][1]
-      this.district = args[2][2]
+    setAddress (province, city, district) {
+      this.province = province
+      this.city = city
+      this.district = district
       this.$refs.addressInput.setQuery(this.fullAddress)
+    },
+    handleSelect (args) {
+      this.setAddress(args[2][0], args[2][1], args[2][2])
     },
     handleChange (i, newIndex) {
       if (newIndex !== this.tempIndex[i]) {
@@ -101,9 +136,18 @@ export default {
       }
     },
     saveAddress () {
-      addAddress(this.province, this.city, this.district, this.address, this.contact_name, this.contact_phone).then((res) => {
-        this.back()
-      })
+      let id = this.$route.params.id
+      if (id) {
+        editAddress(this.province, this.city, this.district, this.address, this.contact_name, this.contact_phone, id).then((res) => {
+          this.back()
+          this.$message.success('修改成功')
+        })
+      } else {
+        addAddress(this.province, this.city, this.district, this.address, this.contact_name, this.contact_phone).then((res) => {
+          this.back()
+          this.$message.success('新增成功')
+        })
+      }
     }
   },
   components: {

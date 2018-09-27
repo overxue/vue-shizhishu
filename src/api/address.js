@@ -1,5 +1,12 @@
 import request from './request'
 
+export function detailAddress (id) {
+  return request({
+    url: `/api/addresses/${id}`,
+    method: 'get'
+  })
+}
+
 export function getAddress () {
   return request({
     url: '/api/user/addresses',
@@ -25,6 +32,21 @@ export function addAddress (province, city, district, address, name, phone) {
   return request({
     url: '/api/addresses',
     method: 'post',
+    data: {
+      province,
+      city,
+      district,
+      address,
+      contact_name: name,
+      contact_phone: phone
+    }
+  })
+}
+
+export function editAddress (province, city, district, address, name, phone, id) {
+  return request({
+    url: `/api/addresses/${id}`,
+    method: 'patch',
     data: {
       province,
       city,

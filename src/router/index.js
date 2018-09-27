@@ -57,7 +57,16 @@ export default new Router({
           path: 'add',
           component: AddressDetail,
           meta: {
-            auth: true
+            auth: true,
+            title: '新增地址'
+          }
+        },
+        {
+          path: ':id',
+          component: AddressDetail,
+          meta: {
+            auth: true,
+            title: '修改地址'
           }
         }
       ],

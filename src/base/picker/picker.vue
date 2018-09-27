@@ -3,14 +3,14 @@
     <div class="picker" v-show="state===1" @touchmove.prevent @click="cancel">
       <transition name="picker-move">
         <div class="picker-panel" v-show="state===1" @click.stop>
-          <div class="picker-choose border-bottom-1px">
+          <div class="picker-choose">
             <span class="cancel" @click="cancel">{{cancelTxt}}</span>
             <span class="confirm" @click="confirm">{{confirmTxt}}</span>
             <h1 class="picker-title">{{title}}</h1>
           </div>
           <div class="picker-content">
-            <div class="mask-top"></div>
-            <div class="mask-bottom"></div>
+            <div class="mask-top border-bottom-1px"></div>
+            <div class="mask-bottom border-top-1px"></div>
             <div class="wheel-wrapper" ref="wheelWrapper">
               <div class="wheel" v-for="(data, index) in pickerData" :key="index">
                 <ul class="wheel-scroll">
@@ -243,6 +243,8 @@ export default {
 </script>
 
 <style scoped lang="stylus" rel="stylesheed/stylus">
+  @import "~common/stylus/mixin"
+
   .picker
     position: fixed
     left: 0
@@ -288,7 +290,7 @@ export default {
           font-size: 14px
         .confirm
           right: 0
-          color: #007bff
+          color: #4eb828
         .cancel
           left: 0
       .picker-content
@@ -304,12 +306,10 @@ export default {
           position: absolute
           top: 0
           background: linear-gradient(to top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
-          border-bottom: 1px solid red
         .mask-bottom
           position: absolute
           bottom: 1px
           background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
-          border-top: 1px solid red
       .wheel-wrapper
         display: flex
         padding: 0 16px

@@ -11,7 +11,7 @@
                 <span class="phone">{{address.contact_phone}}</span>
               </div>
               <div class="add">
-                {{address.address}}
+                {{address.fulladdress}}
               </div>
             </div>
             <div class="address-bottom">
@@ -23,9 +23,9 @@
                 <span class="desc" v-else>设为默认</span>
               </div>
               <div class="right">
-                <div class="edit">
+                <router-link tag="div" class="edit" :to="`address/${address.id}`">
                   <i class="iconfont edit-icon">&#xe657;</i><span class="desc-edit">编辑</span>
-                </div>
+                </router-link>
                 <div class="delete" @click="del(address.id)">
                   <i class="iconfont del-icon">&#xe61e;</i><span class="desc-delete">删除</span>
                 </div>
@@ -107,7 +107,9 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      console.log(from)
+      if (from.path !== '/address') {
+        this._getAddress()
+      }
     }
   },
   components: {
