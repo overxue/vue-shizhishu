@@ -201,7 +201,6 @@ export default {
     top: 0
     bottom: 50px
     width: 100%
-    background: $color-background
     .shopcat
       position: absolute
       top: 0

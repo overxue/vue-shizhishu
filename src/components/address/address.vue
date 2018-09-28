@@ -132,7 +132,6 @@ export default {
     top: 0
     bottom: 0
     width: 100%
-    background: $color-background
     .address-content
       position: fixed
       top: 0

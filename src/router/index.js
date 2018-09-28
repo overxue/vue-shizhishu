@@ -6,6 +6,7 @@ const Product = () => import('components/product/product')
 const Shopcat = () => import('components/shopcat/shopcat')
 const My = () => import('components/my/my')
 const Skin = () => import('components/skin/skin')
+const Coupon = () => import('components/coupon/coupon')
 const Address = () => import('components/address/address')
 const AddressDetail = () => import('components/address-detail/address-detail')
 const Login = () => import('components/login/login')
@@ -70,6 +71,13 @@ export default new Router({
           }
         }
       ],
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/coupon',
+      component: Coupon,
       meta: {
         auth: true
       }

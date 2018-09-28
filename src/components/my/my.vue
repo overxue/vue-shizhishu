@@ -43,9 +43,9 @@
             <div class="icon">
               <i class="iconfont icon-item">&#xe65f;</i>
             </div>
-            <div class="text">
+            <router-link tag="li" to="/coupon" class="text">
               <p class="title">我的优惠券</p>
-            </div>
+            </router-link>
             <div class="icon-back">
               <i class="iconfont">&#xe68b;</i>
             </div>
@@ -132,7 +132,7 @@ export default {
       detailShow: false
     }
   },
-  created () {
+  activated () {
     if (this.accessToken && !this.userName) {
       this._getUserInfo()
     }
