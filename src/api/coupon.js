@@ -13,3 +13,10 @@ export function receiveCoupon (id) {
     method: 'post'
   })
 }
+
+export function getUserCoupon () {
+  return request({
+    url: '/api/user/coupons',
+    method: 'get'
+  })
+}

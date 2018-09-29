@@ -2,35 +2,38 @@
   <div class="coupon">
     <div class="tab border-top-1px">
       <div class="tab-item" :class="{'current': currentIndex === index}" v-for="(item, index) of title" :key="index" @click="selectTab(index)">
-        <span class="tab-link">{{item}}</span>
+        <span class="tab-link">{{item.title}} {{item.count}}</span>
       </div>
     </div>
     <div class="swiper-content">
-      <swiper :options="swiperOption" ref="swiper">
-        <swiper-slide>
+      <swiper :options="swiperOption" ref="swiper" v-if="coupons.length">
+        <swiper-slide v-for="(coupon, index) of coupons" :key="index">
           <div class="content">
             <scroll class="content-wrapper">
               <ul class="content-item">
-                <li class="coupon_voucher2">
-                  <span class="coupon_voucher2_tag">
-                    <i>新到</i>
+                <li class="coupon_voucher2" :class="{'type_disabled': index === 1 || index == 2}" v-for="(item, ind) of coupon" :key="ind">
+                  <span class="coupon_voucher2_tag" :class="{'color_gray': index === 1 || index == 2}" v-if="showTitle(item.satarTime, index)">
+                    <i v-if="index === 1">已使用</i>
+                    <i v-else-if="index === 2">已过期</i>
+                    <i v-else>新到</i>
                   </span>
                   <div class="coupon_voucher2_main">
                     <div class="coupon_voucher2_view">
                       <p class="coupon_voucher2_view_price">
                         <i>¥</i>
-                        <strong>40</strong>
+                        <strong>{{item.money}}</strong>
                       </p>
-                      <p class="coupon_voucher2_view_des">满199元可用</p>
+                      <p class="coupon_voucher2_view_des">满{{item.min_amount}}元可用</p>
                     </div>
                     <div class="coupon_voucher2_info">
                       <p class="coupon_voucher2_info_text">
-                        <i class="coupon_voucher2_info_type">东券</i>仅可购买金龙鱼等品牌部分商品
+                        <i class="coupon_voucher2_info_type" :class="{'icon': index === 1 || index == 2}">优惠券</i>
+                        仅可购买金龙鱼等品牌部分商品
                       </p>
                       <p class="coupon_voucher2_info_label">
                         <span>全平台</span>
                       </p>
-                      <p class="coupon_voucher2_info_date">2018.09.26-2018.09.28</p>
+                      <p class="coupon_voucher2_info_date">请在{{item.expirAt}}前使用</p>
                     </div>
                   </div>
                 </li>
@@ -38,39 +41,82 @@
             </scroll>
           </div>
         </swiper-slide>
-        <swiper-slide>I'm Slide 2</swiper-slide>
-        <swiper-slide>I'm Slide 3</swiper-slide>
       </swiper>
     </div>
-    <back></back>
+    <back @back="back"></back>
+    <h1 class="title">优惠券</h1>
+    <loading v-show="!coupons.length"></loading>
   </div>
 </template>
 
 <script>
 import Back from 'base/back/back'
 import Scroll from 'base/scroll/scroll'
+import Loading from 'base/loading/loading'
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import { getUserCoupon } from 'api/coupon'
 import 'swiper/dist/css/swiper.css'
 
 export default {
+  name: 'coupon',
   data () {
     return {
-      title: ['待使用', '已使用', '已过期'],
+      title: [],
       currentIndex: 0,
       swiperOption: {
         autoplay: false
-      }
+      },
+      coupons: []
     }
   },
-  mounted () {
-    this.swiper.on('SlideChangeEnd', () => {
-      this.currentIndex = this.swiper.activeIndex
-    })
+  created () {
+    this._getCoupon()
   },
   methods: {
+    _getCoupon () {
+      getUserCoupon().then((res) => {
+        this._filterCoupon(res.data)
+        this.tabTitle()
+        this.$nextTick(() => {
+          this.swiper.on('SlideChangeEnd', () => {
+            this.currentIndex = this.swiper.activeIndex
+          })
+        })
+      })
+    },
+    _filterCoupon (data) {
+      let coupon = [[], [], []]
+      data.forEach((item, index) => {
+        // 过期了，没有使用
+        if (dayjs().isAfter(dayjs(item.expirAt)) && item.isUsed === 0) {
+          coupon[2].push(item)
+        } else if (item.isUsed === 1) {
+          coupon[1].push(item)
+        } else if (dayjs().isBefore(dayjs(item.expirAt)) && item.isUsed === 0) {
+          coupon[0].push(item)
+        }
+      })
+      this.coupons = coupon
+    },
+    tabTitle () {
+      let tab = [{ title: '待使用', count: this.coupons[0].length }, { title: '已使用', count: this.coupons[1].length }, { title: '已过期', count: this.coupons[2].length }]
+      this.title = tab
+    },
     selectTab (index) {
       this.currentIndex = index
       this.swiper.slideTo(index, 0, false)
+    },
+    back () {
+      this.$router.back()
+    },
+    showTitle (date, index) {
+      if (index === 1 || index === 2) {
+        return true
+      }
+      dayjs.extend(isBetween)
+      return dayjs(date).isBetween(dayjs().subtract(2, 'day'), dayjs())
     }
   },
   computed: {
@@ -78,15 +124,12 @@ export default {
       return this.$refs.swiper.swiper
     }
   },
-  destroyed () {
-    console.log('123')
-    this.swiper.destroy(false)
-  },
   components: {
     Back,
     swiper,
     swiperSlide,
-    Scroll
+    Scroll,
+    Loading
   }
 }
 </script>
@@ -138,9 +181,11 @@ export default {
               position: relative
               margin: 0 10px 15px 10px
               border-radius: 6px
-              color: #53c7ca
+              color: #ff774b
               border-top: 6px solid currentColor
               border-bottom: 10px solid #fff
+              &.type_disabled
+                color: #999
               &:last-child
                 margin-bottom: 0
               &::before
@@ -165,8 +210,15 @@ export default {
                 padding: 0 8px
                 text-align: center
                 border-radius: 10px 10px 10px 0
-                background-image: linear-gradient(left,#ff9574 20%,#e93b3d)
+                background-image: linear-gradient(left, #ff9574 20%, #e93b3d)
                 box-shadow: 2px 2px 5px rgba(233,59,61,.2)
+                &.color_gray
+                  background-image: linear-gradient(left, #ccc 20%, #999)
+                  box-shadow: 2px 2px 5px hsla(0, 0%, 60%, .2)
+                  &::before
+                    background-color: #ccc
+                  &::after
+                    background-color: #999
                 &::before
                   content: ""
                   width: 4px
@@ -250,7 +302,9 @@ export default {
                       height: 15px
                       line-height: 15px
                       border-radius: 0 2px 2px 0
-                      background-color: #53c7ca
+                      background-color: #ff774b
+                      &.icon
+                        background-color: #999
                       &::before
                         content: ""
                         display: inline-block
@@ -278,4 +332,12 @@ export default {
                     position: absolute
                     bottom: 2px
                     left: 0
+    .title
+      position: absolute
+      top: 0
+      left: 10%
+      width: 80%
+      text-align: center
+      line-height: 45px
+      font-size: 18px
 </style>
