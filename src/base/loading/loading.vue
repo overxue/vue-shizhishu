@@ -19,16 +19,16 @@ export default {}
   @import "~common/stylus/variable"
 
   .loading
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background: #fff;
-    z-index: 999;
-    text-align: center;
-    font-size: 14px;
-    color: #999;
+    width: 100%
+    position: fixed
+    left: 0
+    top: 0
+    bottom: 0
+    background: #fff
+    z-index: 999
+    text-align: center
+    font-size: 14px
+    color: #999
     .line-scale-pulse-out
       margin: 160px 0 20px 0
       & > div

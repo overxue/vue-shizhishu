@@ -11,7 +11,7 @@
             </li>
           </ul>
       </scroll>
-      <scroll class="foods-wrapper" :probeType="probeType"  :listenScroll="listenScroll" @scroll="scroll" ref="foodWrapper">
+      <scroll class="foods-wrapper" :probeType="probeType" :listenScroll="listenScroll" @scroll="scroll" ref="foodWrapper">
         <ul>
           <li v-for="(categoryProduct, index) in categoryProducts" :key="index" ref="foodList">
             <h1 class="title">{{categoryProduct.name}}</h1>
@@ -35,6 +35,7 @@
             </ul>
           </li>
         </ul>
+        <top :posY="scrollY" @top="backTop"></top>
       </scroll>
       <div class="list-fixed" ref="fixed" v-show="fixedTitle">
         <h1 class="fixed-title">{{fixedTitle}}</h1>
@@ -47,6 +48,7 @@
 <script>
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import Top from 'base/top/top'
 import { getCateogry, getCategoryProduct } from 'api/category'
 export default {
   data () {
@@ -116,6 +118,10 @@ export default {
       this.$router.push({
         path: `/goods/${id}`
       })
+    },
+    // 返回顶部
+    backTop () {
+      this.$refs.foodWrapper.scrollTo(0, 0, 1000)
     }
   },
   watch: {
@@ -150,7 +156,8 @@ export default {
   },
   components: {
     Scroll,
-    Loading
+    Loading,
+    Top
   }
 }
 </script>

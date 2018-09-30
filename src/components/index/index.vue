@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <scroll class="index-content" ref="shop">
+    <scroll class="index-content" ref="shop" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
       <div>
         <div class="slider-wrapper">
           <swiper :bannerList="bannerList"></swiper>
@@ -71,6 +71,7 @@
       </div>
     </scroll>
     <loading v-show="!bannerList.length && !coupons.length && !categoryProducts.length"></loading>
+    <top :posY="posY" @top="backTop"></top>
   </div>
 </template>
 
@@ -78,6 +79,7 @@
 import Loading from 'base/loading/loading'
 import Swiper from 'base/swiper/swiper'
 import Scroll from 'base/scroll/scroll'
+import Top from 'base/top/top'
 import { getBanner } from 'api/banner'
 import { getCoupon, receiveCoupon } from 'api/coupon'
 import { getCategoryProduct } from 'api/category'
@@ -92,7 +94,10 @@ export default {
       categoryProducts: [],
       scrollX: true,
       scrollY: false,
-      click: false
+      click: false,
+      probeType: 3,
+      listenScroll: true,
+      posY: 0
     }
   },
   created () {
@@ -137,6 +142,14 @@ export default {
       receiveCoupon(id).then((res) => {
         this.$message.success('领取成功')
       })
+    },
+    // 实时获取滚动位置
+    scroll (pos) {
+      this.posY = pos.y
+    },
+    // 返回顶部
+    backTop () {
+      this.$refs.shop.scrollTo(0, 0, 1000)
     }
   },
   watch: {
@@ -154,7 +167,8 @@ export default {
   components: {
     Scroll,
     Loading,
-    Swiper
+    Swiper,
+    Top
   }
 }
 </script>

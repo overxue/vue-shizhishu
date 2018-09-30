@@ -56,7 +56,6 @@ export default {}
       right: 0
       height: 50px
       background: $color-tab-background
-      z-index: -1
       .tab-item
         // 让所有弹性盒模型对象的子元素都有相同的长度，且忽略它们内部的内容
         flex: 1
