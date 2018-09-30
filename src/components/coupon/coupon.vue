@@ -37,6 +37,9 @@
                     </div>
                   </div>
                 </li>
+                <div class="no-result-wrapper" v-show="!coupon.length">
+                  <no-result title="暂无此类优惠券"></no-result>
+                </div>
               </ul>
             </scroll>
           </div>
@@ -55,6 +58,7 @@ import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
+import NoResult from 'base/no-result/no-result'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { getUserCoupon } from 'api/coupon'
 import 'swiper/dist/css/swiper.css'
@@ -90,11 +94,11 @@ export default {
       let coupon = [[], [], []]
       data.forEach((item, index) => {
         // 过期了，没有使用
-        if (dayjs().isAfter(dayjs(item.expirAt)) && item.isUsed === 0) {
+        if (dayjs().isAfter(dayjs(item.expirAt).add(1, 'day')) && item.isUsed === 0) {
           coupon[2].push(item)
         } else if (item.isUsed === 1) {
           coupon[1].push(item)
-        } else if (dayjs().isBefore(dayjs(item.expirAt)) && item.isUsed === 0) {
+        } else if (dayjs().isBefore(dayjs(item.expirAt).add(1, 'day')) && item.isUsed === 0) {
           coupon[0].push(item)
         }
       })
@@ -116,7 +120,7 @@ export default {
         return true
       }
       dayjs.extend(isBetween)
-      return dayjs(date).isBetween(dayjs().subtract(2, 'day'), dayjs())
+      return dayjs(date).isBetween(dayjs().subtract(3, 'day'), dayjs())
     }
   },
   computed: {
@@ -129,7 +133,8 @@ export default {
     swiper,
     swiperSlide,
     Scroll,
-    Loading
+    Loading,
+    NoResult
   }
 }
 </script>
@@ -332,6 +337,8 @@ export default {
                     position: absolute
                     bottom: 2px
                     left: 0
+            .no-result-wrapper
+              margin-top: 150px
     .title
       position: absolute
       top: 0

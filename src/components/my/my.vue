@@ -302,7 +302,7 @@ export default {
       z-index: 100
       top: 0
       left: 0
-      bottom: 50px
+      bottom: 0
       width: 100%
       overflow: auto
       backdrop-filter: blur(10px)
