@@ -12,6 +12,7 @@ const AddressDetail = () => import('components/address-detail/address-detail')
 const Login = () => import('components/login/login')
 const Verification = () => import('components/login/verification')
 const ProductDetail = () => import('components/product-detail/product-detail')
+const Pay = () => import('components/pay/pay')
 
 Vue.use(Router)
 
@@ -103,6 +104,10 @@ export default new Router({
     {
       path: '/goods/:id',
       component: ProductDetail
+    },
+    {
+      path: '/shop/pay',
+      component: Pay
     }
   ]
 })

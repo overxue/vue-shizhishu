@@ -37,8 +37,8 @@
             </div>
           </div>
         </div>
-        <div class="content-right">
-          <div class="pay" :class="{'extra': total > 0}">结算</div>
+        <div class="content-right" @click="goPay">
+          <div class="pay" :class="{'extra': total > 0}">结算 ({{selectCount}})</div>
         </div>
       </div>
     </div>
@@ -62,7 +62,7 @@ import InputNumber from 'base/input/input-number'
 import loading from 'base/loading/loading'
 import CountUp from 'base/countup/countup'
 import { getCart, delCart } from 'api/cart'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -82,6 +82,18 @@ export default {
         }
       })
       return total.toFixed(2)
+    },
+    selectCount () {
+      if (this.selectedAllStatus) {
+        return this.carts.length
+      }
+      let i = 0
+      this.allStatus.map((res) => {
+        if (res) {
+          i++
+        }
+      })
+      return i
     },
     ...mapGetters([
       'accessToken',
@@ -103,9 +115,11 @@ export default {
       } else {
         product.select = !product.select
       }
+      let status = []
       this.carts.forEach((res, index) => {
-        this.allStatus[index] = res.select
+        status[index] = res.select
       })
+      this.allStatus = status
       this.allStatus.includes(false) ? this.selectedAllStatus = false : this.selectedAllStatus = true
     },
     selectAll () {
@@ -115,10 +129,12 @@ export default {
         this.selectAllProduct(status)
         this.carts = this.shopCat
       } else {
+        let sta = []
         this.carts.forEach((res, index) => {
           res.select = status
-          this.allStatus[index] = status
+          sta[index] = status
         })
+        this.allStatus = sta
       }
       this.selectedAllStatus = status
     },
@@ -133,11 +149,28 @@ export default {
         this.allStatus.splice(index, 1)
       })
     },
+    goPay () {
+      if (!this.selectCount) {
+        this.$message.warning('请选择商品')
+        return false
+      }
+      let shop = []
+      this.carts.forEach((res) => {
+        if (res.select) {
+          shop.push(res)
+        }
+      })
+      this.setPayShop(shop)
+      this.$router.push('/shop/pay')
+    },
     ...mapActions([
       'selectShop',
       'selectAllProduct',
       'delShop'
-    ])
+    ]),
+    ...mapMutations({
+      setPayShop: 'SET_PAY_SHOP'
+    })
   },
   activated () {
     this.show = true

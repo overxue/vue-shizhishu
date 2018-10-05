@@ -13,7 +13,9 @@ const state = {
   // 过期时间
   expiredAt: loadExpiresIn(),
   // 购物车中的商品
-  shopCat: loadShopCat()
+  shopCat: loadShopCat(),
+  // 结算中的商品
+  payShop: []
 }
 
 export default state
