@@ -107,7 +107,10 @@ export default new Router({
     },
     {
       path: '/shop/pay',
-      component: Pay
+      component: Pay,
+      meta: {
+        auth: true
+      }
     }
   ]
 })

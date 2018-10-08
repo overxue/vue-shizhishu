@@ -57,3 +57,10 @@ export function editAddress (province, city, district, address, name, phone, id)
     }
   })
 }
+
+export function orderAddress () {
+  return request({
+    url: '/api/order/addresses',
+    method: 'get'
+  })
+}

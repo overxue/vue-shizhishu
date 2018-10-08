@@ -20,3 +20,13 @@ export function getUserCoupon () {
     method: 'get'
   })
 }
+
+export function orderCouponCount (total) {
+  return request({
+    url: '/api/order/coupons',
+    method: 'post',
+    data: {
+      total
+    }
+  })
+}
