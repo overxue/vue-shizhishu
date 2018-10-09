@@ -1,17 +1,23 @@
 <template>
   <div class="address">
-    <div class="address-content">
+    <div class="pat-top border-bottom-1px">
       <back @back="back"></back>
+      <h1 class="sub">{{this.$route.meta.title}}</h1>
+    </div>
+    <div class="address-content">
       <scroll class="address-wrapper">
         <transition-group name="list" tag="ul">
           <li :key="address.id" class="address-item" v-for="address in addresses">
-            <div class="address-top">
+            <div class="address-top" :class="{'address-chose':show}">
               <div class="text">
                 <span class="name">{{address.contact_name}}</span>
                 <span class="phone">{{address.contact_phone}}</span>
               </div>
               <div class="add">
                 {{address.fulladdress}}
+              </div>
+              <div class="choose" v-show="show" @click="chooseAddress(address.id)" :class="{'chooseCurrent': addressId == address.id}">
+                <i class="iconfont radius-icon" v-if="addressId > 0">&#xe61f;</i>
               </div>
             </div>
             <div class="address-bottom">
@@ -23,7 +29,7 @@
                 <span class="desc" v-else>设为默认</span>
               </div>
               <div class="right">
-                <router-link tag="div" class="edit" :to="`address/${address.id}`">
+                <router-link tag="div" class="edit" :to="`/address/${address.id}`">
                   <i class="iconfont edit-icon">&#xe657;</i><span class="desc-edit">编辑</span>
                 </router-link>
                 <div class="delete" @click="del(address.id)">
@@ -34,7 +40,7 @@
           </li>
         </transition-group>
       </scroll>
-      <router-link tag="div" to="address/add" class="add-address">
+      <router-link tag="div" to="/address/add" class="add-address">
         <div class="desc">
           <i class="iconfont icon-jia">&#xe601;</i>
           <span class="text">新增地址</span>
@@ -59,6 +65,7 @@ import Load from 'base/loading/loadingmore'
 import loading from 'base/loading/loading'
 import NoResult from 'base/no-result/no-result'
 import { getAddress, defaultAddress, delAddress } from 'api/address'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'addresses',
@@ -67,7 +74,8 @@ export default {
       addresses: [],
       showLoading: false,
       address_id: '',
-      showNull: false
+      showNull: false,
+      show: this.$route.meta.showChoose
     }
   },
   created () {
@@ -103,14 +111,26 @@ export default {
       delAddress(this.address_id).then((res) => {
         this._getAddress()
       })
-    }
+    },
+    chooseAddress (id) {
+      this.setAddressId(id)
+      this.$router.back()
+    },
+    ...mapMutations({
+      setAddressId: 'SET_ADDRESS_ID'
+    })
   },
   watch: {
     '$route' (to, from) {
-      if (from.path !== '/address') {
+      if (from.path !== '/address' && from.path !== '/choose/address') {
         this._getAddress()
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'addressId'
+    ])
   },
   components: {
     Back,
@@ -132,9 +152,17 @@ export default {
     top: 0
     bottom: 0
     width: 100%
+    .pat-top
+      height: 44px
+      background: #fff
+      .sub
+        width: 100%
+        text-align: center
+        line-height: 44px
+        font-size: 18px
     .address-content
       position: fixed
-      top: 0
+      top: 44px
       bottom: 40px
       width: 100%
       .address-wrapper
@@ -155,12 +183,33 @@ export default {
             font-size: $font-size-medium
             border-1px($color-border)
             background: #fff
+            &.address-chose
+              padding-right: 30px
             .text
               margin-bottom: 10px
-              .name
+              .name, .phone
                 font-weight: 700
+              .phone
+                margin-left: 5px
             .add
               no-wrap()
+            .choose
+              position: absolute
+              top: 40px
+              right: 10px
+              width: 20px
+              height: 20px
+              border-radius: 50%
+              border: 1px solid #686868
+              text-align: center
+              &.chooseCurrent
+                background: #4eb828
+                border: 1px solid #4eb828
+              .radius-icon
+                color: #fff
+                line-height: 24px
+                font-weight: 700
+                font-size: 20px
           .address-bottom
             display: flex
             align-items: center

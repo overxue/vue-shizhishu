@@ -15,7 +15,9 @@ const state = {
   // 购物车中的商品
   shopCat: loadShopCat(),
   // 结算中的商品
-  payShop: []
+  payShop: [],
+  // 结算地址选择id
+  addressId: ''
 }
 
 export default state

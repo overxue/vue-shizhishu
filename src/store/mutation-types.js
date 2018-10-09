@@ -9,3 +9,5 @@ export const SET_USER_INFO = 'SET_USER_INFO'
 export const SET_SHOP_CAT = 'SET_SHOP_CAT'
 
 export const SET_PAY_SHOP = 'SET_PAY_SHOP'
+
+export const SET_ADDRESS_ID = 'SET_ADDRESS_ID'

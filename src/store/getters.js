@@ -11,3 +11,5 @@ export const userPhone = state => state.userInfo.phone
 export const shopCat = state => state.shopCat
 
 export const payShop = state => state.payShop
+
+export const addressId = state => state.addressId

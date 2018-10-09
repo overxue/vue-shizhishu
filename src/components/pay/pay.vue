@@ -1,14 +1,14 @@
 <template>
   <div class="pay-sub">
     <div class="pat-top border-bottom-1px">
-      <back @back="back" class="back"></back>
+      <back @back="back"></back>
       <h1 class="sub">确认订单</h1>
     </div>
     <div class="pay-content">
       <scroll class="pay-wrapper" ref="payWrapper">
         <div>
           <div class="content">
-            <div class="address">
+            <router-link tag="div" to="/choose/address" class="address">
               <div class="address_border" v-if="address.id">
                 <ul>
                   <li class="address-name">{{address.contact_name}} {{address.contact_phone}}</li>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="address_new_border"></div>
               </div>
-            </div>
+            </router-link>
             <ul>
               <li class="shop" v-for="(item, index) of payShop" :key="index">
                 <div class="shop-content border-bottom-1px">
@@ -95,21 +95,26 @@
       </small>
       <div class="submitbtn">去支付</div>
     </div>
+    <svg-loading v-show="showSvg"></svg-loading>
+    <loading v-show="Object.keys(this.totalCoupon) == 0 && Object.keys(this.address) == 0"></loading>
   </div>
 </template>
 
 <script>
 import Scroll from 'base/scroll/scroll'
 import Back from 'base/back/back'
-import { orderAddress } from 'api/address'
+import SvgLoading from 'base/svg/svg'
+import Loading from 'base/loading/loading'
+import { orderAddress, detailAddress } from 'api/address'
 import { orderCouponCount } from 'api/coupon'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
       address: {},
-      totalCoupon: {}
+      totalCoupon: {},
+      showSvg: false
     }
   },
   computed: {
@@ -124,7 +129,8 @@ export default {
       return parseFloat(this.shopMoney) + parseInt(3)
     },
     ...mapGetters([
-      'payShop'
+      'payShop',
+      'addressId'
     ])
   },
   methods: {
@@ -140,18 +146,42 @@ export default {
       orderAddress().then((res) => {
         if (res.default_address || res.last_used) {
           this.address = res
+          this.setAddressId(res.id)
         }
       })
-    }
+    },
+    _detialAddress (id) {
+      detailAddress(id).then((res) => {
+        this.address = res
+        this.showSvg = false
+        this.$nextTick(() => {
+          this.$refs.payWrapper.refresh()
+        })
+      })
+    },
+    ...mapMutations({
+      setAddressId: 'SET_ADDRESS_ID'
+    })
   },
   activated () {
-    this.$refs.payWrapper.refresh()
+    if (!this.payShop.length) {
+      this.$router.back()
+      return
+    }
     this._orderCoupon()
-    this._orderAddress()
+    if (!this.addressId) {
+      this._orderAddress()
+    } else if (this.addressId !== this.address.id) {
+      this.showSvg = true
+      this._detialAddress(this.addressId)
+    }
+    this.$refs.payWrapper.refresh()
   },
   components: {
     Scroll,
-    Back
+    Back,
+    SvgLoading,
+    Loading
   }
 }
 </script>
@@ -166,8 +196,6 @@ export default {
     width: 100%
     .pat-top
       background: #fff
-      .back
-        left: 0
       .sub
         width: 100%
         text-align: center

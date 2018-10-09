@@ -73,7 +73,18 @@ export default new Router({
         }
       ],
       meta: {
-        auth: true
+        auth: true,
+        title: '我的地址',
+        showChoose: false
+      }
+    },
+    {
+      path: '/choose/address',
+      component: Address,
+      meta: {
+        auth: true,
+        title: '选择地址',
+        showChoose: true
       }
     },
     {

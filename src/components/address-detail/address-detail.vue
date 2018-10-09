@@ -167,6 +167,7 @@ export default {
     bottom: 0
     width: 100%
     background: #fff
+    z-index: 100
     &.slide-enter-active, &.slide-leave-active
       transition: all 0.3s
     &.slide-enter, &.slide-leave-to

@@ -19,6 +19,9 @@ const mutations = {
   },
   [types.SET_PAY_SHOP] (state, shop) {
     state.payShop = shop
+  },
+  [types.SET_ADDRESS_ID] (state, id) {
+    state.addressId = id
   }
 }
 export default mutations

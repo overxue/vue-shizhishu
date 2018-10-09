@@ -20,7 +20,7 @@ export default {
   .back
     position: absolute
     top: 0
-    left: 6px
+    left: 0
     z-index: 50
     .icon
       display: block
