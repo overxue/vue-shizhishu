@@ -82,7 +82,7 @@ export default {}
       width: 60px
       height: 60px
       position: absolute
-      top: 50%
+      top: 300px
       left: 50%
       transform: translate(-50%, -50%)
 </style>

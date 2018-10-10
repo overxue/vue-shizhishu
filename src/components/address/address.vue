@@ -173,7 +173,7 @@ export default {
           margin-bottom: 10px
           background: $color-tab-background
           &.list-enter-active
-            transition: all 1s linear
+            transition: all .5s linear
           &.list-leave-active
             transition: all .1s linear
           &.list-enter, &.list-leave-to

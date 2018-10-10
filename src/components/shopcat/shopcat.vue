@@ -42,9 +42,10 @@
         </div>
       </div>
     </div>
-    <loading v-show="!carts.length && this.show"></loading>
-    <div class="shop-empty" v-if="!this.show">
-      <div class="empty-top" v-show="!this.accessToken">
+    <loading v-show="!carts.length && show"></loading>
+    <loading-svg v-show="svgShow"></loading-svg>
+    <div class="shop-empty" v-if="!show">
+      <div class="empty-top" v-show="!accessToken">
         <router-link tag="div" to="login" class="login">登录</router-link>
         <p class="desc">登录后同步手机购物车中的商品</p>
       </div>
@@ -61,6 +62,7 @@ import Scroll from 'base/scroll/scroll'
 import InputNumber from 'base/input/input-number'
 import loading from 'base/loading/loading'
 import CountUp from 'base/countup/countup'
+import LoadingSvg from 'base/svg/svg'
 import { getCart, delCart } from 'api/cart'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 
@@ -70,7 +72,8 @@ export default {
       carts: [],
       selectedAllStatus: false,
       allStatus: [],
-      show: true
+      show: true,
+      svgShow: false
     }
   },
   computed: {
@@ -104,6 +107,7 @@ export default {
     _getCart () {
       getCart().then((res) => {
         this.carts = res.data
+        this.svgShow = false
       })
     },
     selectProduct (index) {
@@ -144,9 +148,11 @@ export default {
         this.carts = this.shopCat
         return
       }
+      this.svgShow = true
       delCart(id).then((res) => {
         this._getCart()
         this.allStatus.splice(index, 1)
+        this.svgShow = false
       })
     },
     goPay () {
@@ -174,6 +180,7 @@ export default {
   },
   activated () {
     this.show = true
+    this.svgShow = true
     if (!this.accessToken) {
       this.carts = this.shopCat
       if (!this.shopCat.length) {
@@ -220,7 +227,8 @@ export default {
     Scroll,
     InputNumber,
     loading,
-    CountUp
+    CountUp,
+    LoadingSvg
   }
 }
 </script>
