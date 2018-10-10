@@ -22,6 +22,12 @@ const mutations = {
   },
   [types.SET_ADDRESS_ID] (state, id) {
     state.addressId = id
+  },
+  [types.SET_TOTAL_MONEY] (state, money) {
+    state.totalMoney = money
+  },
+  [types.SET_CHOOSE_COUPON] (state, coupon) {
+    state.chooseCoupon = coupon
   }
 }
 export default mutations

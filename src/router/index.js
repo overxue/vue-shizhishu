@@ -88,10 +88,21 @@ export default new Router({
       }
     },
     {
+      path: '/choose/coupon',
+      component: Coupon,
+      meta: {
+        auth: true,
+        title: '选择优惠券',
+        showChoose: true
+      }
+    },
+    {
       path: '/coupon',
       component: Coupon,
       meta: {
-        auth: true
+        auth: true,
+        title: '优惠券',
+        showChoose: false
       }
     },
     {

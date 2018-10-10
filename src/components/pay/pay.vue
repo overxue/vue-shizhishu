@@ -53,9 +53,9 @@
                 <div class="coupon-left">支付方式</div>
                 <div class="coupon-pay">支付宝</div>
               </div>
-              <div class="coupon border-bottom-1px">
+              <div class="coupon border-bottom-1px" @click="goCoupon">
                 <div class="coupon-left">优惠券</div>
-                <div class="coupon-back" v-if="totalCoupon.tot > 0">
+                <div class="coupon-back" v-if="totalCoupon.tot > 0 && !chCoupon.id">
                   <div class="coupon-center">
                     <span class="hongbao">
                       <svg t="1539009865568" class="icon" style="" viewBox="0 0 1064 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5054" xmlns:xlink="http://www.w3.org/1999/xlink" width="12.46875" height="12"><path d="M-48.606208 883.816448" p-id="5055" fill="#ffffff"></path><path d="M1041.337344 883.816448" p-id="5056" fill="#ffffff"></path><path d="M39.621632 864.801792" p-id="5057" fill="#ffffff"></path><path d="M509.394944 422.965248c6.775808 6.750208 14.449664 10.349568 23.615488 10.123264 9.629696-0.24576 17.088512-3.618816 23.604224-10.123264L917.02272 63.525888 148.996096 63.525888 509.394944 422.965248z" p-id="5058" fill="#ffffff"></path><path d="M84.430848 922.140672c0 21.199872 17.82784 39.027712 39.028736 39.027712l819.098624 0c21.20192 0 39.023616-17.82784 39.023616-39.027712L981.581824 129.54112 622.142464 488.49408c-23.875584 23.849984-54.44608 37.581824-89.132032 37.581824-34.210816 0-65.047552-13.008896-89.621504-37.581824L84.430848 129.54112 84.430848 922.140672z" p-id="5059" fill="#ffffff"></path><path d="M1026.39616 864.801792" p-id="5060" fill="#ffffff"></path></svg>
@@ -64,7 +64,8 @@
                   </div>
                   <i class="iconfont back">&#xe68b;</i>
                 </div>
-                <div class="coupon-right" v-else>暂无优惠券可用</div>
+                <div class="coupon-right" v-else-if="totalCoupon.tot == 0">暂无优惠券可用</div>
+                <div to="/choose/coupon" tag="div" class="coupon-right" v-else>- ￥{{chCoupon.money}}</div>
               </div>
             </div>
             <div class="coupon-wrapper">
@@ -74,7 +75,7 @@
               </div>
               <div class="pay-total">
                 <div class="coupon-left">优惠金额</div>
-                <div class="coupon-pay">- ￥0.00</div>
+                <div class="coupon-pay">- ￥{{chCoupon.money}}</div>
               </div>
               <div class="pay-total border-bottom-1px">
                 <div class="coupon-left">配送费</div>
@@ -91,7 +92,7 @@
     <div class="bottom">
       <span>￥{{total}}</span>
       <small>
-        ｜已优惠¥0.00
+        ｜已优惠¥{{chCoupon.money}}
       </small>
       <div class="submitbtn">去支付</div>
     </div>
@@ -110,6 +111,12 @@ import { orderCouponCount } from 'api/coupon'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
+  beforeRouteLeave (to, from, next) {
+    if (to.path !== '/choose/coupon' && to.path !== '/choose/address') {
+      this.setChooseCoupon({ id: '', money: '0.00' })
+    }
+    next()
+  },
   data () {
     return {
       address: {},
@@ -126,11 +133,12 @@ export default {
       return money.toFixed(2)
     },
     total () {
-      return parseFloat(this.shopMoney) + parseInt(3)
+      return (parseFloat(this.shopMoney) + parseInt(3) - parseInt(this.chCoupon.money)).toFixed(2)
     },
     ...mapGetters([
       'payShop',
-      'addressId'
+      'addressId',
+      'chCoupon'
     ])
   },
   methods: {
@@ -140,6 +148,7 @@ export default {
     _orderCoupon () {
       orderCouponCount(this.shopMoney).then((res) => {
         this.totalCoupon = res
+        this.showSvg = false
       })
     },
     _orderAddress () {
@@ -159,8 +168,17 @@ export default {
         })
       })
     },
+    goCoupon () {
+      if (this.totalCoupon.tot === 0) {
+        return
+      }
+      this.setTotalMoney(this.shopMoney)
+      this.$router.push('/choose/coupon')
+    },
     ...mapMutations({
-      setAddressId: 'SET_ADDRESS_ID'
+      setAddressId: 'SET_ADDRESS_ID',
+      setTotalMoney: 'SET_TOTAL_MONEY',
+      setChooseCoupon: 'SET_CHOOSE_COUPON'
     })
   },
   activated () {
@@ -168,7 +186,10 @@ export default {
       this.$router.back()
       return
     }
-    this._orderCoupon()
+    if (!this.chCoupon.id) {
+      this.showSvg = true
+      this._orderCoupon()
+    }
     if (!this.addressId) {
       this._orderAddress()
     } else if (this.addressId !== this.address.id) {

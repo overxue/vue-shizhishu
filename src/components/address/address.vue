@@ -17,7 +17,7 @@
                 {{address.fulladdress}}
               </div>
               <div class="choose" v-show="show" @click="chooseAddress(address.id)" :class="{'chooseCurrent': addressId == address.id}">
-                <i class="iconfont radius-icon" v-if="addressId > 0">&#xe61f;</i>
+                <i class="iconfont radius-icon">&#xe61f;</i>
               </div>
             </div>
             <div class="address-bottom">
@@ -197,19 +197,19 @@ export default {
               position: absolute
               top: 40px
               right: 10px
-              width: 20px
-              height: 20px
+              width: 22px
+              height: 22px
               border-radius: 50%
-              border: 1px solid #686868
               text-align: center
+              background: #bbb
               &.chooseCurrent
                 background: #4eb828
                 border: 1px solid #4eb828
               .radius-icon
                 color: #fff
-                line-height: 24px
+                line-height: 28px
                 font-weight: 700
-                font-size: 20px
+                font-size: 26px
           .address-bottom
             display: flex
             align-items: center

@@ -17,7 +17,14 @@ const state = {
   // 结算中的商品
   payShop: [],
   // 结算地址选择id
-  addressId: ''
+  addressId: '',
+  // 结算总金额
+  totalMoney: 0,
+  // 选择优惠券
+  chooseCoupon: {
+    id: '',
+    money: '0.00'
+  }
 }
 
 export default state

@@ -11,8 +11,8 @@
           <div class="content">
             <scroll class="content-wrapper">
               <ul class="content-item">
-                <li class="coupon_voucher2" :class="{'type_disabled': index === 1 || index == 2}" v-for="(item, ind) of coupon" :key="ind">
-                  <span class="coupon_voucher2_tag" :class="{'color_gray': index === 1 || index == 2}" v-if="showTitle(item.satarTime, index)">
+                <li class="coupon_voucher2" :class="{'type_disabled': index === 1 || index == 2 || (parseFloat(totalMoney) < item.min_amount && showChoose)}" v-for="(item, ind) of coupon" :key="ind">
+                  <span class="coupon_voucher2_tag" :class="{'color_gray': index === 1 || index == 2 || (parseFloat(totalMoney) < item.min_amount && showChoose)}" v-if="showTitle(item.satarTime, index)">
                     <i v-if="index === 1">已使用</i>
                     <i v-else-if="index === 2">已过期</i>
                     <i v-else>新到</i>
@@ -27,13 +27,16 @@
                     </div>
                     <div class="coupon_voucher2_info">
                       <p class="coupon_voucher2_info_text">
-                        <i class="coupon_voucher2_info_type" :class="{'icon': index === 1 || index == 2}">优惠券</i>
+                        <i class="coupon_voucher2_info_type" :class="{'icon': index === 1 || index == 2 || (parseFloat(totalMoney) < item.min_amount && showChoose)}">优惠券</i>
                         仅可购买金龙鱼等品牌部分商品
                       </p>
                       <p class="coupon_voucher2_info_label">
                         <span>全平台</span>
                       </p>
                       <p class="coupon_voucher2_info_date">请在{{item.expirAt}}前使用</p>
+                      <div class="choose" v-if="showChoose && index === 0 && parseFloat(totalMoney) > item.min_amount" @click="chooseCoupon(item)" :class="{'chooseCurrent': chCoupon.id == item.id}">
+                        <i class="iconfont radius-icon">&#xe61f;</i>
+                      </div>
                     </div>
                   </div>
                 </li>
@@ -47,7 +50,7 @@
       </swiper>
     </div>
     <back @back="back"></back>
-    <h1 class="title">优惠券</h1>
+    <h1 class="title">{{this.$route.meta.title}}</h1>
     <loading v-show="!coupons.length"></loading>
   </div>
 </template>
@@ -61,6 +64,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 import NoResult from 'base/no-result/no-result'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { getUserCoupon } from 'api/coupon'
+import { mapGetters, mapMutations } from 'vuex'
 import 'swiper/dist/css/swiper.css'
 
 export default {
@@ -72,7 +76,8 @@ export default {
       swiperOption: {
         autoplay: false
       },
-      coupons: []
+      coupons: [],
+      showChoose: this.$route.meta.showChoose
     }
   },
   created () {
@@ -121,12 +126,24 @@ export default {
       }
       dayjs.extend(isBetween)
       return dayjs(date).isBetween(dayjs().subtract(3, 'day'), dayjs())
-    }
+    },
+    chooseCoupon (item) {
+      const money = parseInt(item.money).toFixed(2)
+      this.setChooseCoupon({ id: item.id, money: money })
+      this.$router.back()
+    },
+    ...mapMutations({
+      setChooseCoupon: 'SET_CHOOSE_COUPON'
+    })
   },
   computed: {
     swiper () {
       return this.$refs.swiper.swiper
-    }
+    },
+    ...mapGetters([
+      'totalMoney',
+      'chCoupon'
+    ])
   },
   components: {
     Back,
@@ -337,6 +354,23 @@ export default {
                     position: absolute
                     bottom: 2px
                     left: 0
+                  .choose
+                    position: absolute
+                    top: 40px
+                    right: 10px
+                    width: 22px
+                    height: 22px
+                    border-radius: 50%
+                    text-align: center
+                    background: #bbb
+                    &.chooseCurrent
+                      background: #4eb828
+                      border: 1px solid #4eb828
+                    .radius-icon
+                      color: #fff
+                      line-height: 28px
+                      font-weight: 700
+                      font-size: 26px
             .no-result-wrapper
               margin-top: 150px
     .title
