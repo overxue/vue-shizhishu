@@ -82,7 +82,7 @@
                 <div class="coupon-pay">+ ￥3.00</div>
               </div>
               <div class="count">
-                <div>共1件，合计：<span class="count-price">￥{{total}}</span></div>
+                <div>共{{payShop.length}}件，合计：<span class="count-price">￥{{total}}</span></div>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@
       <small>
         ｜已优惠¥{{chCoupon.money}}
       </small>
-      <div class="submitbtn">去支付</div>
+      <div class="submitbtn" @click="goPay">去支付</div>
     </div>
     <svg-loading v-show="showSvg"></svg-loading>
     <loading v-show="Object.keys(this.totalCoupon) == 0 && Object.keys(this.address) == 0"></loading>
@@ -108,6 +108,7 @@ import SvgLoading from 'base/svg/svg'
 import Loading from 'base/loading/loading'
 import { orderAddress, detailAddress } from 'api/address'
 import { orderCouponCount } from 'api/coupon'
+import { addOrder } from 'api/order'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -174,6 +175,27 @@ export default {
       }
       this.setTotalMoney(this.shopMoney)
       this.$router.push('/choose/coupon')
+    },
+    goPay () {
+      if (!this.address.id) {
+        this.$message.error('请选择地址')
+        return
+      }
+      let id = this.address.id
+      let items = []
+      this.payShop.map((item) => {
+        items.push({
+          id: item.product_id,
+          amount: item.amount
+        })
+      })
+      let ramark = '我是备注，哈哈'
+      this._addOrder(id, items, ramark)
+    },
+    _addOrder (id, items, ramark) {
+      addOrder(id, items, ramark).then((res) => {
+        this.message.success('下单成功')
+      })
     },
     ...mapMutations({
       setAddressId: 'SET_ADDRESS_ID',

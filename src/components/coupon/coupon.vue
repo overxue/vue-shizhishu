@@ -97,13 +97,13 @@ export default {
     },
     _filterCoupon (data) {
       let coupon = [[], [], []]
-      data.forEach((item, index) => {
+      data.forEach((item) => {
         // 过期了，没有使用
-        if (dayjs().isAfter(dayjs(item.expirAt).add(1, 'day')) && item.isUsed === 0) {
+        if (dayjs().isAfter(dayjs(item.expirAt).add(1, 'day')) && parseInt(item.isUsed) === 0) {
           coupon[2].push(item)
-        } else if (item.isUsed === 1) {
+        } else if (parseInt(item.isUsed) === 1) {
           coupon[1].push(item)
-        } else if (dayjs().isBefore(dayjs(item.expirAt).add(1, 'day')) && item.isUsed === 0) {
+        } else if (dayjs().isBefore(dayjs(item.expirAt).add(1, 'day')) && parseInt(item.isUsed) === 0) {
           coupon[0].push(item)
         }
       })

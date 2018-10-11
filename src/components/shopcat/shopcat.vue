@@ -180,7 +180,6 @@ export default {
   },
   activated () {
     this.show = true
-    this.svgShow = true
     if (!this.accessToken) {
       this.carts = this.shopCat
       if (!this.shopCat.length) {
@@ -195,6 +194,7 @@ export default {
       }
       return
     }
+    this.svgShow = true
     this._getCart()
   },
   watch: {
