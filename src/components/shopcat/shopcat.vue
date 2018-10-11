@@ -72,7 +72,7 @@ export default {
       carts: [],
       selectedAllStatus: false,
       allStatus: [],
-      show: true,
+      show: false,
       svgShow: false
     }
   },
@@ -108,6 +108,9 @@ export default {
       getCart().then((res) => {
         this.carts = res.data
         this.svgShow = false
+        if (this.carts.length) {
+          this.show = true
+        }
       })
     },
     selectProduct (index) {
@@ -178,14 +181,17 @@ export default {
       setPayShop: 'SET_PAY_SHOP'
     })
   },
-  activated () {
+  created () {
     this.show = true
+  },
+  activated () {
     if (!this.accessToken) {
       this.carts = this.shopCat
       if (!this.shopCat.length) {
         this.show = false
       } else {
         this.selectedAllStatus = true
+        this.show = true
         this.carts.forEach((res) => {
           if (!res.select) {
             this.selectedAllStatus = false

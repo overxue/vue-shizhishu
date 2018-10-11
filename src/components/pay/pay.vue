@@ -194,7 +194,10 @@ export default {
     },
     _addOrder (id, items, ramark) {
       addOrder(id, items, ramark).then((res) => {
-        this.message.success('下单成功')
+        const div = document.createElement('div')
+        div.innerHTML = res
+        document.body.appendChild(div)
+        document.forms.alipaysubmit.submit()
       })
     },
     ...mapMutations({
