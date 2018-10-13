@@ -190,12 +190,13 @@ export default {
         })
       })
       let ramark = '我是备注，哈哈'
-      this._addOrder(id, items, ramark)
+      let coupon = this.chCoupon.id
+      this._addOrder(id, items, ramark, coupon)
     },
-    _addOrder (id, items, ramark) {
-      addOrder(id, items, ramark).then((res) => {
+    _addOrder (id, items, ramark, coupon) {
+      addOrder(id, items, ramark, coupon).then((res) => {
         const div = document.createElement('div')
-        div.innerHTML = res
+        div.innerHTML = res.form
         document.body.appendChild(div)
         document.forms.alipaysubmit.submit()
       })
