@@ -28,7 +28,7 @@
       </div>
       <div class="my-bottom">
         <ul>
-          <li class="bottom-item">
+          <router-link to="/order" tag="li" class="bottom-item">
             <div class="icon">
               <i class="iconfont icon-item">&#xe8c3;</i>
             </div>
@@ -38,18 +38,47 @@
             <div class="icon-back">
               <i class="iconfont">&#xe68b;</i>
             </div>
+          </router-link>
+          <li class="order">
+            <ul>
+              <li class="order-icon">
+                <i class="iconfont order-ic">&#xe6a6;</i>
+                <p class="desc">待付款</p>
+                <div class="cicrle">1</div>
+              </li>
+              <li class="order-icon">
+                <i class="iconfont order-ic">&#xe678;</i>
+                <p class="desc">待发货</p>
+                <div class="cicrle">1</div>
+              </li>
+              <li class="order-icon">
+                <i class="iconfont order-ic">&#xe67a;</i>
+                <p class="desc">待收货</p>
+                <div class="cicrle">1</div>
+              </li>
+              <li class="order-icon">
+                <i class="iconfont order-ic">&#xe63b;</i>
+                <p class="desc">待评价</p>
+                <div class="cicrle">1</div>
+              </li>
+              <li class="order-icon">
+                <i class="iconfont order-ic">&#xe673;</i>
+                <p class="desc">退款/售后</p>
+                <div class="cicrle">1</div>
+              </li>
+            </ul>
           </li>
-          <li class="bottom-item">
+          <router-link tag="li" to="/coupon" class="bottom-item">
             <div class="icon">
               <i class="iconfont icon-item">&#xe65f;</i>
             </div>
-            <router-link tag="li" to="/coupon" class="text">
+            <div class="text">
               <p class="title">我的优惠券</p>
-            </router-link>
+            </div>
             <div class="icon-back">
               <i class="iconfont">&#xe68b;</i>
             </div>
-          </li>
+          </router-link>
           <router-link to="/address" tag="li" class="bottom-item">
             <div class="icon">
               <i class="iconfont icon-item">&#xe6d7;</i>
@@ -269,18 +298,20 @@ export default {
           height: 40px
           border-1px($color-border)
           line-height: 40px
-          &:nth-child(2)
+          &:first-child
+            border-none()
+          &:nth-child(3)
             .icon-item
-              color: $color-icon!important
+              color: #4eb828!important
           &:last-child
             border-none()
             .icon-item
-              color: $color-icon!important
+              color: #4eb828!important
           .icon
             flex: 0 0 20px;
             margin-right: 10px
             .icon-item
-              color: $color-highlight-background
+              color: #d81e06
               font-size: $font-size-center
           .text
             flex: 1
@@ -289,6 +320,42 @@ export default {
           .icon-back
             flex: 0 0 auto
             color: $color-tab-color
+        .order
+          ul
+            display: flex
+            margin: 0 10px
+            padding: 20px 0
+            border-1px($color-border)
+            .order-icon
+              position: relative
+              flex: 1
+              text-align: center
+              &:nth-child(4)
+                .order-ic
+                  font-size: 17px
+              &:nth-child(5)
+                .order-ic
+                  font-size: 22px
+              .order-ic
+                color: #d81e06
+                display: block
+                height: 22px
+              .desc
+                margin-top: 5px
+                font-size: $font-size-small
+                color: #686868
+              .cicrle
+                position: absolute
+                top: -18px
+                right: 12px
+                width: 18px
+                height: 18px
+                border-radius: 50%
+                line-height: 18px
+                text-align: center
+                font-size: $font-size-small
+                border: 1px solid #d81e06
+                color: #d81e06
       .login-out
         margin: 20px
         height: 40px

@@ -14,6 +14,7 @@ const Verification = () => import('components/login/verification')
 const ProductDetail = () => import('components/product-detail/product-detail')
 const Pay = () => import('components/pay/pay')
 const PayResult = () => import('components/pay-result/pay-result')
+const Order = () => import('components/order/order')
 
 Vue.use(Router)
 
@@ -138,6 +139,13 @@ export default new Router({
     {
       path: '/shop/pay/success',
       component: PayResult,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/order',
+      component: Order,
       meta: {
         auth: true
       }

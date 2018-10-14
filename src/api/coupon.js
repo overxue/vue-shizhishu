@@ -1,4 +1,5 @@
 import request from './request'
+import store from 'store'
 
 export function getCoupon () {
   return request({
@@ -10,7 +11,8 @@ export function getCoupon () {
 export function receiveCoupon (id) {
   return request({
     url: `/api/coupons/${id}/receives`,
-    method: 'post'
+    method: 'post',
+    headers: { 'Authorization': `Bearer ${store.getters.accessToken}` }
   })
 }
 

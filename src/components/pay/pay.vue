@@ -26,7 +26,7 @@
               <li class="shop" v-for="(item, index) of payShop" :key="index">
                 <div class="shop-content border-bottom-1px">
                   <div class="image">
-                    <img :src="item.product.image" width="75" height="75">
+                    <img v-lazy="item.product.image" width="75" height="75">
                   </div>
                   <div class="text">
                     <h1 class="title">{{item.product.title}}</h1>
@@ -115,6 +115,7 @@ export default {
   beforeRouteLeave (to, from, next) {
     if (to.path !== '/choose/coupon' && to.path !== '/choose/address') {
       this.setChooseCoupon({ id: '', money: '0.00' })
+      this.setTotalMoney(0)
     }
     next()
   },

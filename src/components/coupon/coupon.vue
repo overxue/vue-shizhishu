@@ -34,9 +34,15 @@
                         <span>全平台</span>
                       </p>
                       <p class="coupon_voucher2_info_date">请在{{item.expirAt}}前使用</p>
-                      <div class="choose" v-if="showChoose && index === 0 && parseFloat(totalMoney) > item.min_amount" @click="chooseCoupon(item)" :class="{'chooseCurrent': chCoupon.id == item.id}">
+                      <div class="choose" v-if="showChoose && index === 0 && parseFloat(totalMoney) >= item.min_amount" @click="chooseCoupon(item)" :class="{'chooseCurrent': chCoupon.id == item.id}">
                         <i class="iconfont radius-icon">&#xe61f;</i>
                       </div>
+                    </div>
+                  </div>
+                  <div class="coupon_voucher2_foot" v-if="totalMoney && parseFloat(totalMoney) < item.min_amount && index === 0">
+                    <div class="coupon_voucher2_hr"></div>
+                    <div class="coupon_voucher2_description">
+                      <p class="coupon_voucher2_description_title">还差<strong>¥{{ item.min_amount - parseFloat(totalMoney) }}</strong>可使用</p>
                     </div>
                   </div>
                 </li>
@@ -371,6 +377,28 @@ export default {
                       line-height: 28px
                       font-weight: 700
                       font-size: 26px
+              .coupon_voucher2_foot
+                .coupon_voucher2_hr
+                  position: relative
+                  height: 18px
+                  mask-border-slice: 12 fill
+                  mask-border-width: 6px
+                  background-color: #fff
+                  box-sizing: border-box
+                  &::before
+                    content: "";
+                    display: block;
+                    border-top: 1px dashed #e5e5e5;
+                    position: absolute;
+                    left: 10px;
+                    right: 10px;
+                    top: 9px;
+                .coupon_voucher2_description
+                  display: block
+                  background-color: #fff
+                  padding: 0 10px
+                  overflow: hidden
+                  position: relative
             .no-result-wrapper
               margin-top: 150px
     .title
