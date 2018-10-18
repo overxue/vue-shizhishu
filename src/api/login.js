@@ -1,4 +1,7 @@
 import request from './request'
+import axios from 'axios'
+import store from 'store'
+import { http } from './config'
 
 export function login (username, password) {
   return request({
@@ -75,5 +78,14 @@ export function register (key, code, name, password) {
       name,
       password
     }
+  })
+}
+
+export function retoken () {
+  const url = `${http}/api/authorizations/current`
+  return axios.put(url, [], { headers: { 'Authorization': `Bearer ${store.getters.accessToken}` } }).then((res) => {
+    return Promise.resolve(res.data)
+  }).catch((error) => {
+    return Promise.resolve(error.response.data)
   })
 }
