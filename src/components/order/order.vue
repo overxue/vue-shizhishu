@@ -7,7 +7,7 @@
     <div class="order-content">
       <scroll class="order-wrapper" ref="orderWrapper">
         <ul>
-          <li class="order-item" v-for="(item, index) of orders" :key="index">
+          <router-link tag="li" :to="`/order/${item.id}`" class="order-item" v-for="(item, index) of orders" :key="index">
             <div class="title">
               <img src="../login/login.png" width="20" height="20" class="img">
               <p class="shop-name">食之蔬</p>
@@ -37,7 +37,7 @@
             <div class="bottom" v-if="item.order_status === '交易关闭'">
               <div class="border cancel" @click="delOrder(item.id)">删除订单</div>
             </div>
-          </li>
+          </router-link>
         </ul>
       </scroll>
     </div>
@@ -46,6 +46,7 @@
     <div class="no-result-wrapper" v-show="showNull">
       <no-result title="暂无订单，快去下单吧 ~"></no-result>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -185,7 +186,7 @@ export default {
               font-size: 14px
               color: #d81e06
           .content
-            background: #f7f7f7
+            background: #f5f5f5
             .content-item
               padding: 10px
               .content-wrapper

@@ -15,6 +15,7 @@ const ProductDetail = () => import('components/product-detail/product-detail')
 const Pay = () => import('components/pay/pay')
 const PayResult = () => import('components/pay-result/pay-result')
 const Order = () => import('components/order/order')
+const OrderDetail = () => import('components/order-detail/order-detail')
 
 Vue.use(Router)
 
@@ -146,6 +147,15 @@ export default new Router({
     {
       path: '/order',
       component: Order,
+      children: [
+        {
+          path: '/order/:id',
+          component: OrderDetail,
+          meta: {
+            auth: true
+          }
+        }
+      ],
       meta: {
         auth: true
       }

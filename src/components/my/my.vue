@@ -358,11 +358,11 @@ export default {
                 color: #d81e06
       .login-out
         margin: 20px
-        height: 40px
-        background: $color-icon
-        border-radius: 20px
+        height: 50px
+        background: linear-gradient(90deg, #f10000, #ff2000 73%, #ff4f18)
+        border-radius: 25px
         text-align: center
-        line-height: 40px
+        line-height: 50px
         color: $color-font
     .detail
       position: fixed

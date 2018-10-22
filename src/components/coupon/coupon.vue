@@ -238,10 +238,10 @@ export default {
                 padding: 0 8px
                 text-align: center
                 border-radius: 10px 10px 10px 0
-                background-image: linear-gradient(to left,#ff9574 20%,#e93b3d)
+                background: linear-gradient(to left,#ff9574 20%,#e93b3d)
                 box-shadow: 2px 2px 5px rgba(233,59,61,.2)
                 &.color_gray
-                  background-image: linear-gradient(to left, #ccc 20%, #999)
+                  background: linear-gradient(to left, #ccc 20%, #999)
                   box-shadow: 2px 2px 5px hsla(0, 0%, 60%, .2)
                   &::before
                     background-color: #ccc
