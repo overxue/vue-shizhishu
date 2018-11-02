@@ -47,3 +47,10 @@ export function pay (id) {
     method: 'get'
   })
 }
+
+export function getDetail (id) {
+  return request({
+    url: `/api/orders/${id}?include=orderItems.product`,
+    method: 'get'
+  })
+}

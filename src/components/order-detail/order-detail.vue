@@ -23,10 +23,10 @@
               </div>
               <div class="address-right">
                 <div class="right-top">
-                  <span class="top-name">薛聪</span>
-                  <span class="top-phone">18656085175</span>
+                  <span class="top-name">{{order.address.contact_name}}</span>
+                  <span class="top-phone">{{order.address.contact_phone}}</span>
                 </div>
-                <div class="right-bottom">江苏省 南京市 栖霞区 马群街道 南湾营文康苑21幢1单元9层904 </div>
+                <div class="right-bottom">{{order.address.address}}</div>
               </div>
             </div>
             <div class="shop-shop">
@@ -39,59 +39,19 @@
               </div>
             </div>
             <ul class="shop-goods">
-              <li class="goods-wrapper">
+              <li class="goods-wrapper" v-for="(item, index) of order.orderItems.data">
                 <div class="goods-image">
-                  <img src="https://img.alicdn.com/imgextra/i3/2994503751/TB1snIuvBsmBKNjSZFsXXaXSVXa_!!0-item_pic.jpg_200x200.jpg" width="90" height="90">
+                  <img :src="item.product.image" width="90" height="90">
                 </div>
                 <div class="goods-right">
-                  <h1 class="title">雪碧哈哈哈</h1>
+                  <h1 class="title">{{item.product.title}}</h1>
                   <div>
                     <span class="right-left">购买数量：</span>
-                    <span class="right-right">1</span>
+                    <span class="right-right">{{item.amount}}</span>
                   </div>
                   <div>
                     <span class="right-left">商品单价：</span>
-                    <span class="right-right">15.00/盒</span>
-                  </div>
-                  <div>
-                    <span class="right-left">商品总价：</span>
-                    <span class="right-total">￥112.00</span>
-                  </div>
-                </div>
-              </li>
-              <li class="goods-wrapper">
-                <div class="goods-image">
-                  <img src="https://img.alicdn.com/imgextra/i3/2994503751/TB1snIuvBsmBKNjSZFsXXaXSVXa_!!0-item_pic.jpg_200x200.jpg" width="90" height="90">
-                </div>
-                <div class="goods-right">
-                  <h1 class="title">雪碧哈哈哈</h1>
-                  <div>
-                    <span class="right-left">购买数量：</span>
-                    <span class="right-right">1</span>
-                  </div>
-                  <div>
-                    <span class="right-left">商品单价：</span>
-                    <span class="right-right">15.00/盒</span>
-                  </div>
-                  <div>
-                    <span class="right-left">商品总价：</span>
-                    <span class="right-total">￥112.00</span>
-                  </div>
-                </div>
-              </li>
-              <li class="goods-wrapper">
-                <div class="goods-image">
-                  <img src="https://img.alicdn.com/imgextra/i3/2994503751/TB1snIuvBsmBKNjSZFsXXaXSVXa_!!0-item_pic.jpg_200x200.jpg" width="90" height="90">
-                </div>
-                <div class="goods-right">
-                  <h1 class="title">雪碧哈哈哈</h1>
-                  <div>
-                    <span class="right-left">购买数量：</span>
-                    <span class="right-right">1</span>
-                  </div>
-                  <div>
-                    <span class="right-left">商品单价：</span>
-                    <span class="right-right">15.00/盒</span>
+                    <span class="right-right">{{item.price}}</span>
                   </div>
                   <div>
                     <span class="right-left">商品总价：</span>
@@ -111,13 +71,13 @@
               </div>
               <div class="money-top">
                 <span class="money-t">实付款（含运费）</span>
-                <span class="money-b">￥66.69</span>
+                <span class="money-b">￥{{order.total_amount}}</span>
               </div>
             </div>
             <div class="order-mony">
               <div class="money-top">
                 <span class="money-t">订单编号</span>
-                <span>12345678945678</span>
+                <span>{{order.no}}</span>
               </div>
               <div class="money-top">
                 <span class="money-t">创建时间</span>
@@ -138,9 +98,28 @@
 <script>
 import Back from 'base/back/back'
 import Scroll from 'base/scroll/scroll'
+import { getDetail } from 'api/order'
 
 export default {
+  data () {
+    return {
+      order: {
+        address: {},
+        orderItems: {},
+        total_amount: '',
+        no: ''
+      }
+    }
+  },
+  created () {
+    this._getGoods()
+  },
   methods: {
+    _getGoods () {
+      getDetail(this.$route.params.id).then((res) => {
+        this.order = res
+      })
+    },
     back () {
       this.$router.back()
     }
